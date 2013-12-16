@@ -2,19 +2,19 @@
  * GET users listing.
  */
 
-exports.list = function (req, res) {
+exports.findAll = function (req, res) {
     res.send([
                  {
-                     id: 1, name: 'Nahuel Barrios', description: 'first app user!'
+                     findAllById: 1, name: 'Nahuel Barrios', description: 'first app user!'
                  },
                  {
-                     id: 2, name: 'Gustavo Vignolo', description: 'Dr.'
+                     findAllById: 2, name: 'Gustavo Vignolo', description: 'Dr.'
                  }
              ]);
 };
 
-exports.id = function (req, res) {
+exports.findAllById = function (req, res) {
     res.send({
-                 id: req.params.id, name: "Nahuel Barrios", description: "first app user!"
+                 findAllById: req.params.findAllById, name: "Nahuel Barrios", description: "first app user!"
              });
 };

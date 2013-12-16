@@ -29,8 +29,8 @@ if ('development' == app.get('env')) {
 
 //  Prepare resources expose
 app.get('/', routes.index);
-app.get('/users', user.list);
-app.get('/users/:id', user.id);
+app.get('/users', user.findAll);
+app.get('/users/:findAllById', user.findAllById);
 
 //  Finally creates de server
 http.createServer(app).listen(app.get('port'), function () {

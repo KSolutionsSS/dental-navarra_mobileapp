@@ -12,6 +12,11 @@
           <option name="CONTEXT_PATH" value="/app" />
         </settings>
       </file>
+      <file path="$PROJECT_DIR$/webApp">
+        <settings>
+          <option name="CONTEXT_PATH" value="/webapp" />
+        </settings>
+      </file>
     </deployment>
     <server-settings>
       <option name="BASE_DIRECTORY_NAME" value="Unnamed_misPacientes" />

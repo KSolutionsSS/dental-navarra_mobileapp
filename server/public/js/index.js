@@ -14,6 +14,7 @@ $(document).ready(function () {
                                                 local: [
                                                     'Limpieza', 'Implante', 'Consulta periódica'
                                                 ],
+
                                                 limit: 10
                                             });
 

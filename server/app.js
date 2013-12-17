@@ -5,6 +5,7 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
+var wine = require('./routes/wine');
 var http = require('http');
 var path = require('path');
 
@@ -30,7 +31,14 @@ if ('development' == app.get('env')) {
 //  Prepare resources expose
 app.get('/', routes.index);
 app.get('/users', user.findAll);
-app.get('/users/:findAllById', user.findAllById);
+app.get('/users/:findById', user.findById);
+
+//  Example CRUD methods using MongoDB
+app.get('/wines', wine.findAll);
+app.get('/wines/:id', wine.findById);
+app.post('/wines', wine.addWine);
+app.put('/wines/:id', wine.updateWine);
+app.delete('/wines/:id', wine.deleteWine);
 
 //  Finally creates de server
 http.createServer(app).listen(app.get('port'), function () {

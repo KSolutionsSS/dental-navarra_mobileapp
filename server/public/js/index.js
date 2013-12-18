@@ -1,21 +1,45 @@
 $(document).ready(function () {
 
-    $('#addMeetingFormName').typeahead({
-                                           name: 'patients',
-                                           local: [
-                                               'Nahuel Barrios', 'Gustavo Vignolo', 'Claudia Safranchik', 'Anahi Barrios', 'Patricia Safranchik',
-                                               'Nicolas Vignolo', 'Carolina Vignolo', 'Paola Safranchik', 'Cristian Caputto'
-                                           ],
-                                           limit: 10
-                                       });
+    var addMeetingForm = (function () {
 
-    $('#addMeetingFormTreatment').typeahead({
-                                                name: 'treatments',
-                                                local: [
-                                                    'Limpieza', 'Implante', 'Consulta periódica'
-                                                ],
+        return {
+            init: function () {
 
-                                                limit: 10
-                                            });
+                $.getJSON('/patients', function (data) {
+
+                    var values = data.map(function (each) {
+                        return each.name + ' ' + each.lastName;
+                    });
+
+                    $('#addMeetingFormName').typeahead({
+                                                           name: 'patients',
+                                                           local: values,
+                                                           template: '<p><i class="glyphicon glyphicon-user"></i>{{value}}</p>',
+                                                           engine: Hogan,
+                                                       });
+                });
+
+
+                $.getJSON('/treatments', function (data) {
+
+                    var values = data.map(function (each) {
+                        return each.description;
+                    });
+
+                    $('#addMeetingFormTreatment').typeahead({
+                                                                name: 'treatments',
+                                                                valueKey: 'description',
+                                                                local: values,
+                                                                template: '<p><i class="fa fa-stethoscope"></i>{{description}}</p>',
+                                                                engine: Hogan,
+                                                                limit: 10
+                                                            });
+                });
+
+            }
+        };
+    }());
+
+    addMeetingForm.init();
 
 });

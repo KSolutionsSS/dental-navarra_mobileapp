@@ -4,7 +4,8 @@
 
 var express = require('express');
 var routes = require('./routes');
-var user = require('./routes/user');
+var patient = require('./routes/patient');
+var treatment = require('./routes/treatment');
 var wine = require('./routes/wine');
 var http = require('http');
 var path = require('path');
@@ -30,8 +31,11 @@ if ('development' == app.get('env')) {
 
 //  Prepare resources expose
 app.get('/', routes.index);
-app.get('/users', user.findAll);
-app.get('/users/:findById', user.findById);
+
+app.get('/patients', patient.findAll);
+app.get('/patients/:findById', patient.findById);
+
+app.get('/treatments', treatment.findAll);
 
 //  Example CRUD methods using MongoDB
 app.get('/wines', wine.findAll);

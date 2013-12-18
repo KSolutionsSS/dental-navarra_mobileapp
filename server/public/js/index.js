@@ -7,9 +7,7 @@ $(document).ready(function () {
 
                 $.getJSON('/patients', function (data) {
 
-                    var values = data.map(function (each) {
-                        return each.name + ' ' + each.lastName;
-                    });
+                    var values = data.map(app.domain.patient.generateFullName);
 
                     $('#addMeetingFormName').typeahead({
                                                            name: 'patients',

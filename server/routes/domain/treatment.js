@@ -2,19 +2,15 @@
  * Created by Nahuel Barrios <barrios.nahuel@gmail.com>.
  * Created on 12/17/13, at 7:13 PM.
  */
-exports.findAll = function (req, res) {
-    res.send([
-                 {
-                     id: 2, description: 'Implante'
-                 },
-                 {
-                     id: 1, description: 'Limpieza'
-                 },
-                 {
-                     id: 3, description: 'Consulta periódica'
-                 },
-                 {
-                     id: 4, description: 'Revision anual'
-                 }
-             ]);
-};
+(function () {
+    var collectionName = 'treatments';
+
+    exports.findAll = function (req, res) {
+        console.log('Finding all treatments');
+        db.collection(collectionName, function (err, collection) {
+            collection.find().toArray(function (err, items) {
+                res.send(items);
+            });
+        });
+    };
+}());

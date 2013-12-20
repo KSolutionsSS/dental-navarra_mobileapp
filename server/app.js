@@ -44,7 +44,7 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 
 app.get('/patients', patient.findAll);
-app.get('/patients/:findById', patient.findById);
+app.get('/patients/:id', patient.findById);
 
 app.get('/treatments', treatment.findAll);
 
@@ -66,7 +66,9 @@ http.createServer(app).listen(app.get('port'), function () {
 function connectToDatabase() {
     var mongo = require('mongodb');
 
-    var Server = mongo.Server, Db = mongo.Db, BSON = mongo.BSONPure;
+    var Server = mongo.Server;
+    var Db = mongo.Db;
+    BSON = mongo.BSONPure;
 
     var server = new Server(dbHost, dbPort, {auto_reconnect: true});
     db = new Db(dbName, server);
@@ -76,31 +78,105 @@ function connectToDatabase() {
         //  You'd typically not find this code in a real-life app, since the database would already exist.
         var populateDB = function () {
 
-            var wines = [
-                {
-                    name: 'CHATEAU DE SAINT COSME',
-                    year: '2009',
-                    grapes: 'Grenache / Syrah',
-                    country: 'France',
-                    region: 'Southern Rhone',
-                    description: 'The aromas of fruit and spice...',
-                    picture: 'saint_cosme.jpg'
-                },
-                {
-                    name: 'LAN RIOJA CRIANZA',
-                    year: '2006',
-                    grapes: 'Tempranillo',
-                    country: 'Spain',
-                    region: 'Rioja',
-                    description: 'A resurgence of interest in boutique vineyards...',
-                    picture: 'lan_rioja.jpg'
+            var winesCollectionName = 'wines';
+            db.collection(winesCollectionName, {strict: true}, function (err, collection) {
+                if (err) {
+                    console.log('The "' + winesCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
+                    var wines = [
+                        {
+                            name: 'CHATEAU DE SAINT COSME',
+                            year: '2009',
+                            grapes: 'Grenache / Syrah',
+                            country: 'France',
+                            region: 'Southern Rhone',
+                            description: 'The aromas of fruit and spice...',
+                            picture: 'saint_cosme.jpg'
+                        },
+                        {
+                            name: 'LAN RIOJA CRIANZA',
+                            year: '2006',
+                            grapes: 'Tempranillo',
+                            country: 'Spain',
+                            region: 'Rioja',
+                            description: 'A resurgence of interest in boutique vineyards...',
+                            picture: 'lan_rioja.jpg'
+                        }
+                    ];
+                    db.collection(winesCollectionName, function (err, collection) {
+                        collection.insert(wines, {safe: true}, function (err, result) {
+                        });
+                    });
                 }
-            ];
-
-            db.collection('wines', function (err, collection) {
-                collection.insert(wines, {safe: true}, function (err, result) {
-                });
             });
+
+            var treatmentsCollectionName = 'treatments';
+            db.collection(treatmentsCollectionName, {strict: true}, function (err, collection) {
+                if (err) {
+                    console.log('The "' + treatmentsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
+                    var treatments = [
+                        {
+                            id: 2, description: 'Implante'
+                        },
+                        {
+                            id: 1, description: 'Limpieza'
+                        },
+                        {
+                            id: 3, description: 'Consulta periódica'
+                        },
+                        {
+                            id: 4, description: 'Revision anual'
+                        }
+                    ];
+                    db.collection(treatmentsCollectionName, function (err, collection) {
+                        collection.insert(treatments, {safe: true}, function (err, result) {
+                        });
+                    });
+                }
+            });
+
+            var patientsCollectionName = 'patients';
+            db.collection(patientsCollectionName, {strict: true}, function (err, collection) {
+                if (err) {
+                    console.log('The "' + patientsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
+                    var patients = [
+                        {
+                            id: 1, name: 'Nahuel', lastName: 'Barrios'
+                        },
+                        {
+                            id: 2, name: 'Gustavo', lastName: 'Vignolo'
+                        },
+                        {
+                            id: 3, name: 'Nicolas', lastName: 'Vignolo'
+                        },
+                        {
+                            id: 4, name: 'Carolina', lastName: 'Vignolo'
+                        },
+                        {
+                            id: 5, name: 'Patricia', lastName: 'Safranchik'
+                        },
+                        {
+                            id: 6, name: 'Paola', lastName: 'Safranchik'
+                        },
+                        {
+                            id: 7, name: 'Claudia', lastName: 'Safranchik'
+                        },
+                        {
+                            id: 8, name: 'Cristian', lastName: 'Caputto'
+                        },
+                        {
+                            id: 9, name: 'Tomas', lastName: 'Caputto'
+                        },
+                        {
+                            id: 10, name: 'María Sol', lastName: 'Caputto'
+                        }
+                    ];
+                    db.collection(patientsCollectionName, function (err, collection) {
+                        collection.insert(patients, {safe: true}, function (err, result) {
+                        });
+                    });
+                }
+            });
+
         };
 
         if (err) {
@@ -108,12 +184,8 @@ function connectToDatabase() {
         } else {
             console.log('Connected to "' + dbName + '" database');
 
-            db.collection('wines', {strict: true}, function (err, collection) {
-                if (err) {
-                    console.log("The 'wines' collection doesn't exist. Creating it with sample data...");
-                    populateDB();
-                }
-            });
+
+            populateDB();
         }
 
 

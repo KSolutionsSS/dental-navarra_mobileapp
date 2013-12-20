@@ -12,6 +12,9 @@ exports.findAll = function (req, res) {
                  },
                  {
                      id: 3, description: 'Consulta periódica'
+                 },
+                 {
+                     id: 4, description: 'Revision anual'
                  }
              ]);
 };

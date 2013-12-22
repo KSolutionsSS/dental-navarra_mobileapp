@@ -1,0 +1,22 @@
+button {
+    width: 100%;
+}
+
+body {
+    background-color: #1E6653;
+}
+
+h1 {
+    color: #4C4C4C;
+    background: #C0DBD2 url("../img/logo.png") no-repeat;
+    padding: 5px 5px 5px 70px;
+    font-weight: bolder;
+}
+
+p {
+    color: #ffffff;
+}
+
+blockquote small {
+    color: #000000;
+}

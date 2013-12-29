@@ -115,16 +115,19 @@ function connectToDatabase() {
                     console.log('The "' + treatmentsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
                     var treatments = [
                         {
-                            id: 2, description: 'Implante'
+                            id: 2, description: 'Limpieza'
                         },
                         {
-                            id: 1, description: 'Limpieza'
+                            id: 1, description: 'Cirugía'
                         },
                         {
-                            id: 3, description: 'Consulta periódica'
+                            id: 3, description: 'Implantes'
                         },
                         {
-                            id: 4, description: 'Revision anual'
+                            id: 4, description: 'Ortodoncia'
+                        },
+                        {
+                            id: 5, description: 'Tratamiento periodontal'
                         }
                     ];
                     db.collection(treatmentsCollectionName, function (err, collection) {

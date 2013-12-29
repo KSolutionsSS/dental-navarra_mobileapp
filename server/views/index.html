@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Dental Navarra - Administración de citas</title>
+    <title>Dental Navarra - Gestión de control de tratamientos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dental Navarra - Administración de citas">
     <meta name="author" content="Nahuel Barrios">
@@ -48,7 +48,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h1>Dental Navarra - Administración de citas</h1>
+            <h1>Dental Navarra - Gestión de control de tratamientos</h1>
         </div>
     </div>
 
@@ -63,6 +63,7 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form">
+
                         <div class="form-group">
                             <div class="col-md-12">
                                 <input type="text" class="form-control" id="addMeetingFormName" placeholder="Ingrese el nombre del paciente"
@@ -71,16 +72,30 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <input type="text" class="form-control" id="addMeetingFormTreatment" placeholder="¿Qué tratamiento se hizo?"
+                                <input type="text" class="form-control" id="addMeetingFormTreatment" placeholder="Tratamiento realizado"
                                        required="required" tabindex="2">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <textarea class="form-control" rows="3"
-                                          placeholder="Indique cualquier comentario adicional que deba ser tenido en cuenta" tabindex="3"></textarea>
+
+                        <div id="optionalFields">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" tabindex="3"> Es primer cirugía
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" id="addMeetingFormImplantType" placeholder="Tipo de implante"
+                                           required="required" tabindex="3">
+                                </div>
                             </div>
                         </div>
+
                         <button type="submit" class="btn btn-primary" tabindex="4">
                             <i class="glyphicon glyphicon-save"></i>
                             Guardar cita
@@ -117,7 +132,8 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <input type="email" class="form-control" id="addPatientFormEmail" placeholder="Email" required="required" tabindex="8">
+                                <input type="email" class="form-control" id="addPatientFormEmail" placeholder="Email" required="required"
+                                       tabindex="8">
                             </div>
                         </div>
                         <div class="form-group">

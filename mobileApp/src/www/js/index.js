@@ -27,6 +27,12 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+
+        $('form').submit(function (event) {
+            //  TODO : Functionality : Fix this hard-coded functionality
+            event.preventDefault();
+            location.href = '/misPacientes/src/www/home.html';
+        });
     },
     // deviceready Event Handler
     //

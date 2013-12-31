@@ -31,7 +31,7 @@ var app = {
         $('form').submit(function (event) {
             //  TODO : Functionality : Fix this hard-coded functionality
             event.preventDefault();
-            location.href = '/misPacientes/src/www/home.html';
+            location.href = 'home.html';
         });
     },
     // deviceready Event Handler

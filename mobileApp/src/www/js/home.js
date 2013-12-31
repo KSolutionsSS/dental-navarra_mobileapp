@@ -4,6 +4,8 @@ $(document).ready(function () {
 
     loadPromotions();
 
+    notification.beep(5);
+    notification.vibrate(2000);
 });
 
 function loadPromotions() {

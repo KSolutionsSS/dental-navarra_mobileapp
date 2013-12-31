@@ -3,7 +3,9 @@
  * Created on 12/31/13, at 7:34 PM.
  */
 
-var notification = (function () {
+var modules = modules || {};
+
+modules.notification = (function () {
 
     function vibrate(miliseconds) {
         navigator.notification.vibrate(miliseconds);

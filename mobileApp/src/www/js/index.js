@@ -31,7 +31,7 @@ var app = {
         $('form').submit(function (event) {
             //  TODO : Functionality : Fix this hard-coded functionality
             event.preventDefault();
-            location.href = 'home.html';
+            location.href = 'views/home.html';
         });
     },
     // deviceready Event Handler

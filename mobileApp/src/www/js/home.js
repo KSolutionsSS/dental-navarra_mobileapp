@@ -4,7 +4,9 @@ $(document).ready(function () {
 
     loadPromotions();
 
-    notification.beep(5);
+    //  TODO : Functionality : test notifications!
+    notification.popUp('un mensaje', 'un titulo', 'nombre del boton');
+    notification.beep(10);
     notification.vibrate(2000);
 });
 

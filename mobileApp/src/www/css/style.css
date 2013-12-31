@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 button {
     width: 100%;
 }
@@ -21,9 +23,6 @@ blockquote small {
     color: #000000;
 }
 
-
-@charset "utf-8";
-
 .badge.pull-left {
     margin-right: 15px;
 }
@@ -36,12 +35,23 @@ blockquote small {
 /****************************************** Sobreescribo bootstrap ******************************************/
 /************************************************************************************************************/
 
+a {
+    color: black;
+}
+
+a:hover {
+    color: #1E6653;
+}
+
 .badge {
     background-color: #428bca;
 }
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
-    color: #FFF;
-    background-color: #428bca;
+    background-color: #C0DBD2;
     border-color: black;
+}
+
+.form-control:focus {
+    border-color: #C0DBD2;
 }

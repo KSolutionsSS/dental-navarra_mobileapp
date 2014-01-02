@@ -16,6 +16,7 @@ var routes = require('./routes');
 
 var patient = require('./routes/domain/patient');
 var treatment = require('./routes/domain/treatment');
+var user = require('./routes/domain/user');
 var wine = require('./routes/domain/wine');
 
 var http = require('http');
@@ -47,6 +48,9 @@ app.get('/patients', patient.findAll);
 app.get('/patients/:id', patient.findById);
 
 app.get('/treatments', treatment.findAll);
+
+app.get('/users', user.findAll);
+app.post('/users', user.save);
 
 //  Example CRUD methods using MongoDB
 app.get('/wines', wine.findAll);

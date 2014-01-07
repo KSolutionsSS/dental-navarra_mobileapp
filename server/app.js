@@ -14,6 +14,7 @@ var dbPort = 27017;
 var express = require('express');
 var routes = require('./routes');
 
+var admin = require('./routes/domain/admin');
 var patient = require('./routes/domain/patient');
 var treatment = require('./routes/domain/treatment');
 var user = require('./routes/domain/user');
@@ -28,6 +29,10 @@ var app = express();
 app.set('port', process.env.PORT || port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+// Asynchronous authentication
+app.use(express.basicAuth(admin.login));
+
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
@@ -108,6 +113,25 @@ function connectToDatabase() {
                     ];
                     db.collection(winesCollectionName, function (err, collection) {
                         collection.insert(wines, {safe: true}, function (err, result) {
+                        });
+                    });
+                }
+            });
+
+            var adminsCollectionName = 'admins';
+            db.collection(adminsCollectionName, {strict: true}, function (err, collection) {
+                if (err) {
+                    console.log('The "' + adminsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
+                    var admins = [
+                        {
+                            id: 1, username: 'admin', password: 'admin'
+                        },
+                        {
+                            id: 2, username: 'test', password: 'test'
+                        }
+                    ];
+                    db.collection(adminsCollectionName, function (err, collection) {
+                        collection.insert(admins, {safe: true}, function (err, result) {
                         });
                     });
                 }

@@ -39,3 +39,7 @@ i {
 #optionalFields > div {
     display: none;
 }
+
+.tab-pane {
+    padding-top: 25px;
+}

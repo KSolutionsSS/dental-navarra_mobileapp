@@ -52,114 +52,143 @@
         </div>
     </div>
 
-    <div class="row clearfix">
 
-        <div class="col-md-6 column">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <i class="fa fa-check-square-o"></i>Agregar cita a paciente
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form">
+    <div class="row">
+        <div class="col-md-12 column">
+            <ul class="nav nav-tabs">
+                <li><a href="#tafalla" data-toggle="tab">Tafalla</a></li>
+                <li><a href="#alsasua" data-toggle="tab">Alsasua</a></li>
+                <li><a href="#milagro" data-toggle="tab">Milagro</a></li>
+            </ul>
 
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input type="text" class="form-control" id="addMeetingFormName" placeholder="Ingrese el nombre del paciente"
-                                       required="required" tabindex="1">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input type="text" class="form-control" id="addMeetingFormTreatment" placeholder="Tratamiento realizado"
-                                       required="required" tabindex="2">
-                            </div>
-                        </div>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tafalla">
+                    <div class="row">
+                        <div class="col-md-6 column">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        <i class="fa fa-check-square-o"></i>Agregar cita a paciente
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <form class="form-horizontal" role="form">
 
-                        <div id="optionalFields">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" tabindex="3"> Es primer cirugía
-                                        </label>
-                                    </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="addMeetingFormName"
+                                                       placeholder="Ingrese el nombre del paciente"
+                                                       required="required" tabindex="1">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="addMeetingFormTreatment"
+                                                       placeholder="Tratamiento realizado"
+                                                       required="required" tabindex="2">
+                                            </div>
+                                        </div>
+
+                                        <div id="optionalFields">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" tabindex="3"> Es primer cirugía
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control" id="addMeetingFormImplantType"
+                                                           placeholder="Tipo de implante"
+                                                           required="required" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary" tabindex="4">
+                                            <i class="glyphicon glyphicon-save"></i>
+                                            Guardar cita
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control" id="addMeetingFormImplantType" placeholder="Tipo de implante"
-                                           required="required" tabindex="3">
+                        <div class="col-md-6 column">
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                        Crear nuevo paciente
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" id="addPatientFormName" placeholder="Nombre"
+                                                       required="required"
+                                                       tabindex="5">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="addPatientFormLastName" placeholder="Primer apellido"
+                                                       tabindex="6">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="addPatientFormSecondLastName"
+                                                       placeholder="Segundo apellido"
+                                                       tabindex="7">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <input type="email" class="form-control" id="addPatientFormEmail" placeholder="Email"
+                                                       required="required"
+                                                       tabindex="8">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-10">
+                                                <button type="submit" class="btn btn-default" tabindex="9">
+                                                    <i class="glyphicon glyphicon-save"></i>
+                                                    Guardar nuevo paciente
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
-
-                        <button type="submit" class="btn btn-primary" tabindex="4">
-                            <i class="glyphicon glyphicon-save"></i>
-                            Guardar cita
-                        </button>
-                    </form>
+                    </div>
                 </div>
+
+                <div class="tab-pane fade" id="alsasua">...</div>
+
+                <div class="tab-pane fade" id="milagro">3</div>
             </div>
+
         </div>
-
-        <div class="col-md-6 column">
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <i class="glyphicon glyphicon-user"></i>
-                        Crear nuevo paciente
-                    </h3>
-                </div>
-                <div class="panel-body">
-
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="addPatientFormName" placeholder="Nombre" required="required" tabindex="5">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" id="addPatientFormLastName" placeholder="Primer apellido" tabindex="6">
-                            </div>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" id="addPatientFormSecondLastName" placeholder="Segundo apellido" tabindex="7">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <input type="email" class="form-control" id="addPatientFormEmail" placeholder="Email" required="required"
-                                       tabindex="8">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-10">
-                                <button type="submit" class="btn btn-default" tabindex="9">
-                                    <i class="glyphicon glyphicon-save"></i>
-                                    Guardar nuevo paciente
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <div class="row">
         <div class="col-md-12">
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group">
-                    <a href="https://docs.google.com/spreadsheet/ccc?key=0AqAWn1xLDRvPdDA1Y1liWHI2LUdnS2VhR1V6SHVkUVE" class="btn btn-default" role="button" target="_blank"><i class="fa fa-bullhorn"></i>Gestionar promociones</a>
+                    <a href="https://docs.google.com/spreadsheet/ccc?key=0AqAWn1xLDRvPdDA1Y1liWHI2LUdnS2VhR1V6SHVkUVE" class="btn btn-default"
+                       role="button" target="_blank"><i class="fa fa-bullhorn"></i>Gestionar promociones</a>
                 </div>
                 <div class="btn-group">
-                    <a href="http://www.dentalnavarra.com/" class="btn btn-default" role="button" target="_blank"><i class="fa fa-globe"></i>Sitio web Dental Navara</a>
+                    <a href="http://www.dentalnavarra.com/" class="btn btn-default" role="button" target="_blank"><i class="fa fa-globe"></i>Sitio web
+                        Dental Navara</a>
                 </div>
             </div>
         </div>

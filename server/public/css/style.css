@@ -40,6 +40,12 @@ i {
     display: none;
 }
 
+/*Para el header de los tabs*/
+.nav.nav-tabs i{
+    color: black;
+}
+
+/*Para el contenido de los tabs*/
 .tab-pane {
     padding-top: 25px;
 }

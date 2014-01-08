@@ -1,4 +1,2 @@
-maqueta/plugins
-maqueta/platforms/android
-src/platforms/android
-src/plugins
+src/platforms/android/bin
+src/platforms/android/gen

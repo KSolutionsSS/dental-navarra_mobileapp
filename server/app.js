@@ -222,34 +222,36 @@ function connectToDatabase() {
                     console.log('The "' + patientsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
                     var patients = [
                         {
-                            id: 1, name: 'Nahuel', lastName: 'Barrios'
+                            id: 1, name: 'Nahuel', lastName: 'Barrios', age: 24, history: [
+                            {date: new Date(2013, 1, 12, 0, 0, 0, 0)}
+                        ]
                         },
                         {
-                            id: 2, name: 'Gustavo', lastName: 'Vignolo'
+                            id: 2, name: 'Gustavo', lastName: 'Vignolo', age: 24
                         },
                         {
-                            id: 3, name: 'Nicolas', lastName: 'Vignolo'
+                            id: 3, name: 'Nicolas', lastName: 'Vignolo', age: 24
                         },
                         {
-                            id: 4, name: 'Carolina', lastName: 'Vignolo'
+                            id: 4, name: 'Carolina', lastName: 'Vignolo', age: 24
                         },
                         {
-                            id: 5, name: 'Patricia', lastName: 'Safranchik'
+                            id: 5, name: 'Patricia', lastName: 'Safranchik', age: 24
                         },
                         {
-                            id: 6, name: 'Paola', lastName: 'Safranchik'
+                            id: 6, name: 'Paola', lastName: 'Safranchik', age: 24
                         },
                         {
-                            id: 7, name: 'Claudia', lastName: 'Safranchik'
+                            id: 7, name: 'Claudia', lastName: 'Safranchik', age: 24
                         },
                         {
-                            id: 8, name: 'Cristian', lastName: 'Caputto'
+                            id: 8, name: 'Cristian', lastName: 'Caputto', age: 24
                         },
                         {
-                            id: 9, name: 'Tomas', lastName: 'Caputto'
+                            id: 9, name: 'Tomas', lastName: 'Caputto', age: 24
                         },
                         {
-                            id: 10, name: 'María Sol', lastName: 'Caputto'
+                            id: 10, name: 'María Sol', lastName: 'Caputto', age: 24
                         }
                     ];
                     db.collection(patientsCollectionName, function (err, collection) {

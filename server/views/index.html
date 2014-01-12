@@ -150,15 +150,22 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-8">
                                                 <input type="email" class="form-control" id="addPatientFormEmail" placeholder="Email"
                                                        required="required"
-                                                       tabindex="8">
+                                                       tabindex="8" maxlength="50">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="addPatientFormBirthDate"
+                                                       placeholder="Fec. nacimiento"
+                                                       maxlength="8"
+                                                       tabindex="9">
                                             </div>
                                         </div>
+
                                         <div class="form-group">
                                             <div class="col-sm-10">
-                                                <button type="submit" class="btn btn-default" tabindex="9">
+                                                <button type="submit" class="btn btn-default" tabindex="10">
                                                     <i class="glyphicon glyphicon-save"></i>
                                                     Guardar nuevo paciente
                                                 </button>
@@ -187,11 +194,14 @@
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group">
                     <a href="https://docs.google.com/spreadsheet/ccc?key=0AqAWn1xLDRvPdDA1Y1liWHI2LUdnS2VhR1V6SHVkUVE" class="btn btn-default"
-                       role="button" target="_blank"><i class="fa fa-bullhorn"></i>Gestionar promociones</a>
+                       role="button" target="_blank" tabindex="11">
+                        <i class="fa fa-bullhorn"></i>Gestionar promociones
+                    </a>
                 </div>
                 <div class="btn-group">
-                    <a href="http://www.dentalnavarra.com/" class="btn btn-default" role="button" target="_blank"><i class="fa fa-globe"></i>Sitio web
-                        Dental Navara</a>
+                    <a href="http://www.dentalnavarra.com/" class="btn btn-default" role="button" target="_blank" tabindex="12">
+                        <i class="fa fa-globe"></i>Sitio web Dental Navara
+                    </a>
                 </div>
             </div>
         </div>

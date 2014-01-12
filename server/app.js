@@ -139,30 +139,81 @@ function connectToDatabase() {
 
             var treatmentsCollectionName = 'treatments';
             db.collection(treatmentsCollectionName, {strict: true}, function (err, collection) {
-                if (err) {
-                    console.log('The "' + treatmentsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
-                    var treatments = [
-                        {
-                            id: 2, description: 'Limpieza'
-                        },
-                        {
-                            id: 1, description: 'Cirugía'
-                        },
-                        {
-                            id: 3, description: 'Implantes'
-                        },
-                        {
-                            id: 4, description: 'Ortodoncia'
-                        },
-                        {
-                            id: 5, description: 'Tratamiento periodontal'
-                        }
-                    ];
-                    db.collection(treatmentsCollectionName, function (err, collection) {
-                        collection.insert(treatments, {safe: true}, function (err, result) {
-                        });
+
+                collection.remove({}, function (err, removed) {
+                    console.log('Removed all records in ' + treatmentsCollectionName + ' collection.');
+                });
+
+                console.log('The "' + treatmentsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
+                var treatments = [
+                    {
+                        id: 1, description: 'Limpieza (complejidad 1)', revisions: [
+                        {frequency: 12}
+                    ]
+                    },
+                    {
+                        id: 2, description: 'Limpieza (complejidad 2)', revisions: [
+                        {frequency: 6}
+                    ]
+                    },
+                    {
+                        id: 3, description: 'Limpieza (complejidad 3)', revisions: [
+                        {frequency: 3}
+                    ]
+                    },
+                    {
+                        id: 4, description: 'Cirugías de implantes', revisions: [
+                        {sequence: 1, frequency: 2, quantity: 2, description: 'Control radiográfico'},
+                        {sequence: 2, frequency: 12, description: 'Revision anual radiológica'},
+                        {sequence: 2, frequency: 6, description: 'Control cada 6 meses'}
+                    ]
+                    },
+                    {
+                        id: 5, description: 'Implantes', types: [
+                        {description: 'Elevación de seno', revisions: [
+                            {frequency: 4.5, description: 'Control radiográfico', quantity: 2}
+                        ]},
+                        {description: 'Periodontal', revisions: [
+                            {sequence: 1, frequency: 2, description: 'Control'},
+                            {sequence: 2, frequency: 6, description: 'Control'},
+                            {sequence: 3, frequency: 12, description: 'Control'}
+                        ]},
+                        {description: 'Exodoncia', revisions: [
+                            {frequency: 3, description: 'Control radiográfico'}
+                        ]}
+                    ]
+                    },
+                    {
+                        id: 6, description: 'Tratamiento periodontal (complejidad 1)', revisions: [
+                        {frequency: 12, description: 'Control'}
+                    ]
+                    },
+                    {
+                        id: 7, description: 'Tratamiento periodontal (complejidad 2)', revisions: [
+                        {frequency: 6, description: 'Control'}
+                    ]
+                    },
+                    {
+                        id: 8, description: 'Tratamiento periodontal (complejidad 3)', revisions: [
+                        {frequency: 3, description: 'Control'}
+                    ]
+                    },
+                    {
+                        id: 9, description: 'Ortodoncia', revisions: [
+                        {sequence: 1, frequency: 6, description: 'Control'},
+                        {sequence: 2, frequency: 24, description: 'Control'}
+                    ]
+                    },
+                    {
+                        id: 10, description: 'Control general anual', revisions: [
+                        {frequency: 12, description: 'Control general anual'}
+                    ]
+                    }
+                ];
+                db.collection(treatmentsCollectionName, function (err, collection) {
+                    collection.insert(treatments, {safe: true}, function (err, result) {
                     });
-                }
+                });
             });
 
             var patientsCollectionName = 'patients';

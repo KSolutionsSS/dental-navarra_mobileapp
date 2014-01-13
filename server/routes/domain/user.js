@@ -7,7 +7,7 @@
     var collectionName = 'users';
 
     exports.findAll = function (req, res) {
-        console.log('Finding all patients');
+        console.log('Finding all users');
         db.collection(collectionName, function (err, collection) {
             collection.find().toArray(function (err, items) {
                 res.send(items);

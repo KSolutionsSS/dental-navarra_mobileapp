@@ -31,16 +31,6 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="img/favicon.ico">
-
-    <!--Libraries-->
-    <script type="text/javascript" src="js/lib/jquery.min.js"></script>
-    <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/lib/typeahead.min.js"></script>
-    <script type="text/javascript" src="js/lib/hogan-2.0.0.js"></script>
-
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/app/domain/domain.js"></script>
-    <script type="text/javascript" src="js/app/domain/patient.js"></script>
 </head>
 
 <body>
@@ -130,7 +120,7 @@
                                 </div>
                                 <div class="panel-body">
 
-                                    <form class="form-horizontal" role="form">
+                                    <form class="form-horizontal" role="form" id="addPatientForm">
                                         <div class="form-group">
                                             <div class="col-sm-12">
                                                 <input type="text" class="form-control" id="addPatientFormName" placeholder="Nombre"
@@ -141,10 +131,11 @@
                                         <div class="form-group">
                                             <div class="col-sm-6">
                                                 <input type="text" class="form-control" id="addPatientFormLastName" placeholder="Primer apellido"
-                                                       tabindex="6">
+                                                       required="required" tabindex="6">
                                             </div>
                                             <div class="col-sm-6">
                                                 <input type="text" class="form-control" id="addPatientFormSecondLastName"
+                                                       required="required"
                                                        placeholder="Segundo apellido"
                                                        tabindex="7">
                                             </div>
@@ -157,6 +148,7 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control" id="addPatientFormBirthDate"
+                                                       required="required"
                                                        placeholder="Fec. nacimiento"
                                                        maxlength="8"
                                                        tabindex="9">
@@ -207,5 +199,18 @@
         </div>
     </div>
 </div>
+
+<!--Libraries-->
+<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/lib/typeahead.min.js"></script>
+<script type="text/javascript" src="js/lib/hogan-2.0.0.js"></script>
+
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/app/domain/domain.js"></script>
+<script type="text/javascript" src="js/app/domain/patient.js"></script>
+<script type="text/javascript" src="js/app/util/util.js"></script>
+<script type="text/javascript" src="js/app/util/date.js"></script>
+
 </body>
 </html>

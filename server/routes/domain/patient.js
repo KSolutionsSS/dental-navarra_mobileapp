@@ -25,5 +25,20 @@
         });
     };
 
+    exports.save = function (req, res) {
+        var user = req.body;
+        console.log('Adding patient: ' + JSON.stringify(user));
+        db.collection(collectionName, {strict: true}, function (err, collection) {
+            collection.insert(user, {safe: true}, function (err, result) {
+                if (err) {
+                    res.send({'error': 'An error has occurred trying to save a patient'});
+                } else {
+                    console.log('Success: ' + JSON.stringify(result[0]));
+                    res.send(result[0]);
+                }
+            });
+        });
+    };
+
 }());
 

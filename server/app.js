@@ -51,6 +51,7 @@ app.get('/', routes.index);
 
 app.get('/patients', patient.findAll);
 app.get('/patients/:id', patient.findById);
+app.post('/patients', patient.save);
 
 app.get('/treatments', treatment.findAll);
 

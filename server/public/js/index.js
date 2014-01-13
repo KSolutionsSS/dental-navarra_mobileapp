@@ -34,6 +34,26 @@ $(document).ready(function () {
                                                             });
                 });
 
+                $('#addPatientForm').submit(function (event) {
+                    event.preventDefault();
+
+                    var newPatient = {name: $('#addPatientFormName').val(), lastName: $('#addPatientFormLastName').val(), secondLastName: $('#addPatientFormSecondLastName').val(), email: $('#addPatientFormEmail').val(), age: app.util.date.getYears($('#addPatientFormBirthDate').val())};
+
+                    $.ajax({
+                               type: "POST",
+                               url: '/patientsss',
+                               data: newPatient,
+                               success: function (data) {
+                                   console.log('Se creo el paciente correcetamente.');
+                               },
+                               error: function (err) {
+                                   console.log('Ocurrió un error intentando crear un nuevo paciente');
+                               }
+                           });
+
+
+                });
+
             }
         };
     }());

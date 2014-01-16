@@ -40,6 +40,10 @@ hr {
     border-color: #dddddd;
 }
 
+img {
+    width: 100%;
+}
+
 #optionalFields > div {
     display: none;
 }

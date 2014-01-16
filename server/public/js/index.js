@@ -33,6 +33,13 @@ $(document).ready(function () {
                                                             });
                 });
 
+            }
+        };
+    }());
+
+    var newPatientForm = (function () {
+        return {
+            init: function () {
                 $('#addPatientForm').submit(function (event) {
                     event.preventDefault();
 
@@ -52,11 +59,12 @@ $(document).ready(function () {
 
 
                 });
-
             }
         };
     }());
 
     addMeetingForm.init();
+
+    newPatientForm.init();
 
 });

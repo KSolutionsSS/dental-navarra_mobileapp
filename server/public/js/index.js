@@ -17,7 +17,6 @@ $(document).ready(function () {
                                                        });
                 });
 
-
                 $.getJSON('/treatments', function (data) {
 
                     var values = data.map(function (each) {
@@ -41,10 +40,10 @@ $(document).ready(function () {
 
                     $.ajax({
                                type: "POST",
-                               url: '/patientsss',
+                               url: '/patients',
                                data: newPatient,
                                success: function (data) {
-                                   console.log('Se creo el paciente correcetamente.');
+                                   location.reload();
                                },
                                error: function (err) {
                                    console.log('Ocurrió un error intentando crear un nuevo paciente');

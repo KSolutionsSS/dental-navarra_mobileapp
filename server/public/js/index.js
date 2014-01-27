@@ -88,7 +88,14 @@ $(document).ready(function () {
         var onSubmit = function (event) {
             event.preventDefault();
 
-            var newPatient = {name: $('#addPatientFormName').val(), lastName: $('#addPatientFormLastName').val(), secondLastName: $('#addPatientFormSecondLastName').val(), email: $('#addPatientFormEmail').val(), age: app.util.date.getYears($('#addPatientFormBirthDate').val())};
+            var newPatient = {
+                name: $('#addPatientFormName').val(),
+                lastName: $('#addPatientFormLastName').val(),
+                secondLastName: $('#addPatientFormSecondLastName').val(),
+                email: $('#addPatientFormEmail').val(),
+                birthday: $('#addPatientFormBirthDate').val(),
+                office: $('.tab-pane.active').attr('id')
+            };
 
             $.ajax({
                        type: "POST",

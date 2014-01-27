@@ -84,27 +84,28 @@ $(document).ready(function () {
     }());
 
     var newPatientForm = (function () {
+
+        var onSubmit = function (event) {
+            event.preventDefault();
+
+            var newPatient = {name: $('#addPatientFormName').val(), lastName: $('#addPatientFormLastName').val(), secondLastName: $('#addPatientFormSecondLastName').val(), email: $('#addPatientFormEmail').val(), age: app.util.date.getYears($('#addPatientFormBirthDate').val())};
+
+            $.ajax({
+                       type: "POST",
+                       url: '/patients',
+                       data: newPatient,
+                       success: function (data) {
+                           location.reload();
+                       },
+                       error: function (err) {
+                           console.log('Ocurrió un error intentando crear un nuevo paciente');
+                       }
+                   });
+        };
+
         return {
             init: function () {
-                $('#addPatientForm').submit(function (event) {
-                    event.preventDefault();
-
-                    var newPatient = {name: $('#addPatientFormName').val(), lastName: $('#addPatientFormLastName').val(), secondLastName: $('#addPatientFormSecondLastName').val(), email: $('#addPatientFormEmail').val(), age: app.util.date.getYears($('#addPatientFormBirthDate').val())};
-
-                    $.ajax({
-                               type: "POST",
-                               url: '/patients',
-                               data: newPatient,
-                               success: function (data) {
-                                   location.reload();
-                               },
-                               error: function (err) {
-                                   console.log('Ocurrió un error intentando crear un nuevo paciente');
-                               }
-                           });
-
-
-                });
+                $('#addPatientForm').submit(onSubmit);
             }
         };
     }());

@@ -59,6 +59,12 @@
                 <div class="tab-pane fade in active" id="tafalla">
                     <div class="row">
                         <div class="col-md-6 column">
+
+                            <div class="alert alert-success">
+                                <button type="button" class="close">&times;</button>
+                                <strong>¡Bien!</Strong> Se actualizó la historia clínica del paciente correctamente.
+                            </div>
+
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
@@ -66,9 +72,9 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
-                                    <form class="form-horizontal" role="form">
+                                    <form class="form-horizontal" role="form" id="addMeetingForm">
 
-                                        <div class="form-group">
+                                    <div class="form-group">
                                             <div class="col-md-12">
                                                 <input type="text" class="form-control" id="addMeetingFormName"
                                                        placeholder="Ingrese el nombre del paciente"
@@ -80,26 +86,6 @@
                                                 <input type="text" class="form-control" id="addMeetingFormTreatment"
                                                        placeholder="Tratamiento realizado"
                                                        required="required" tabindex="2">
-                                            </div>
-                                        </div>
-
-                                        <div id="optionalFields">
-                                            <div class="form-group">
-                                                <div class="col-md-12">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" tabindex="3"> Es primer cirugía
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <div class="col-md-12">
-                                                    <input type="text" class="form-control" id="addMeetingFormImplantType"
-                                                           placeholder="Tipo de implante"
-                                                           required="required" tabindex="3">
-                                                </div>
                                             </div>
                                         </div>
 
@@ -209,11 +195,13 @@
 <script type="text/javascript" src="js/lib/typeahead.min.js"></script>
 <script type="text/javascript" src="js/lib/hogan-2.0.0.js"></script>
 
+<!--My scripts-->
 <script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript" src="js/app/domain/domain.js"></script>
 <script type="text/javascript" src="js/app/domain/patient.js"></script>
 <script type="text/javascript" src="js/app/util/util.js"></script>
 <script type="text/javascript" src="js/app/util/date.js"></script>
+<script type="text/javascript" src="js/app/util/array.js"></script>
 
 </body>
 </html>

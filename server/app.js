@@ -52,6 +52,7 @@ app.get('/', routes.index);
 app.get('/patients', patient.findAll);
 app.get('/patients/:id', patient.findById);
 app.post('/patients', patient.save);
+app.put('/patients/:id', patient.update);
 
 app.get('/treatments', treatment.findAll);
 
@@ -90,52 +91,58 @@ function connectToDatabase() {
 
             var winesCollectionName = 'wines';
             db.collection(winesCollectionName, {strict: true}, function (err, collection) {
-                if (err) {
-                    console.log('The "' + winesCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
-                    var wines = [
-                        {
-                            name: 'CHATEAU DE SAINT COSME',
-                            year: '2009',
-                            grapes: 'Grenache / Syrah',
-                            country: 'France',
-                            region: 'Southern Rhone',
-                            description: 'The aromas of fruit and spice...',
-                            picture: 'saint_cosme.jpg'
-                        },
-                        {
-                            name: 'LAN RIOJA CRIANZA',
-                            year: '2006',
-                            grapes: 'Tempranillo',
-                            country: 'Spain',
-                            region: 'Rioja',
-                            description: 'A resurgence of interest in boutique vineyards...',
-                            picture: 'lan_rioja.jpg'
-                        }
-                    ];
-                    db.collection(winesCollectionName, function (err, collection) {
-                        collection.insert(wines, {safe: true}, function (err, result) {
-                        });
+
+                collection.remove({}, function (err, removed) {
+                    console.log('Removed all records in ' + winesCollectionName + ' collection.');
+                });
+
+                console.log('The "' + winesCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
+                var wines = [
+                    {
+                        name: 'CHATEAU DE SAINT COSME',
+                        year: '2009',
+                        grapes: 'Grenache / Syrah',
+                        country: 'France',
+                        region: 'Southern Rhone',
+                        description: 'The aromas of fruit and spice...',
+                        picture: 'saint_cosme.jpg'
+                    },
+                    {
+                        name: 'LAN RIOJA CRIANZA',
+                        year: '2006',
+                        grapes: 'Tempranillo',
+                        country: 'Spain',
+                        region: 'Rioja',
+                        description: 'A resurgence of interest in boutique vineyards...',
+                        picture: 'lan_rioja.jpg'
+                    }
+                ];
+                db.collection(winesCollectionName, function (err, collection) {
+                    collection.insert(wines, {safe: true}, function (err, result) {
                     });
-                }
+                });
             });
 
             var adminsCollectionName = 'admins';
             db.collection(adminsCollectionName, {strict: true}, function (err, collection) {
-                if (err) {
-                    console.log('The "' + adminsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
-                    var admins = [
-                        {
-                            id: 1, username: 'admin', password: 'admin'
-                        },
-                        {
-                            id: 2, username: 'test', password: 'test'
-                        }
-                    ];
-                    db.collection(adminsCollectionName, function (err, collection) {
-                        collection.insert(admins, {safe: true}, function (err, result) {
-                        });
+
+                collection.remove({}, function (err, removed) {
+                    console.log('Removed all records in ' + adminsCollectionName + ' collection.');
+                });
+
+                console.log('The "' + adminsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
+                var admins = [
+                    {
+                        username: 'admin', password: 'admin'
+                    },
+                    {
+                        username: 'test', password: 'test'
+                    }
+                ];
+                db.collection(adminsCollectionName, function (err, collection) {
+                    collection.insert(admins, {safe: true}, function (err, result) {
                     });
-                }
+                });
             });
 
             var treatmentsCollectionName = 'treatments';
@@ -148,29 +155,29 @@ function connectToDatabase() {
                 console.log('The "' + treatmentsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
                 var treatments = [
                     {
-                        id: 1, description: 'Limpieza (complejidad 1)', revisions: [
+                        description: 'Limpieza (complejidad 1)', revisions: [
                         {frequency: 12}
                     ]
                     },
                     {
-                        id: 2, description: 'Limpieza (complejidad 2)', revisions: [
+                        description: 'Limpieza (complejidad 2)', revisions: [
                         {frequency: 6}
                     ]
                     },
                     {
-                        id: 3, description: 'Limpieza (complejidad 3)', revisions: [
+                        description: 'Limpieza (complejidad 3)', revisions: [
                         {frequency: 3}
                     ]
                     },
                     {
-                        id: 4, description: 'Cirugías de implantes', revisions: [
+                        description: 'Cirugías de implantes', revisions: [
                         {sequence: 1, frequency: 2, quantity: 2, description: 'Control radiográfico'},
                         {sequence: 2, frequency: 12, description: 'Revision anual radiológica'},
                         {sequence: 2, frequency: 6, description: 'Control cada 6 meses'}
                     ]
                     },
                     {
-                        id: 5, description: 'Implantes', types: [
+                        description: 'Implantes', types: [
                         {description: 'Elevación de seno', revisions: [
                             {frequency: 4.5, description: 'Control radiográfico', quantity: 2}
                         ]},
@@ -185,28 +192,28 @@ function connectToDatabase() {
                     ]
                     },
                     {
-                        id: 6, description: 'Tratamiento periodontal (complejidad 1)', revisions: [
+                        description: 'Tratamiento periodontal (complejidad 1)', revisions: [
                         {frequency: 12, description: 'Control'}
                     ]
                     },
                     {
-                        id: 7, description: 'Tratamiento periodontal (complejidad 2)', revisions: [
+                        description: 'Tratamiento periodontal (complejidad 2)', revisions: [
                         {frequency: 6, description: 'Control'}
                     ]
                     },
                     {
-                        id: 8, description: 'Tratamiento periodontal (complejidad 3)', revisions: [
+                        description: 'Tratamiento periodontal (complejidad 3)', revisions: [
                         {frequency: 3, description: 'Control'}
                     ]
                     },
                     {
-                        id: 9, description: 'Ortodoncia', revisions: [
+                        description: 'Ortodoncia', revisions: [
                         {sequence: 1, frequency: 6, description: 'Control'},
                         {sequence: 2, frequency: 24, description: 'Control'}
                     ]
                     },
                     {
-                        id: 10, description: 'Control general anual', revisions: [
+                        description: 'Control general anual', revisions: [
                         {frequency: 12, description: 'Control general anual'}
                     ]
                     }
@@ -219,47 +226,48 @@ function connectToDatabase() {
 
             var patientsCollectionName = 'patients';
             db.collection(patientsCollectionName, {strict: true}, function (err, collection) {
-                if (err) {
-                    console.log('The "' + patientsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
-                    var patients = [
-                        {
-                            id: 1, name: 'Nahuel', lastName: 'Barrios', age: 24, history: [
-                            {date: new Date(2013, 1, 12, 0, 0, 0, 0)}
-                        ]
-                        },
-                        {
-                            id: 2, name: 'Gustavo', lastName: 'Vignolo', age: 24
-                        },
-                        {
-                            id: 3, name: 'Nicolas', lastName: 'Vignolo', age: 24
-                        },
-                        {
-                            id: 4, name: 'Carolina', lastName: 'Vignolo', age: 24
-                        },
-                        {
-                            id: 5, name: 'Patricia', lastName: 'Safranchik', age: 24
-                        },
-                        {
-                            id: 6, name: 'Paola', lastName: 'Safranchik', age: 24
-                        },
-                        {
-                            id: 7, name: 'Claudia', lastName: 'Safranchik', age: 24
-                        },
-                        {
-                            id: 8, name: 'Cristian', lastName: 'Caputto', age: 24
-                        },
-                        {
-                            id: 9, name: 'Tomas', lastName: 'Caputto', age: 24
-                        },
-                        {
-                            id: 10, name: 'María Sol', lastName: 'Caputto', age: 24
-                        }
-                    ];
-                    db.collection(patientsCollectionName, function (err, collection) {
-                        collection.insert(patients, {safe: true}, function (err, result) {
-                        });
+
+                collection.remove({}, function (err, removed) {
+                    console.log('Removed all records in ' + patientsCollectionName + ' collection.');
+                });
+
+                console.log('The "' + patientsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
+                var patients = [
+                    {
+                        name: 'Nahuel', lastName: 'Barrios', birthday: 16101989
+                    },
+                    {
+                        name: 'Gustavo', lastName: 'Vignolo', birthday: 16101989
+                    },
+                    {
+                        name: 'Nicolas', lastName: 'Vignolo', birthday: 16101989
+                    },
+                    {
+                        name: 'Carolina', lastName: 'Vignolo', birthday: 16101989
+                    },
+                    {
+                        name: 'Patricia', lastName: 'Safranchik', birthday: 16101989
+                    },
+                    {
+                        name: 'Paola', lastName: 'Safranchik', birthday: 16101989
+                    },
+                    {
+                        name: 'Claudia', lastName: 'Safranchik', birthday: 16101989
+                    },
+                    {
+                        name: 'Cristian', lastName: 'Caputto', birthday: 16101989
+                    },
+                    {
+                        name: 'Tomas', lastName: 'Caputto', birthday: 16101989
+                    },
+                    {
+                        name: 'María Sol', lastName: 'Caputto', birthday: 16101989
+                    }
+                ];
+                db.collection(patientsCollectionName, function (err, collection) {
+                    collection.insert(patients, {safe: true}, function (err, result) {
                     });
-                }
+                });
             });
 
         };

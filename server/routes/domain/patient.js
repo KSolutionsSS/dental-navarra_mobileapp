@@ -40,5 +40,28 @@
         });
     };
 
+    exports.update = function (req, res) {
+        var id = req.params.id;
+        var patient = req.body;
+
+        console.log('Updating patient: ' + id);
+        console.log(JSON.stringify(patient));
+
+        patient._id = new BSON.ObjectID(id);
+
+        db.collection(collectionName, function (err, collection) {
+            collection.update({'_id': patient._id}, patient, {safe: true}, function (err, result) {
+                if (err) {
+                    console.log('Error updating patient: ' + err);
+                    //  TODO : verify error code when error!!
+                    res.send({'error': 'An error has occurred'});
+                } else {
+                    console.log('' + result + ' document(s) updated');
+                    res.send(patient);
+                }
+            });
+        });
+    };
+
 }());
 

@@ -1,13 +1,57 @@
 $(document).ready(function () {
 
+    var patients, treatments;
+    var fadeDuration = 200;
+
     var addMeetingForm = (function () {
+        var $alertMessage = $('.alert');
+
+        var onSubmit = function (event) {
+            event.preventDefault();
+            $alertMessage.fadeOut(fadeDuration);
+
+            var patient = app.util.array.getObject(patients, function (eachPatient) {
+                return app.domain.patient.generateFullName(eachPatient) === $('#addMeetingFormName').val();
+            });
+
+            var newMeeting = {
+                date: new Date(), treatment: {
+                    _id: app.util.array.getId(treatments, function (eachTreatment) {
+                        return eachTreatment.description === $('#addMeetingFormTreatment').val();
+                    })
+                }
+            };
+
+            if (!patient.medicalHistory) {
+                patient.medicalHistory = [];
+            }
+            patient.medicalHistory.push(newMeeting);
+
+            $.ajax({
+                       type: "PUT",
+                       url: '/patients/' + patient._id,
+                       data: patient,
+                       success: function (data) {
+                           $alertMessage.fadeIn(fadeDuration);
+                       },
+                       error: function (err) {
+                           console.log('Ocurrió un error intentando actualizar el historial de un paciente:');
+                           console.log(err);
+                       }
+                   });
+        };
 
         return {
             init: function () {
+                $alertMessage.hide();
+                $alertMessage.find('button').click(function () {
+                    $alertMessage.fadeOut();
+                });
 
                 $.getJSON('/patients', function (data) {
 
-                    var values = data.map(app.domain.patient.generateFullName);
+                    patients = data;
+                    var values = patients.map(app.domain.patient.generateFullName);
 
                     $('#addMeetingFormName').typeahead({
                                                            name: 'patients',
@@ -19,7 +63,8 @@ $(document).ready(function () {
 
                 $.getJSON('/treatments', function (data) {
 
-                    var values = data.map(function (each) {
+                    treatments = data;
+                    var values = treatments.map(function (each) {
                         return each.description;
                     });
 
@@ -33,6 +78,7 @@ $(document).ready(function () {
                                                             });
                 });
 
+                $('#addMeetingForm').submit(onSubmit);
             }
         };
     }());

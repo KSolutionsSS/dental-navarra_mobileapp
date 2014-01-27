@@ -35,13 +35,14 @@
     <div class="row clearfix">
         <div class="col-md-12 column">
 
-            <div class="panel-group" id="panel-844234">
+            <div class="panel-group" id="collapsable-panel">
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-844234" href="#panel-element-18783">Avisos</a>
+                        <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
+                           href="#panel-notifications">Avisos</a>
                     </div>
-                    <div id="panel-element-18783" class="panel-collapse collapse">
+                    <div id="panel-notifications" class="panel-collapse collapse">
                         <div class="panel-body">
                             <ul class="list-unstyled">
                                 <li>
@@ -60,14 +61,27 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-844234"
-                           href="#panel-element-18784">Promociones</a>
+                        <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
+                           href="#panel-promotions">Promociones</a>
                     </div>
-                    <div id="panel-element-18784" class="panel-collapse collapse">
+                    <div id="panel-promotions" class="panel-collapse collapse">
                         <div class="panel-body">
                             <ul class="list-unstyled" id="promotions">
                                 <li>Cargando promociones...</li>
                             </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
+                           href="#panel-contact">Contacto</a>
+                    </div>
+                    <div id="panel-contact" class="panel-collapse collapse">
+                        <div class="panel-body" id="contactInformation">
+                            <h3>Escaneá el código QR y accedé a nuestro sitio web</h3>
+                            <img src="../img/qr.png">
                         </div>
                     </div>
                 </div>
@@ -83,8 +97,20 @@
         <li>{{:descripcion}} !! <span class="badge">vigente hasta {{:fechaHasta}}</span></li>
 
     {{/for}}
+
 </script>
 
+<script id="contactInformationTemplate" type="text/x-jsrender">
+    <address>
+        <strong>{{:name}}.</strong><br>
+        {{:street}}<br>
+        {{:city}}, {{:postalCode}}<br>
+        T: {{:phoneNumber}}<br>
+        C.E.: <a href="mailto:{{:email}}">{{:email}}</a>
+    </address>
+
+
+</script>
 
 <!--Libraries-->
 

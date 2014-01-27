@@ -105,6 +105,7 @@ $(document).ready(function () {
                            location.reload();
                        },
                        error: function (err) {
+                           //  TODO : Cuando puedo venir acá?
                            console.log('Ocurrió un error intentando crear un nuevo paciente');
                        }
                    });

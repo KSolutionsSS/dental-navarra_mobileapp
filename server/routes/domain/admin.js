@@ -10,13 +10,17 @@
 
         db.collection(collectionName, function (err, collection) {
             collection.findOne({'username': username}, function (err, item) {
-                findAll(function (err, admins) {
+                var result;
 
-                    callback(err, admins.some(function (each) {
-                        return each.username === username && each.password === password;
-                    }));
+                if (item) {
+                    console.log('User found');
+                    result = item.username === username && item.password === password;
+                } else {
+                    console.log('User not found');
+                    result = false;
+                }
 
-                });
+                callback(err, result);
             });
         });
     };

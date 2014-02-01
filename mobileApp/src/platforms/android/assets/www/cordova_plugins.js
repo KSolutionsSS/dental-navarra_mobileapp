@@ -1,3 +1,11 @@
-cordova.define('cordova/plugin_list', function(require, exports, module) {
-module.exports = []
+cordova.define('cordova/plugin_list', function (require, exports, module) {
+    module.exports = [
+        {
+            "file": "plugins/com.red_folder.phonegap.plugin.backgroundservice/www/backgroundservice.js",
+            "id": "com.red_folder.phonegap.plugin.backgroundservice.BackgroundService",
+            "clobbers": [
+                "window.plugins.BackgroundServices"
+            ]
+        }
+    ]
 });

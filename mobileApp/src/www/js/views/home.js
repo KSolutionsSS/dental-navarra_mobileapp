@@ -53,7 +53,7 @@ $(document).ready(function () {
         $('#contactInformation').append($('#contactInformationTemplate').render(contactInformationAlsasua));
     };
 
-//    loadPromotions();
+    loadPromotions();
     renderContactTab();
 
     //  TODO : Functionality : test notifications!

@@ -19,6 +19,51 @@
 var app = {
     // Application Constructor
     initialize: function () {
+        var initializeBackgroundService = function () {
+            var milliseconds = 3000;
+
+            var onError = function (error) {
+                alert("Error: " + error.ErrorMessage);
+                alert(JSON.stringify(error));
+            };
+
+            var myService = cordova.require('com.red_folder.phonegap.plugin.backgroundservice.BackgroundService');
+
+            myService.getStatus(function (data) {
+                if (!data.ServiceRunning) {
+                    myService.startService(function (data) {
+                        console.log('Background service started');
+
+                        myService.enableTimer(milliseconds, function (data) {
+                            console.log('Timer started (ms):' + milliseconds);
+                        });
+
+                        myService.registerForBootStart(function (data) {
+                            console.log('Background service registered for boot start');
+                        }, onError);
+                    }, onError);
+                }
+            }, onError);
+
+//            function deregisterForBootStart() {
+//                myService.deregisterForBootStart(function (r) {
+//                    console.log('deregisterForBootStart called ok');
+//                }, onError);
+//            }
+//            function setConfig() {
+//                var helloToTxt = document.getElementById("helloToTxt");
+//                var helloToString = helloToTxt.value;
+//                var config = {
+//                    "HelloTo": helloToString
+//                };
+//                myService.setConfiguration(config, function (r) {
+//                    console.log('setConfig called ok');
+//                }, onError);
+//            }
+        };
+
+        initializeBackgroundService();
+
         this.bindEvents();
     },
     // Bind Event Listeners

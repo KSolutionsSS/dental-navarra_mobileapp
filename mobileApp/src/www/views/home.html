@@ -43,7 +43,7 @@
                            href="#panel-notifications">Avisos</a>
                     </div>
                     <div id="panel-notifications" class="panel-collapse collapse">
-                    <div class="panel-body">
+                        <div class="panel-body">
                             <ul class="list-unstyled">
                                 <li>
                                     <span class="badge pull-left">16/01/14</span> Limpieza bucal 13hs
@@ -59,19 +59,19 @@
                     </div>
                 </div>
 
-                <!--<div class="panel panel-default">-->
-                <!--<div class="panel-heading">-->
-                <!--<a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"-->
-                <!--href="#panel-promotions">Promociones</a>-->
-                <!--</div>-->
-                <!--<div id="panel-promotions" class="panel-collapse collapse">-->
-                <!--<div class="panel-body">-->
-                <!--<ul class="list-unstyled" id="promotions">-->
-                <!--<li>Cargando promociones...</li>-->
-                <!--</ul>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
+                           href="#panel-promotions">Promociones</a>
+                    </div>
+                    <div id="panel-promotions" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ul class="list-unstyled" id="promotions">
+                                <li>Cargando promociones...</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -95,6 +95,7 @@
         <li>{{:descripcion}} !! <span class="badge">vigente hasta {{:fechaHasta}}</span></li>
 
     {{/for}}
+
 </script>
 
 <script id="contactInformationTemplate" type="text/x-jsrender">
@@ -105,6 +106,7 @@
         T: {{:phoneNumber}}<br>
         C.E.: <a href="mailto:{{:email}}">{{:email}}</a>
     </address>
+
 
 </script>
 

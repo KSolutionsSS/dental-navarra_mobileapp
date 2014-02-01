@@ -49,6 +49,7 @@ $(document).ready(function () {
             email: 'milagro@dentalnavarra.com'
         };
 
+        //  TODO : Functionality : make this a dynamic call.
         $('#contactInformation').append($('#contactInformationTemplate').render(contactInformationAlsasua));
     };
 
@@ -56,7 +57,7 @@ $(document).ready(function () {
     renderContactTab();
 
     //  TODO : Functionality : test notifications!
-    modules.notification.popUp('un mensaje', 'un titulo', 'nombre del boton');
-    modules.notification.beep(10);
-    modules.notification.vibrate(2000);
+//    modules.notification.popUp('un mensaje', 'un titulo', 'nombre del boton');
+//    modules.notification.beep(10);
+//    modules.notification.vibrate(2000);
 });

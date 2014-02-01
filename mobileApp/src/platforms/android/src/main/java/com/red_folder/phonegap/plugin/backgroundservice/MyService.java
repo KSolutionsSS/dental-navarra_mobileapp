@@ -15,7 +15,7 @@ public class MyService extends BackgroundService {
 
     @Override
     protected JSONObject doWork() {
-        Log.i(TAG, "Entro a doWork");
+        Log.i(TAG, "--> doWork");
         JSONObject result = new JSONObject();
 
         try {
@@ -23,7 +23,7 @@ public class MyService extends BackgroundService {
             String now = df.format(new Date(System.currentTimeMillis()));
 
             String msg = "Hello " + this.mHelloTo + " - its currently " + now;
-            result.put("Message", msg);
+            result.put("Message", "{\"id\":\"hola\", \"value\":\"nahuel\", \"mensaje\":\"" + msg + "\"}");
 
             Log.d(TAG, msg);
         } catch (JSONException e) {
@@ -35,7 +35,7 @@ public class MyService extends BackgroundService {
 
     @Override
     protected JSONObject getConfig() {
-        Log.i(TAG, "Entro a getConfig");
+        Log.i(TAG, "--> getConfig");
         JSONObject result = new JSONObject();
 
         try {
@@ -49,7 +49,7 @@ public class MyService extends BackgroundService {
 
     @Override
     protected void setConfig(JSONObject config) {
-        Log.i(TAG, "Entro a setConfig");
+        Log.i(TAG, "--> setConfig");
         try {
             if (config.has("HelloTo")) {
                 this.mHelloTo = config.getString("HelloTo");
@@ -61,17 +61,17 @@ public class MyService extends BackgroundService {
 
     @Override
     protected JSONObject initialiseLatestResult() {
-        Log.i(TAG, "Entro a initialiseLatestResult");
+        Log.i(TAG, "--> initialiseLatestResult");
         return null;
     }
 
     @Override
     protected void onTimerEnabled() {
-        Log.i(TAG, "Entro a onTimerEnabled");
+        Log.i(TAG, "--> onTimerEnabled");
     }
 
     @Override
     protected void onTimerDisabled() {
-        Log.i(TAG, "Entro a onTimerDisabled");
+        Log.i(TAG, "--> onTimerDisabled");
     }
 }

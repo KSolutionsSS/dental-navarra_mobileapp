@@ -2,6 +2,11 @@ var urlJson = "https://spreadsheets.google.com/feeds/cells/0AqAWn1xLDRvPdDA1Y1li
 
 $(document).ready(function () {
 
+
+    var loadNotifications = function () {
+        console.log('Loading notifications about treatments...');
+    };
+
     var loadPromotions = function () {
         console.log('Loading promotions...');
 
@@ -56,6 +61,7 @@ $(document).ready(function () {
         $('#contactInformation').append($('#contactInformationTemplate').render(contactInformationAlsasua));
     };
 
+    loadNotifications();
     loadPromotions();
     renderContactTab();
 

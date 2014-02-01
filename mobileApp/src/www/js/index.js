@@ -22,6 +22,15 @@ var app = {
         var initializeBackgroundService = function () {
             var milliseconds = 10000;
 
+            var onSuccess = function (data) {
+                if (data.LatestResult) {
+                    var result = $.parseJSON(data.LatestResult.Message);
+                    console.log('lenght:' + result.id);
+                    console.log('label:' + result.value);
+                    console.log('mensaje: ' + result.mensaje);
+                }
+            };
+
             var onError = function (error) {
                 alert("Error: " + error.ErrorMessage);
                 alert(JSON.stringify(error));
@@ -31,6 +40,8 @@ var app = {
 
             myService.getStatus(function (data) {
                 if (!data.ServiceRunning) {
+                    myService.registerForUpdates(onSuccess, onError);
+
                     myService.startService(function (data) {
                         console.log('Background service started');
 

@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.phonegap.mispacientes;
+package com.nbempire.mispacientes;
 
 import android.os.Bundle;
 import org.apache.cordova.Config;

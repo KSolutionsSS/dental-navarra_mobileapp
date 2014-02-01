@@ -3,6 +3,8 @@ var urlJson = "https://spreadsheets.google.com/feeds/cells/0AqAWn1xLDRvPdDA1Y1li
 $(document).ready(function () {
 
     var loadPromotions = function () {
+        console.log('Loading promotions...');
+
         var renderPromotions = function (promotions, container) {
             container.empty().append($('#promotionTemplate').render({promotions: promotions}));
         };
@@ -14,8 +16,9 @@ $(document).ready(function () {
 
         googleDocsSimpleParser.parseSpreadsheetCellsUrl({
                                                             url: urlJson,
-                                                            done: function (people) {
-                                                                renderPromotions(people, $("#promotions"));
+                                                            done: function (promotions) {
+                                                                console.log('Promotions: ' + promotions.length);
+                                                                renderPromotions(promotions, $("#promotions"));
                                                             },
                                                             transformer: descriptionToUppercase
                                                         });

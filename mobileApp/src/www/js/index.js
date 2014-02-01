@@ -20,7 +20,7 @@ var app = {
     // Application Constructor
     initialize: function () {
         var initializeBackgroundService = function () {
-            var milliseconds = 3000;
+            var milliseconds = 10000;
 
             var onError = function (error) {
                 alert("Error: " + error.ErrorMessage);

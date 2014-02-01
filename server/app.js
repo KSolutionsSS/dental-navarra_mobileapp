@@ -51,6 +51,7 @@ app.get('/', routes.index);
 
 app.get('/patients', patient.findAll);
 app.get('/patients/:id', patient.findById);
+app.get('/patients/:id/notifications', patient.findNotificationsById);
 app.post('/patients', patient.save);
 app.put('/patients/:id', patient.update);
 

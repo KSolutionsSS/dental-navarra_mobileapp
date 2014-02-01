@@ -6,6 +6,23 @@
 (function () {
     var collectionName = 'patients';
 
+    var methods = {
+        findById: function (id, callback) {
+            console.log('Retrieving patient: ' + id);
+            db.collection(collectionName, function (err, collection) {
+                collection.findOne({'_id': new BSON.ObjectID(id)}, callback);
+            });
+        },
+        getNotifications: function (patient) {
+            console.log('Checking notifications for patient: ' + patient._id);
+            //  TODO : Functionality : Calculate this.
+            return [
+                {message: 'Te hiciste un tratamiento de limpieza hace 5 meses, tendrías que hacerte otro dentro de 1 mes.', endDate: '01/03/2014'},
+                {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'}
+            ];
+        }
+    };
+
     exports.findAll = function (req, res) {
         console.log('Finding all patients');
         db.collection(collectionName, function (err, collection) {
@@ -16,12 +33,8 @@
     };
 
     exports.findById = function (req, res) {
-        var id = req.params.id;
-        console.log('Retrieving patient: ' + id);
-        db.collection(collectionName, function (err, collection) {
-            collection.findOne({'_id': new BSON.ObjectID(id)}, function (err, item) {
-                res.send(item);
-            });
+        methods.findById(req.params.id, function (err, item) {
+            res.send(item);
         });
     };
 
@@ -60,6 +73,14 @@
                     res.send(patient);
                 }
             });
+        });
+    };
+
+    exports.findNotificationsById = function (req, res) {
+        var id = req.params.id;
+        console.log('Retrieving notifications for patient: ' + id);
+        methods.findById(id, function (err, item) {
+            res.send(methods.getNotifications(item));
         });
     };
 

@@ -49,10 +49,11 @@ $(document).ready(function () {
             email: 'milagro@dentalnavarra.com'
         };
 
+        //  TODO : Functionality : make this a dynamic call.
         $('#contactInformation').append($('#contactInformationTemplate').render(contactInformationAlsasua));
     };
 
-    loadPromotions();
+//    loadPromotions();
     renderContactTab();
 
     //  TODO : Functionality : test notifications!

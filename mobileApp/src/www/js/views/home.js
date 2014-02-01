@@ -57,7 +57,7 @@ $(document).ready(function () {
     renderContactTab();
 
     //  TODO : Functionality : test notifications!
-    modules.notification.popUp('un mensaje', 'un titulo', 'nombre del boton');
-    modules.notification.beep(10);
-    modules.notification.vibrate(2000);
+//    modules.notification.popUp('un mensaje', 'un titulo', 'nombre del boton');
+//    modules.notification.beep(10);
+//    modules.notification.vibrate(2000);
 });

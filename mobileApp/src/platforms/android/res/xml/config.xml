@@ -15,6 +15,10 @@
         <param name="android-package"
                value="org.apache.cordova.App" />
     </feature>
+    <feature name="BackgroundServicePlugin">
+        <param name="android-package"
+               value="com.red_folder.phonegap.plugin.backgroundservice.BackgroundServicePlugin" />
+    </feature>
     <access origin="http://127.0.0.1*" />
     <preference name="useBrowserHistory"
                 value="true" />
@@ -48,8 +52,4 @@
                 value="7" />
     <preference name="android-installLocation"
                 value="auto" />
-    <feature name="BackgroundServicePlugin">
-        <param name="android-package"
-               value="com.red_folder.phonegap.plugin.backgroundservice.BackgroundServicePlugin" />
-    </feature>
 </widget>

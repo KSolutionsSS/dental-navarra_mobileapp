@@ -1,4 +1,4 @@
-/home/justkenchu/Coding/workspace/misPacientes/mobileApp/src/platforms/android/gen/com/phonegap/helloworld/R.java \
+/home/justkenchu/Coding/workspace/misPacientes/mobileApp/src/platforms/android/gen/com/nbempire/mispacientes/R.java \
  : /home/justkenchu/Coding/workspace/misPacientes/mobileApp/src/platforms/android/res/xml/config.xml \
 /home/justkenchu/Coding/workspace/misPacientes/mobileApp/src/platforms/android/res/drawable-xhdpi/icon.png \
 /home/justkenchu/Coding/workspace/misPacientes/mobileApp/src/platforms/android/res/values/strings.xml \

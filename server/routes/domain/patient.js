@@ -57,7 +57,7 @@ var mailSender = require('../service/mailSender');
                     };
 
                     //  TODO : Functionality : Put this sender dynamic.
-                    mailSender.send('tafalla', mailOptions, function (error, response) {
+                    mailSender.send(user.office, mailOptions, function (error, response) {
                         if (error) {
                             //  TODO : Functionality : Resend the email!!
                             console.log('The welcome message email could not be sent: ' + error);
@@ -88,7 +88,7 @@ var mailSender = require('../service/mailSender');
                     //  TODO : verify error code when error!!
                     res.send({'error': 'An error has occurred'});
                 } else {
-                    console.log('' + result + ' document(s) updated');
+                    console.log('...' + result + ' document(s) updated');
                     res.send(patient);
                 }
             });

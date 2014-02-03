@@ -4,49 +4,75 @@
  */
 var nodemailer = require("nodemailer");
 
-var accounts = {
-    tafalla: {
-        user: 'tafalla@dentalnavarra.com',
-        pass: '112233'
-    },
-    alsasua: {
-        user: 'alsasua@dentalnavarra.com',
-        pass: '112233'
-    },
-    milagro: {
-        user: 'milagro@dentalnavarra.com',
-        pass: '112233'
-    },
-    test: {
-        user: 'barrios.nahuel@gmail.com',
-        pass: 'this is not my password LOL'
+var getCorrespondingAccount = function (id) {
+    var configuredAccounts = {
+        tafalla: {
+            name: 'Clínica Odontológica Tafalla',
+            user: 'tafalla@dentalnavarra.com',
+            pass: 'This is not the password LOL'
+        },
+        alsasua: {
+            name: 'Clínica Dental Alsasua',
+            user: 'alsasua@dentalnavarra.com',
+            pass: 'This is not the password LOL'
+        },
+        milagro: {
+            name: 'Clínica Dental Milagro',
+            user: 'milagro@dentalnavarra.com',
+            pass: 'This is not the password LOL'
+        },
+        test: {
+            name: 'Nahuel Barrios',
+            user: 'barrios.nahuel@gmail.com',
+            pass: 'This is not the password LOL'
+        }
+    };
+
+    var officeName;
+    var eachAttribute;
+    for (eachAttribute in configuredAccounts) {
+        if (configuredAccounts.hasOwnProperty(eachAttribute)) {
+            if (id === eachAttribute) {
+                officeName = eachAttribute;
+                break;
+            }
+        }
     }
+
+    return configuredAccounts[officeName];
 };
 
 var sendMail = function (sender, options, callback) {
-    //  TODO : Functionality : Check which of the configured senders must use.
+//    var senderAccount = getCorrespondingAccount(sender);
+    var senderAccount = getCorrespondingAccount('test');
 
-    options.from = 'Nahuel Barrios ✔ <barrios.nahuel@gmail.com>';// sender address
+    if (senderAccount) {
+        options.from = senderAccount.name + ' ✔ <' + senderAccount.user + '>';//Sender address
+        console.log('Sending email from account: ' + options.from);
 
-    //  Create reusable transport method (opens pool of SMTP connections)
-    var smtpTransport = nodemailer.createTransport("SMTP", {
-        service: "Gmail",
-        auth: accounts.test
-    });
+        //  Create reusable transport method (opens pool of SMTP connections)
+        var smtpTransport = nodemailer.createTransport("SMTP", {
+            service: "Gmail",
+            auth: senderAccount
+        });
 
-    smtpTransport.sendMail(options, function (error, response) {
-        if (error) {
-            console.log('There was an error sending mail to: ' + options.to);
-            console.log(error);
-        } else {
-            console.log("Welcome message sent: " + response.message);
-        }
+        smtpTransport.sendMail(options, function (error, response) {
+            if (error) {
+                console.log('There was an error sending mail to: ' + options.to);
+                console.log(error);
+            } else {
+                console.log("Welcome message sent: " + response.message);
+            }
 
-        callback(error, response);
+            callback(error, response);
 
-        //If you don't want to use this transport object anymore, uncomment following line
-        smtpTransport.close(); // shut down the connection pool, no more messages
-    });
+            //If you don't want to use this transport object anymore, uncomment following line
+            smtpTransport.close(); // shut down the connection pool, no more messages
+        });
+    } else {
+        console.log('IMPORTANT: Someone is hacking the site. He tried to send an email from sender: "' + sender + '".');
+        //  TODO : Functionality : Send me an email to check site's security.
+    }
 };
 
 
@@ -69,10 +95,10 @@ exports.send = function (sender, options, callback) {
 var testMailSender = function () {
     //  Setup e-mail data with unicode symbols
     var mailOptions = {
-        from: "Nahuel Barrios ✔ <barrios.nahuel@gmail.com>", // sender address
-        to: "barrios.nahuel@gmail.com", // list of receivers
-        subject: "hola ✔", // Subject line
-        html: "<b>Toma wacheen ✔ mira, hasta te puse ese tilde y todo jaja... <br>Ahí esta andando, había puesto mal mi propia contraseña jaja, soy un gil xD</b>" // html body
+        from: "Nahuel Barrios ✔ <barrios.nahuel@gmail.com>",
+        to: "barrios.nahuel@gmail.com",
+        subject: "hola ✔",
+        html: "<p>Hola <b>Nahuel ✔</b>!<br>Este es un email de prueba.</p>"// HTML body.
     };
 
     sendMail(mailOptions, function (error, response) {

@@ -25,6 +25,7 @@ var app = {
 
             var retrieveNotifications = function (data) {
                 console.log('Getting user notifications and saving them to local storage system...');
+                //  TODO : Functionality : Get user notifications!!
             };
 
             var onError = function (error) {

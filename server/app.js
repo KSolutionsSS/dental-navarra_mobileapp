@@ -4,7 +4,8 @@
  */
 
 //  Application properties
-var port = 8080;
+var appPort = 8080;
+var apiPort = 8081;
 
 var dbName = 'mispacientesdb';
 var dbHost = 'localhost';
@@ -24,34 +25,69 @@ var http = require('http');
 var path = require('path');
 
 var app = express();
+var api = express();
 
-//  All environments
-app.set('port', process.env.PORT || port);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+/**
+ * Configures the API server. It sets the port and the corresponding headers to allow CORS support.
+ */
+var configureApiServer = function () {
+    api.set('port', process.env.PORT || apiPort);
+
+    api.use(express.logger('dev'));
+    api.use(express.bodyParser());
+
+    //  CORS support, taken from: https://github.com/visionmedia/express/blob/master/examples/cors/index.js
+    api.all('*', function (req, res, next) {
+        if (!req.get('Origin')) {
+            return next();
+        }
+
+        // use "*" here to accept any origin
+        res.set('Access-Control-Allow-Origin', '*');
+        res.set('Access-Control-Allow-Methods', 'GET');
+        res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
+
+        if ('OPTIONS' === req.method) {
+            return res.send(200);
+        }
+
+        next();
+    });
+};
+
+var configureAppServer = function () {
+    app.set('port', process.env.PORT || appPort);
+    app.set('views', path.join(__dirname, 'views'));
+    app.set('view engine', 'jade');
 
 // Asynchronous authentication
-app.use(express.basicAuth(admin.login));
+    app.use(express.basicAuth(admin.login));
 
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.favicon());
+    app.use(express.logger('dev'));
+    app.use(express.json());
+    app.use(express.urlencoded());
+    app.use(express.methodOverride());
+    app.use(app.router);
+    app.use(express.static(path.join(__dirname, 'public')));
 
 //  Development only
-if ('development' == app.get('env')) {
-    app.use(express.errorHandler());
-}
+    if ('development' == app.get('env')) {
+        app.use(express.errorHandler());
+    }
+};
 
-//  Prepare resources expose
+configureApiServer();
+configureAppServer();
+
+//=============================================================================
+//                      Prepare resources to expone
+//=============================================================================
 app.get('/', routes.index);
 
 app.get('/patients', patient.findAll);
 app.get('/patients/:id', patient.findById);
-app.get('/patients/:id/notifications', patient.findNotificationsById);
+api.get('/patients/:id/notifications', patient.findNotificationsById);
 app.post('/patients', patient.save);
 app.put('/patients/:id', patient.update);
 
@@ -67,14 +103,19 @@ app.post('/wines', wine.addWine);
 app.put('/wines/:id', wine.updateWine);
 app.delete('/wines/:id', wine.deleteWine);
 
-connectToDatabase();
+//=============================================================================
+//                      Finally creates de servers
+//=============================================================================
+http.createServer(api).listen(api.get('port'), function () {
+    console.log('Express server listening for API requests on port ' + api.get('port'));
+});
 
-//  Finally creates de server
 http.createServer(app).listen(app.get('port'), function () {
-    console.log('Express server listening on port ' + app.get('port'));
+    console.log('Express server listening for APP requests on port ' + app.get('port'));
 });
 
 
+connectToDatabase();
 function connectToDatabase() {
     var mongo = require('mongodb');
 
@@ -225,51 +266,51 @@ function connectToDatabase() {
                 });
             });
 
-            var patientsCollectionName = 'patients';
-            db.collection(patientsCollectionName, {strict: true}, function (err, collection) {
-
-                collection.remove({}, function (err, removed) {
-                    console.log('Removed all records in ' + patientsCollectionName + ' collection.');
-                });
-
-                console.log('The "' + patientsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
-                var patients = [
-                    {
-                        name: 'Nahuel', lastName: 'Barrios', birthday: 16101989
-                    },
-                    {
-                        name: 'Gustavo', lastName: 'Vignolo', birthday: 16101989
-                    },
-                    {
-                        name: 'Nicolas', lastName: 'Vignolo', birthday: 16101989
-                    },
-                    {
-                        name: 'Carolina', lastName: 'Vignolo', birthday: 16101989
-                    },
-                    {
-                        name: 'Patricia', lastName: 'Safranchik', birthday: 16101989
-                    },
-                    {
-                        name: 'Paola', lastName: 'Safranchik', birthday: 16101989
-                    },
-                    {
-                        name: 'Claudia', lastName: 'Safranchik', birthday: 16101989
-                    },
-                    {
-                        name: 'Cristian', lastName: 'Caputto', birthday: 16101989
-                    },
-                    {
-                        name: 'Tomas', lastName: 'Caputto', birthday: 16101989
-                    },
-                    {
-                        name: 'María Sol', lastName: 'Caputto', birthday: 16101989
-                    }
-                ];
-                db.collection(patientsCollectionName, function (err, collection) {
-                    collection.insert(patients, {safe: true}, function (err, result) {
-                    });
-                });
-            });
+//            var patientsCollectionName = 'patients';
+//            db.collection(patientsCollectionName, {strict: true}, function (err, collection) {
+//
+//                collection.remove({}, function (err, removed) {
+//                    console.log('Removed all records in ' + patientsCollectionName + ' collection.');
+//                });
+//
+//                console.log('The "' + patientsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
+//                var patients = [
+//                    {
+//                        name: 'Nahuel', lastName: 'Barrios', birthday: 16101989
+//                    },
+//                    {
+//                        name: 'Gustavo', lastName: 'Vignolo', birthday: 16101989
+//                    },
+//                    {
+//                        name: 'Nicolas', lastName: 'Vignolo', birthday: 16101989
+//                    },
+//                    {
+//                        name: 'Carolina', lastName: 'Vignolo', birthday: 16101989
+//                    },
+//                    {
+//                        name: 'Patricia', lastName: 'Safranchik', birthday: 16101989
+//                    },
+//                    {
+//                        name: 'Paola', lastName: 'Safranchik', birthday: 16101989
+//                    },
+//                    {
+//                        name: 'Claudia', lastName: 'Safranchik', birthday: 16101989
+//                    },
+//                    {
+//                        name: 'Cristian', lastName: 'Caputto', birthday: 16101989
+//                    },
+//                    {
+//                        name: 'Tomas', lastName: 'Caputto', birthday: 16101989
+//                    },
+//                    {
+//                        name: 'María Sol', lastName: 'Caputto', birthday: 16101989
+//                    }
+//                ];
+//                db.collection(patientsCollectionName, function (err, collection) {
+//                    collection.insert(patients, {safe: true}, function (err, result) {
+//                    });
+//                });
+//            });
 
         };
 
@@ -281,8 +322,5 @@ function connectToDatabase() {
 
             populateDB();
         }
-
-
     });
-
 }

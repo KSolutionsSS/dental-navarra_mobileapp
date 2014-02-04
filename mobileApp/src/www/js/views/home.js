@@ -29,27 +29,36 @@ $(document).ready(function () {
 
         var $container = $("#promotions");
 
-        var renderPromotions = function (promotions, container) {
-            container.empty().append($('#promotionTemplate').render({promotions: promotions}));
-        };
-
-        var descriptionToUppercase = function (promotion) {
-            promotion.descripcion = promotion.descripcion.toUpperCase();
-            return promotion;
-        };
-
         googleDocsSimpleParser.parseSpreadsheetCellsUrl({
                                                             url: urlJson,
                                                             done: function (promotions) {
-                                                                console.log('Promotions: ' + promotions.length);
+                                                                var renderPromotions = function (promotions, container) {
+                                                                    $.templates({
+                                                                                    promotions: {
+                                                                                        markup: "#promotionTemplate ",
+                                                                                        helpers: {
+                                                                                            calculateEndDate: function (numberOfWeeks) {
+                                                                                                var now = new Date();
+                                                                                                now.setDate(now.getDate() + numberOfWeeks * 7);
+
+                                                                                                return now.getDate() + '/' + (now.getMonth() + 1)
+                                                                                                           + '/' + now.getFullYear();
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                });
+
+                                                                    container.html($.render.promotions({promotions: promotions}));
+                                                                };
+
+                                                                console.log('Obtained: ' + promotions.length + ' promotions.');
                                                                 renderPromotions(promotions, $container);
                                                             },
                                                             fail: function (jqXHR, textStatus, errorThrown) {
                                                                 console.log('There was an error getting promotions: ' + jqXHR.status + '. Text: '
                                                                                 + textStatus);
                                                                 $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las promociones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
-                                                            },
-                                                            transformer: descriptionToUppercase
+                                                            }
                                                         });
     };
 

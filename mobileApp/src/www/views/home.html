@@ -98,7 +98,7 @@
 <script id="promotionTemplate" type="text/x-jsrender">
     {{for promotions}}
 
-        <li>{{:descripcion}} !! <span class="badge">vigente hasta {{:fechaHasta}}</span></li>
+        <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(cantidadSemanas)}}</span></li>
 
     {{/for}}
 

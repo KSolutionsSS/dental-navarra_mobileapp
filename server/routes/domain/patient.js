@@ -20,7 +20,9 @@ var mailSender = require('../service/mailSender');
             //  TODO : Functionality : Calculate this.
             return [
                 {message: 'Te hiciste un tratamiento de limpieza hace 5 meses, tendrías que hacerte otro dentro de 1 mes.', endDate: '01/03/2014'},
-                {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'}
+                {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'},
+                {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
+                {message: 'Deberías concurrir para un control general.', endDate: '01/03/2014'}
             ];
         }
     };

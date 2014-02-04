@@ -17,13 +17,13 @@
        under the License.
  */
 
-package com.nbempire.mispacientes;
+package com.nbempire.dentalnavarra;
 
 import android.os.Bundle;
 import org.apache.cordova.Config;
 import org.apache.cordova.CordovaActivity;
 
-public class MisPacientes extends CordovaActivity {
+public class DentalNavarraActivity extends CordovaActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

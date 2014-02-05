@@ -21,7 +21,7 @@ var app = {
     initialize: function () {
 
         var initializeBackgroundService = function () {
-            var milliseconds = 10000;
+            var milliseconds = 60000;
 
             var retrieveNotifications = function (data) {
                 console.log('Getting user notifications and saving them to local storage system...');

@@ -21,11 +21,14 @@ var app = {
     initialize: function () {
 
         var initializeBackgroundService = function () {
-            var milliseconds = 60000;
+            var milliseconds = 6000000;
 
             var retrieveNotifications = function (data) {
                 console.log('Getting user notifications and saving them to local storage system...');
                 //  TODO : Functionality : Get user notifications!!
+
+//                navigator.notification.beep(1);
+//                navigator.notification.vibrate(2000);
             };
 
             var onError = function (error) {

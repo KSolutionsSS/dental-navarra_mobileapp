@@ -2,25 +2,63 @@ var urlJson = "https://spreadsheets.google.com/feeds/cells/0AqAWn1xLDRvPdDA1Y1li
 
 $(document).ready(function () {
 
+
+    var loadNotifications = function () {
+        console.log('Loading notifications about treatments...');
+
+        //  TODO : Functionality : Make this call dynamic
+        var url = 'http://localhost:8081/patients/52ef0890ca5844de1fee3d4f/notifications';
+
+        var $container = $('#notifications');
+
+        $.ajax({
+                   url: url,
+                   type: 'GET',
+               }).done(function (notifications) {
+                           console.log('Obtained: ' + notifications.length + ' notifications.');
+                           $container.empty().append($('#notificationTemplate').render({notifications: notifications}));
+
+                       }).fail(function (jqXHR, textStatus, errorThrown) {
+                                   console.log('There was an error getting user notifications: ' + jqXHR.status + '. Text: ' + textStatus);
+                                   $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las notificaciones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
+                               });
+    };
+
     var loadPromotions = function () {
         console.log('Loading promotions...');
 
-        var renderPromotions = function (promotions, container) {
-            container.empty().append($('#promotionTemplate').render({promotions: promotions}));
-        };
-
-        var descriptionToUppercase = function (promotion) {
-            promotion.descripcion = promotion.descripcion.toUpperCase();
-            return promotion;
-        };
+        var $container = $("#promotions");
 
         googleDocsSimpleParser.parseSpreadsheetCellsUrl({
                                                             url: urlJson,
                                                             done: function (promotions) {
-                                                                console.log('Promotions: ' + promotions.length);
-                                                                renderPromotions(promotions, $("#promotions"));
+                                                                var renderPromotions = function (promotions, container) {
+                                                                    $.templates({
+                                                                                    promotions: {
+                                                                                        markup: "#promotionTemplate ",
+                                                                                        helpers: {
+                                                                                            calculateEndDate: function (numberOfWeeks) {
+                                                                                                var now = new Date();
+                                                                                                now.setDate(now.getDate() + numberOfWeeks * 7);
+
+                                                                                                return now.getDate() + '/' + (now.getMonth() + 1)
+                                                                                                           + '/' + now.getFullYear();
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                });
+
+                                                                    container.html($.render.promotions({promotions: promotions}));
+                                                                };
+
+                                                                console.log('Obtained: ' + promotions.length + ' promotions.');
+                                                                renderPromotions(promotions, $container);
                                                             },
-                                                            transformer: descriptionToUppercase
+                                                            fail: function (jqXHR, textStatus, errorThrown) {
+                                                                console.log('There was an error getting promotions: ' + jqXHR.status + '. Text: '
+                                                                                + textStatus);
+                                                                $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las promociones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
+                                                            }
                                                         });
     };
 
@@ -56,6 +94,7 @@ $(document).ready(function () {
         $('#contactInformation').append($('#contactInformationTemplate').render(contactInformationAlsasua));
     };
 
+    loadNotifications();
     loadPromotions();
     renderContactTab();
 

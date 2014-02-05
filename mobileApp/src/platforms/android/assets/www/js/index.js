@@ -19,16 +19,16 @@
 var app = {
     // Application Constructor
     initialize: function () {
-        var initializeBackgroundService = function () {
-            var milliseconds = 60000;
 
-            var onSuccess = function (data) {
-                if (data.LatestResult) {
-                    var result = $.parseJSON(data.LatestResult.Message);
-                    console.log('lenght:' + result.id);
-                    console.log('label:' + result.value);
-                    console.log('mensaje: ' + result.mensaje);
-                }
+        var initializeBackgroundService = function () {
+            var milliseconds = 6000000;
+
+            var retrieveNotifications = function (data) {
+                console.log('Getting user notifications and saving them to local storage system...');
+                //  TODO : Functionality : Get user notifications!!
+
+//                navigator.notification.beep(1);
+//                navigator.notification.vibrate(2000);
             };
 
             var onError = function (error) {
@@ -40,7 +40,7 @@ var app = {
 
             myService.getStatus(function (data) {
                 if (!data.ServiceRunning) {
-                    myService.registerForUpdates(onSuccess, onError);
+                    myService.registerForUpdates(retrieveNotifications, onError);
 
                     myService.startService(function (data) {
                         console.log('Background service started');

@@ -23,19 +23,6 @@ blockquote small {
     color: #000000;
 }
 
-.badge.pull-left {
-    margin-right: 15px;
-}
-
-.btn-group.btn-group-vertical.btn-group-lg {
-    width: 100%;
-}
-
-#rememberNotificationView .btn-default {
-    color: #FFF;
-    background-color: #00DA09;
-}
-
 /************************************************************************************************************/
 /****************************************** Sobreescribo Bootstrap ******************************************/
 /************************************************************************************************************/
@@ -59,4 +46,30 @@ a:hover {
 
 .form-control:focus {
     border-color: #C0DBD2;
+}
+
+.badge.pull-left {
+    margin-right: 15px;
+}
+
+.btn-group.btn-group-vertical.btn-group-lg {
+    width: 100%;
+}
+
+/************************************************************************************************************/
+/************************************************ My styles *************************************************/
+/************************************************************************************************************/
+
+#notifications > li:not(:last-child), #promotions > li:not(:last-child) {
+    border-bottom: dashed #000000 2px;
+    margin-bottom: 5px;
+}
+
+#promotions > li:not(:last-child) {
+    padding-bottom: 5px;
+}
+
+#rememberNotificationView .btn-default {
+    color: #FFF;
+    background-color: #00DA09;
 }

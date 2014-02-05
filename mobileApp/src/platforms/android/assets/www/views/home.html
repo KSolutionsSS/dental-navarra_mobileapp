@@ -44,16 +44,8 @@
                     </div>
                     <div id="panel-notifications" class="panel-collapse collapse">
                         <div class="panel-body">
-                        <ul class="list-unstyled">
-                                <li>
-                                    <span class="badge pull-left">16/01/14</span> Limpieza bucal 13hs
-                                </li>
-                                <li>
-                                    <span class="badge pull-left">25/01/14</span> Sacar una muela 15.30hs
-                                </li>
-                                <li>
-                                    <span class="badge pull-left">16/02/14</span> Implantación de protesis 09hs
-                                </li>
+                            <ul class="list-unstyled" id="notifications">
+                                <li>Cargando notificaciones...</li>
                             </ul>
                         </div>
                     </div>
@@ -66,7 +58,7 @@
                     </div>
                     <div id="panel-promotions" class="panel-collapse collapse">
                         <div class="panel-body">
-                        <ul class="list-unstyled" id="promotions">
+                            <ul class="list-unstyled" id="promotions">
                                 <li>Cargando promociones...</li>
                             </ul>
                         </div>
@@ -80,8 +72,6 @@
                     </div>
                     <div id="panel-contact" class="panel-collapse collapse">
                         <div class="panel-body" id="contactInformation">
-                            <h3>Escaneá el código QR y accedé a nuestro sitio web</h3>
-                            <img class="img-responsive" src="../img/qr.png">
                         </div>
                     </div>
                 </div>
@@ -91,10 +81,22 @@
     </div>
 </div>
 
+
+<!-- Templates definitions -->
+
+<script id="notificationTemplate" type="text/x-jsrender">
+    {{for notifications}}
+
+        <li><span class="badge pull-left">{{:endDate}}</span> {{:message}}</li>
+
+    {{/for}}
+
+</script>
+
 <script id="promotionTemplate" type="text/x-jsrender">
     {{for promotions}}
 
-        <li>{{:descripcion}} !! <span class="badge">vigente hasta {{:fechaHasta}}</span></li>
+        <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(cantidadSemanas)}}</span></li>
 
     {{/for}}
 </script>
@@ -107,7 +109,6 @@
         T: {{:phoneNumber}}<br>
         C.E.: <a href="mailto:{{:email}}">{{:email}}</a>
     </address>
-
 </script>
 
 <!--Libraries-->

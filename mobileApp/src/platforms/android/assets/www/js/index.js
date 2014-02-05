@@ -20,7 +20,7 @@ var app = {
     // Application Constructor
     initialize: function () {
         var initializeBackgroundService = function () {
-            var milliseconds = 10000;
+            var milliseconds = 60000;
 
             var onSuccess = function (data) {
                 if (data.LatestResult) {

@@ -44,7 +44,7 @@ var configureApiServer = function () {
 
         // use "*" here to accept any origin
         res.set('Access-Control-Allow-Origin', '*');
-        res.set('Access-Control-Allow-Methods', 'GET');
+        res.set('Access-Control-Allow-Methods', 'GET, POST');
         res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
 
         if ('OPTIONS' === req.method) {
@@ -89,6 +89,7 @@ app.get('/patients', patient.findAll);
 app.get('/patients/:id', patient.findById);
 api.get('/patients/:id/notifications', patient.findNotificationsById);
 app.post('/patients', patient.save);
+api.post('/patients/:username/login', patient.login);
 app.put('/patients/:id', patient.update);
 
 app.get('/treatments', treatment.findAll);

@@ -42,9 +42,21 @@ var mailSender = require('../service/mailSender');
         });
     };
 
+    /**
+     * @param req In its body attribute must contain an object with: name, lastName, secondLastName, email, birthday, office.
+     * @param res A response object.
+     */
     exports.save = function (req, res) {
+        var generateRandomPassword = function () {
+            //  TODO : Functionality : Encrypt this password!
+            return '112233';
+        };
+
         var user = req.body;
         console.log('Adding patient: ' + JSON.stringify(user));
+
+        user.password = generateRandomPassword();
+
         db.collection(collectionName, {strict: true}, function (err, collection) {
             collection.insert(user, {safe: true}, function (err, result) {
                 if (err) {
@@ -102,6 +114,39 @@ var mailSender = require('../service/mailSender');
         console.log('Retrieving notifications for patient: ' + id);
         methods.findById(id, function (err, item) {
             res.send(methods.getNotifications(item));
+        });
+    };
+
+    /**
+     * @param req
+     * @param res Will return an object with: _id, statusCode. _id is the patient _id and statusCode is the HTTP statusCode for the operation.
+     * 200: Successful login; 401: Wrong pasword; 404: There's not any patient with the specified username.
+     */
+    exports.login = function (req, res) {
+        console.log('llego!!');
+
+        db.collection(collectionName, function (err, collection) {
+            var email = req.params.username;
+
+            collection.findOne({'email': email}, function (err, item) {
+                var result = {};
+
+                if (item) {
+                    console.log('User found: ' + email);
+                    if (item.password === req.body.password) {
+                        result.statusCode = 200;
+                        result._id = item._id;
+                    } else {
+                        result.statusCode = 401;
+                        console.log('Wrong password for username: ' + email);
+                    }
+                } else {
+                    console.log('User NOT found: ' + email);
+                    result.statusCode = 404;
+                }
+
+                res.send(result);
+            });
         });
     };
 

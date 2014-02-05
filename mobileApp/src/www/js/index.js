@@ -27,8 +27,12 @@ var app = {
                 console.log('Getting user notifications and saving them to local storage system...');
                 //  TODO : Functionality : Get user notifications!!
 
-//                navigator.notification.beep(1);
-//                navigator.notification.vibrate(2000);
+                var notifyUser = function () {
+                    navigator.notification.vibrate(1500);
+                    navigator.notification.beep(1);
+                    window.plugins.statusBarNotification.notify("Notificaciones de Dental Navarra", "Usted debe hacerse un control radiográfico");
+                };
+//                notifyUser();
             };
 
             var onError = function (error) {

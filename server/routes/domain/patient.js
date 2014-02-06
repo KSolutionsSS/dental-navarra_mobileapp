@@ -4,6 +4,7 @@
  */
 
 var mailSender = require('../service/mailSender');
+var passwordHash = require('password-hash');
 
 (function () {
     var collectionName = 'patients';
@@ -48,14 +49,15 @@ var mailSender = require('../service/mailSender');
      */
     exports.save = function (req, res) {
         var generateRandomPassword = function () {
-            //  TODO : Functionality : Encrypt this password!
-            return '112233';
+            //  TODO : Functionality : Make it random!
+            return passwordHash.generate('112233');
         };
 
         var user = req.body;
         console.log('Adding patient: ' + JSON.stringify(user));
 
         user.password = generateRandomPassword();
+        console.log('Generated password: ' + user.password);
 
         db.collection(collectionName, {strict: true}, function (err, collection) {
             collection.insert(user, {safe: true}, function (err, result) {
@@ -133,7 +135,8 @@ var mailSender = require('../service/mailSender');
 
                 if (item) {
                     console.log('User found: ' + email);
-                    if (item.password === req.body.password) {
+
+                    if (passwordHash.verify(req.body.password, item.password)) {
                         result.statusCode = 200;
                         result._id = item._id;
                     } else {

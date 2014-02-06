@@ -35,24 +35,31 @@
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
+
             <h1>
                 DENTAL NAVARRA
             </h1>
+
             <blockquote>
                 <p>
                     "La felicidad radica, ante todo, en La S<span>alud"</span>
                 </p>
                 <small>George William Curtis</small>
             </blockquote>
-            <form class="form-horizontal" role="form">
+
+            <form class="form-horizontal" role="form" id="loginForm">
+                <div class="alert alert-danger" id="alert-generic">Disculpe, en este momento no podemos conectarnos con el servidor, intente de nuevo m&aacute;s tarde por favor.</div>
+
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <input type="email" class="form-control" id="email" placeholder="Email" maxlength="50">
+                        <div class="alert alert-danger" id="alert-username">El usuario ingresado no existe.</div>
+                        <input type="email" class="form-control" id="email" placeholder="Email" maxlength="50" required="required">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <input type="password" class="form-control" id="password" placeholder="Contraseña" maxlength="10">
+                        <div class="alert alert-danger" id="alert-password">La contraseña ingresada no es v&aacute;lida.</div>
+                        <input type="password" class="form-control" id="password" placeholder="Contraseña" maxlength="10" required="required">
                     </div>
                 </div>
                 <div class="form-group">
@@ -61,6 +68,7 @@
                     </div>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
@@ -71,6 +79,9 @@
 <script type="text/javascript" charset="utf-8" src="plugins/com.phonegap.plugins.statusbarnotification/statusbarnotification.js"></script>
 
 <!-- My scripts -->
+<script type="text/javascript" src="js/modules/modules.js"></script>
+<script type="text/javascript" src="js/modules/patient/patient.js"></script>
+
 <script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript">
     app.initialize();

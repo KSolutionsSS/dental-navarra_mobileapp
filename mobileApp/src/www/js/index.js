@@ -89,9 +89,25 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
 
         $('form').submit(function (event) {
-            //  TODO : Functionality : Fix this hard-coded functionality
             event.preventDefault();
-            location.href = 'views/home.html';
+
+            $('.alert').fadeOut();
+
+            modules.patient.login($('#email').val(), $('#password').val(), function (response) {
+                switch (response.statusCode) {
+                    case 200:
+                        location.href = 'views/home.html';
+                        break;
+                    case 404:
+                        $('#alert-username').fadeIn();
+                        break;
+                    case 401:
+                        $('#alert-password').fadeIn();
+                }
+            }, function (jqXHR) {
+                console.log('No se pudo realizar la petición de login: ' + jqXHR.status);
+                $('#alert-generic').fadeIn();
+            });
         });
     },
     // deviceready Event Handler

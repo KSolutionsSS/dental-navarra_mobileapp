@@ -72,7 +72,7 @@ a:hover {
 /*          HOME                               */
 /***********************************************/
 #notifications > li:not(:last-child), #promotions > li:not(:last-child) {
-    border-bottom: dashed #000000 2px;
+    border-bottom: dashed #000000 1px;
     margin-bottom: 5px;
 }
 
@@ -83,4 +83,13 @@ a:hover {
 #rememberNotificationView .btn-default {
     color: #FFF;
     background-color: #00DA09;
+}
+
+/***********************************************/
+/*          NOTIFICATION VIEW                  */
+/***********************************************/
+
+#rememberNotificationView span.badge {
+    margin-top: 3px;
+    font-size: x-large;
 }

@@ -1,4 +1,4 @@
-var urlJson = "https://spreadsheets.google.com/feeds/cells/0AqAWn1xLDRvPdDA1Y1liWHI2LUdnS2VhR1V6SHVkUVE/1/public/basic?alt=json";
+var urlJson = 'https://spreadsheets.google.com/feeds/cells/0AqAWn1xLDRvPdDA1Y1liWHI2LUdnS2VhR1V6SHVkUVE/1/public/basic?alt=json';
 
 $(document).ready(function () {
 
@@ -21,13 +21,29 @@ $(document).ready(function () {
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log('There was an error getting user notifications: ' + jqXHR.status + '. Text: ' + textStatus);
             $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las notificaciones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
+
+            // TODO : Unhard-code this.
+            var dummyNotifications = [
+                {message: 'Te hiciste un tratamiento de limpieza hace 5 meses, tendrías que hacerte otro dentro de 1 mes.', endDate: '01/03/2014'},
+                {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'},
+                {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
+                {message: 'Deberías concurrir para un control general.', endDate: '01/03/2014'}
+            ];
+            $container.append($('#notificationTemplate').render({notifications: dummyNotifications}));
+            $container.find('li').click(function (event) {
+                console.dir(event);
+                var endDate = event.target.childNodes[0].childNodes[0].data;
+                var message = event.target.childNodes[1].data;
+
+                location.href = 'rememberNotification.html?message=' + message + '&endDate=' + endDate;
+            });
         });
     };
 
     var loadPromotions = function () {
         console.log('Loading promotions...');
 
-        var $container = $("#promotions");
+        var $container = $('#promotions');
 
         googleDocsSimpleParser.parseSpreadsheetCellsUrl({
                                                             url: urlJson,
@@ -35,7 +51,7 @@ $(document).ready(function () {
                                                                 var renderPromotions = function (promotions, container) {
                                                                     $.templates({
                                                                                     promotions: {
-                                                                                        markup: "#promotionTemplate ",
+                                                                                        markup: "#promotionTemplate",
                                                                                         helpers: {
                                                                                             calculateEndDate: function (numberOfWeeks) {
                                                                                                 var now = new Date();
@@ -97,9 +113,4 @@ $(document).ready(function () {
     loadNotifications();
     loadPromotions();
     renderContactTab();
-
-    //  TODO : Functionality : test notifications!
-//    modules.notification.popUp('un mensaje', 'un titulo', 'nombre del boton');
-//    modules.notification.beep(10);
-//    modules.notification.vibrate(2000);
 });

@@ -49,10 +49,6 @@ var generatePassword = require('password-generator');
      * @param res A response object.
      */
     exports.save = function (req, res) {
-        var generateRandomPassword = function () {
-
-        };
-
         var user = req.body;
         console.log('Adding patient: ' + JSON.stringify(user));
 

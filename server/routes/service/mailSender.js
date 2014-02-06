@@ -44,6 +44,7 @@ var getCorrespondingAccount = function (id) {
 
 var sendMail = function (sender, options, callback) {
 //    var senderAccount = getCorrespondingAccount(sender);
+    // TODO : Unhard-code this.
     var senderAccount = getCorrespondingAccount('test');
 
     if (senderAccount) {

@@ -5,6 +5,7 @@
 
 var mailSender = require('../service/mailSender');
 var passwordHash = require('password-hash');
+var generatePassword = require('password-generator');
 
 (function () {
     var collectionName = 'patients';
@@ -49,15 +50,14 @@ var passwordHash = require('password-hash');
      */
     exports.save = function (req, res) {
         var generateRandomPassword = function () {
-            //  TODO : Functionality : Make it random!
-            return passwordHash.generate('112233');
+
         };
 
         var user = req.body;
         console.log('Adding patient: ' + JSON.stringify(user));
 
-        user.password = generateRandomPassword();
-        console.log('Generated password: ' + user.password);
+        var generated = generatePassword();
+        user.password = passwordHash.generate(generated);
 
         db.collection(collectionName, {strict: true}, function (err, collection) {
             collection.insert(user, {safe: true}, function (err, result) {
@@ -69,7 +69,9 @@ var passwordHash = require('password-hash');
                     var mailOptions = {
                         to: user.email,
                         subject: '¡Bienvenido a Dental Navarra! ✔',
-                        html: '<h3>¡Bienvenido a Dental Navarra!</h3>\n<p>¡Gracias por atenderte en los consultorios de Dental Navarra!</p>\n<p>Con tu direcci&oacute;n de correo electr&oacute;nico y la contraseña que te indicamos a continuaci&oacute;n podr&aacute;s iniciar sesi&oacute;n en la aplicaci&oacute;n m&oacute;vil de Dental Navarra.</p>\n<blockquote>Contraseña: <b><i>112233</i></b></blockquote>\n<p>¿Todav&iacute;a no tienes la aplicaci&oacute;n? Puedes descargarla desde el Play Store de tu Android ingresando a <a href="https://play.google.com/store/apps/details?id=com.nbempire.android.magicannotator">este link</a>.</p>\n<p>¡Que disfrutes la aplicaci&oacute;n!</p>\n<p>Atentamente, el equipo de Dental Navarra.</p>\n<p>No olvides visitar nuestra web <a href="www.dentalnavarra.com">DentalNavarra.com</a>.</p>' // html body
+                        html: '<h3>¡Bienvenido a Dental Navarra!</h3>\n<p>¡Gracias por atenderte en los consultorios de Dental Navarra!</p>\n<p>Con tu direcci&oacute;n de correo electr&oacute;nico y la contraseña que te indicamos a continuaci&oacute;n podr&aacute;s iniciar sesi&oacute;n en la aplicaci&oacute;n m&oacute;vil de Dental Navarra.</p>\n<blockquote>Contraseña: <b><i>'
+                                  + generated
+                            + '</i></b></blockquote>\n<p>¿Todav&iacute;a no tienes la aplicaci&oacute;n? Puedes descargarla desde el Play Store de tu Android ingresando a <a href="https://play.google.com/store/apps/details?id=com.nbempire.android.magicannotator">este link</a>.</p>\n<p>¡Que disfrutes la aplicaci&oacute;n!</p>\n<p>Atentamente, el equipo de Dental Navarra.</p>\n<p>No olvides visitar nuestra web <a href="www.dentalnavarra.com">DentalNavarra.com</a>.</p>' // html body
                     };
 
                     //  TODO : Functionality : Put this sender dynamic.
@@ -125,8 +127,6 @@ var passwordHash = require('password-hash');
      * 200: Successful login; 401: Wrong pasword; 404: There's not any patient with the specified username.
      */
     exports.login = function (req, res) {
-        console.log('llego!!');
-
         db.collection(collectionName, function (err, collection) {
             var email = req.params.username;
 

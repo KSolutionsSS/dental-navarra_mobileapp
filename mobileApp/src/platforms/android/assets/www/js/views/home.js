@@ -13,15 +13,15 @@ $(document).ready(function () {
 
         $.ajax({
                    url: url,
-                   type: 'GET',
+                   type: 'GET'
                }).done(function (notifications) {
-                           console.log('Obtained: ' + notifications.length + ' notifications.');
-                           $container.empty().append($('#notificationTemplate').render({notifications: notifications}));
+            console.log('Obtained: ' + notifications.length + ' notifications.');
+            $container.empty().append($('#notificationTemplate').render({notifications: notifications}));
 
-                       }).fail(function (jqXHR, textStatus, errorThrown) {
-                                   console.log('There was an error getting user notifications: ' + jqXHR.status + '. Text: ' + textStatus);
-                                   $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las notificaciones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
-                               });
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log('There was an error getting user notifications: ' + jqXHR.status + '. Text: ' + textStatus);
+            $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las notificaciones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
+        });
     };
 
     var loadPromotions = function () {

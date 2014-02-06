@@ -1,4 +1,4 @@
-var urlJson = "https://spreadsheets.google.com/feeds/cells/0AqAWn1xLDRvPdDA1Y1liWHI2LUdnS2VhR1V6SHVkUVE/1/public/basic?alt=json";
+var urlJson = 'https://spreadsheets.google.com/feeds/cells/0AqAWn1xLDRvPdDA1Y1liWHI2LUdnS2VhR1V6SHVkUVE/1/public/basic?alt=json';
 
 $(document).ready(function () {
 
@@ -13,21 +13,21 @@ $(document).ready(function () {
 
         $.ajax({
                    url: url,
-                   type: 'GET',
+                   type: 'GET'
                }).done(function (notifications) {
-                           console.log('Obtained: ' + notifications.length + ' notifications.');
-                           $container.empty().append($('#notificationTemplate').render({notifications: notifications}));
+            console.log('Obtained: ' + notifications.length + ' notifications.');
+            $container.empty().append($('#notificationTemplate').render({notifications: notifications}));
 
-                       }).fail(function (jqXHR, textStatus, errorThrown) {
-                                   console.log('There was an error getting user notifications: ' + jqXHR.status + '. Text: ' + textStatus);
-                                   $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las notificaciones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
-                               });
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log('There was an error getting user notifications: ' + jqXHR.status + '. Text: ' + textStatus);
+            $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las notificaciones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
+        });
     };
 
     var loadPromotions = function () {
         console.log('Loading promotions...');
 
-        var $container = $("#promotions");
+        var $container = $('#promotions');
 
         googleDocsSimpleParser.parseSpreadsheetCellsUrl({
                                                             url: urlJson,
@@ -35,7 +35,7 @@ $(document).ready(function () {
                                                                 var renderPromotions = function (promotions, container) {
                                                                     $.templates({
                                                                                     promotions: {
-                                                                                        markup: "#promotionTemplate ",
+                                                                                        markup: '#promotionTemplate ',
                                                                                         helpers: {
                                                                                             calculateEndDate: function (numberOfWeeks) {
                                                                                                 var now = new Date();

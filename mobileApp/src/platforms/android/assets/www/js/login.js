@@ -103,6 +103,7 @@ var app = {
 
                     location.href = 'views/home.html';
                 };
+
                 switch (response.statusCode) {
                     case 200:
                         handleSuccessfulLogin(response.patient);

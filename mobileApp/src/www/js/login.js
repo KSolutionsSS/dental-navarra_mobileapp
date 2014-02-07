@@ -90,24 +90,34 @@ var app = {
 
         $('form').submit(function (event) {
             event.preventDefault();
-            location.href = 'views/home.html';
-//            $('.alert').fadeOut();
-//
-//            modules.patient.login($('#email').val(), $('#password').val(), function (response) {
-//                switch (response.statusCode) {
-//                    case 200:
-//                        location.href = 'views/home.html';
-//                        break;
-//                    case 404:
-//                        $('#alert-username').fadeIn();
-//                        break;
-//                    case 401:
-//                        $('#alert-password').fadeIn();
-//                }
-//            }, function (jqXHR) {
-//                console.log('No se pudo realizar la petición de login: ' + jqXHR.status);
-//                $('#alert-generic').fadeIn();
-//            });
+
+            $('.alert').fadeOut();
+
+            modules.patient.login($('#email').val(), $('#password').val(), function (response) {
+                var handleSuccessfulLogin = function (patient) {
+                    localStorage.setItem('patient', JSON.stringify({
+                                                                       _id: patient._id,
+                                                                       email: patient.email,
+                                                                       office: patient.office
+                                                                   }));
+
+                    location.href = 'views/home.html';
+                };
+
+                switch (response.statusCode) {
+                    case 200:
+                        handleSuccessfulLogin(response.patient);
+                        break;
+                    case 404:
+                        $('#alert-username').fadeIn();
+                        break;
+                    case 401:
+                        $('#alert-password').fadeIn();
+                }
+            }, function (jqXHR) {
+                console.log('No se pudo realizar la petición de login: ' + jqXHR.status);
+                $('#alert-generic').fadeIn();
+            });
         });
     },
     // deviceready Event Handler

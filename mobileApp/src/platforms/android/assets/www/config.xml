@@ -3,9 +3,9 @@
         version="1.0.0"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Mis Pacientes</name>
+    <name>Dental Navarra</name>
     <description>
-        Aplicación para notificación masiva y personalizada a usuarios de consultorios odontológicos Dental Navarra
+        Aplicación para notificación masiva y personalizada a pacientes de consultorios odontológicos Dental Navarra.
     </description>
     <author email="alsasua@dentalnavarra.com"
             href="http://www.dentalnavarra.com/">
@@ -116,5 +116,5 @@
     <gap:splash gap:platform="winphone"
                 src="res/screen/windows-phone/screen-portrait.jpg" />
     <access origin="http://127.0.0.1*" />
-    <content src="index.html" />
+    <content src="login.html" />
 </widget>

@@ -94,9 +94,18 @@ var app = {
             $('.alert').fadeOut();
 
             modules.patient.login($('#email').val(), $('#password').val(), function (response) {
+                var handleSuccessfulLogin = function (patient) {
+                    localStorage.setItem('patient', JSON.stringify({
+                                                                       _id: patient._id,
+                                                                       email: patient.email,
+                                                                       office: patient.office
+                                                                   }));
+
+                    location.href = 'views/home.html';
+                };
                 switch (response.statusCode) {
                     case 200:
-                        location.href = 'views/home.html';
+                        handleSuccessfulLogin(response.patient);
                         break;
                     case 404:
                         $('#alert-username').fadeIn();

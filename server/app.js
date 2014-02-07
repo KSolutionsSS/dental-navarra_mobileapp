@@ -5,7 +5,6 @@
 
 //  Application properties
 var appPort = 8080;
-var apiPort = 8081;
 
 var dbName = 'mispacientesdb';
 var dbHost = 'localhost';
@@ -15,6 +14,7 @@ var dbPort = 27017;
 var express = require('express');
 var routes = require('./routes');
 
+//  Own module dependencies
 var admin = require('./routes/domain/admin');
 var patient = require('./routes/domain/patient');
 var treatment = require('./routes/domain/treatment');
@@ -25,43 +25,14 @@ var http = require('http');
 var path = require('path');
 
 var app = express();
-var api = express();
 
-/**
- * Configures the API server. It sets the port and the corresponding headers to allow CORS support.
- */
-var configureApiServer = function () {
-    api.set('port', process.env.PORT || apiPort);
-
-    api.use(express.logger('dev'));
-    api.use(express.bodyParser());
-
-    //  CORS support, taken from: https://github.com/visionmedia/express/blob/master/examples/cors/index.js
-    api.all('*', function (req, res, next) {
-        if (!req.get('Origin')) {
-            return next();
-        }
-
-        // use "*" here to accept any origin
-        res.set('Access-Control-Allow-Origin', '*');
-        res.set('Access-Control-Allow-Methods', 'GET, POST');
-        res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
-
-        if ('OPTIONS' === req.method) {
-            return res.send(200);
-        }
-
-        next();
-    });
-};
-
+//=============================================================================
+//                      Configure server
+//=============================================================================
 var configureAppServer = function () {
     app.set('port', process.env.PORT || appPort);
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'jade');
-
-// Asynchronous authentication
-    app.use(express.basicAuth(admin.login));
 
     app.use(express.favicon());
     app.use(express.logger('dev'));
@@ -71,31 +42,33 @@ var configureAppServer = function () {
     app.use(app.router);
     app.use(express.static(path.join(__dirname, 'public')));
 
-//  Development only
+    //  Development only
     if ('development' == app.get('env')) {
         app.use(express.errorHandler());
     }
 };
 
-configureApiServer();
 configureAppServer();
+
+// Asynchronous authentication
+var auth = express.basicAuth(admin.login);
 
 //=============================================================================
 //                      Prepare resources to expone
 //=============================================================================
-app.get('/', routes.index);
+app.get('/', auth, routes.index);
 
-app.get('/patients', patient.findAll);
-app.get('/patients/:id', patient.findById);
-api.get('/patients/:id/notifications', patient.findNotificationsById);
-app.post('/patients', patient.save);
-api.post('/patients/:username/login', patient.login);
-app.put('/patients/:id', patient.update);
+app.get('/patients', auth, patient.findAll);
+app.get('/patients/:id', auth, patient.findById);
+app.get('/patients/:id/notifications', patient.findNotificationsById);
+app.post('/patients', auth, patient.save);
+app.post('/patients/:username/login', patient.login);
+app.put('/patients/:id', auth, patient.update);
 
-app.get('/treatments', treatment.findAll);
+app.get('/treatments', auth, treatment.findAll);
 
-app.get('/users', user.findAll);
-app.post('/users', user.save);
+app.get('/users', auth, user.findAll);
+app.post('/users', auth, user.save);
 
 //  Example CRUD methods using MongoDB
 app.get('/wines', wine.findAll);
@@ -105,17 +78,16 @@ app.put('/wines/:id', wine.updateWine);
 app.delete('/wines/:id', wine.deleteWine);
 
 //=============================================================================
-//                      Finally creates de servers
+//                      Finally creates the server
 //=============================================================================
-http.createServer(api).listen(api.get('port'), function () {
-    console.log('Express server listening for API requests on port ' + api.get('port'));
-});
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening for APP requests on port ' + app.get('port'));
 });
 
-
+//=============================================================================
+//                      Open the database and populates it
+//=============================================================================
 connectToDatabase();
 function connectToDatabase() {
     var mongo = require('mongodb');
@@ -128,6 +100,8 @@ function connectToDatabase() {
     db = new Db(dbName, server);
 
     db.open(function (err, db) {
+
+
         //  Populate database with sample data -- Only used once: the first time the application is started.
         //  You'd typically not find this code in a real-life app, since the database would already exist.
         var populateDB = function () {
@@ -176,10 +150,10 @@ function connectToDatabase() {
                 console.log('The "' + adminsCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
                 var admins = [
                     {
-                        username: 'admin', password: 'admin'
+                        username: 'admin', password: '1q2w3e4r'
                     },
                     {
-                        username: 'test', password: 'test'
+                        username: 'test', password: 'solar'
                     }
                 ];
                 db.collection(adminsCollectionName, function (err, collection) {

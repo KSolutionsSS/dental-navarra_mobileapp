@@ -132,7 +132,7 @@ var generatePassword = require('password-generator');
                 var result = {};
 
                 if (item) {
-                    console.log('User found: ' + email +', id: '+item._id);
+                    console.log('User found: ' + email + ', id: ' + item._id);
 
                     if (passwordHash.verify(req.body.password, item.password)) {
                         result.statusCode = 200;

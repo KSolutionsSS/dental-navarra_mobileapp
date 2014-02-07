@@ -16,13 +16,13 @@
       <sourceFolder url="file://$MODULE_DIR$/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src/platforms/android/target/generated-sources/r" isTestSource="false" generated="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src/platforms/android/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src/platforms/android/target" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src/platforms/android/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src/platforms/android/target/generated-sources/combined-assets" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src/platforms/android/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src/platforms/android/target/maven-status" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/r" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+      <excludeFolder url="file://$MODULE_DIR$/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/combined-assets" />
+      <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 18 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -33,7 +33,7 @@
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/../../src/platforms/android/libs" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
       </library>
     </orderEntry>
   </component>

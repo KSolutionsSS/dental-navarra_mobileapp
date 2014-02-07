@@ -132,39 +132,39 @@ function connectToDatabase() {
         //  You'd typically not find this code in a real-life app, since the database would already exist.
         var populateDB = function () {
 
-            var winesCollectionName = 'wines';
-            db.collection(winesCollectionName, {strict: true}, function (err, collection) {
-
-                collection.remove({}, function (err, removed) {
-                    console.log('Removed all records in ' + winesCollectionName + ' collection.');
-                });
-
-                console.log('The "' + winesCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
-                var wines = [
-                    {
-                        name: 'CHATEAU DE SAINT COSME',
-                        year: '2009',
-                        grapes: 'Grenache / Syrah',
-                        country: 'France',
-                        region: 'Southern Rhone',
-                        description: 'The aromas of fruit and spice...',
-                        picture: 'saint_cosme.jpg'
-                    },
-                    {
-                        name: 'LAN RIOJA CRIANZA',
-                        year: '2006',
-                        grapes: 'Tempranillo',
-                        country: 'Spain',
-                        region: 'Rioja',
-                        description: 'A resurgence of interest in boutique vineyards...',
-                        picture: 'lan_rioja.jpg'
-                    }
-                ];
-                db.collection(winesCollectionName, function (err, collection) {
-                    collection.insert(wines, {safe: true}, function (err, result) {
-                    });
-                });
-            });
+//            var winesCollectionName = 'wines';
+//            db.collection(winesCollectionName, {strict: true}, function (err, collection) {
+//
+//                collection.remove({}, function (err, removed) {
+//                    console.log('Removed all records in ' + winesCollectionName + ' collection.');
+//                });
+//
+//                console.log('The "' + winesCollectionName + '" collection doesn\'t exist. Creating it with sample data...');
+//                var wines = [
+//                    {
+//                        name: 'CHATEAU DE SAINT COSME',
+//                        year: '2009',
+//                        grapes: 'Grenache / Syrah',
+//                        country: 'France',
+//                        region: 'Southern Rhone',
+//                        description: 'The aromas of fruit and spice...',
+//                        picture: 'saint_cosme.jpg'
+//                    },
+//                    {
+//                        name: 'LAN RIOJA CRIANZA',
+//                        year: '2006',
+//                        grapes: 'Tempranillo',
+//                        country: 'Spain',
+//                        region: 'Rioja',
+//                        description: 'A resurgence of interest in boutique vineyards...',
+//                        picture: 'lan_rioja.jpg'
+//                    }
+//                ];
+//                db.collection(winesCollectionName, function (err, collection) {
+//                    collection.insert(wines, {safe: true}, function (err, result) {
+//                    });
+//                });
+//            });
 
             var adminsCollectionName = 'admins';
             db.collection(adminsCollectionName, {strict: true}, function (err, collection) {

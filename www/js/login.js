@@ -16,10 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+var displayNextView = function () {
+    location.href = 'views/home.html';
+};
+
 var app = {
     // Application Constructor
     initialize: function () {
-
         var initializeBackgroundService = function () {
             var milliseconds = 6000000;
 
@@ -76,10 +79,25 @@ var app = {
 //                }, onError);
 //            }
         };
+        var checkForLoggedUser = function () {
+            if (localStorage.getItem('patient')) {
+                console.log('User already logged, skipping login view');
+                this.displayNextView();
+            } else {
+                console.log('User not logged, waiting user to login');
+                this.bindEvents();
+            }
+        };
+
+        //  TODO : Delete this line or context.
+        var dummyPatient = {"_id": "52f5036af687300200acd105", "email": "barrios.nahuel@gmail.com", "office": "tafalla"};
+        localStorage.setItem('patient', JSON.stringify(dummyPatient));
+//        localStorage.removeItem('patient');
 
         initializeBackgroundService();
-
-        this.bindEvents();
+        checkForLoggedUser();
+        //  TODO : Delete this line or context.
+//        this.bindEvents();
     },
     // Bind Event Listeners
     //
@@ -102,8 +120,7 @@ var app = {
                                                                        email: patient.email,
                                                                        office: patient.office
                                                                    }));
-
-                    location.href = 'views/home.html';
+                    this.displayNextView();
                 };
 
                 switch (response.statusCode) {

@@ -19,7 +19,7 @@ $(document).ready(function () {
     $view.find('p').html(decodeURIComponent(getURLParameter('message')));
     $view.find('span.badge').html(getURLParameter('endDate'));
 
-    var patient=JSON.parse(localStorage.getItem('patient'));
+    var patient = JSON.parse(localStorage.getItem('patient'));
     var callLink = $view.find('a');
     callLink.attr('href', callLink.attr('href') + patient.office.phoneNumber);
 });

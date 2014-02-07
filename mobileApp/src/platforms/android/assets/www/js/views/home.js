@@ -1,43 +1,76 @@
 var urlJson = 'https://spreadsheets.google.com/feeds/cells/0AqAWn1xLDRvPdDA1Y1liWHI2LUdnS2VhR1V6SHVkUVE/1/public/basic?alt=json';
 
+var offices = {
+    tafalla: {
+        name: "Clínica Odontológica Tafalla",
+        street: "C/ Diputación Foral, 4,1 A.",
+        city: "Tafalla",
+        postalCode: 31300,
+        phoneNumber: "948 755 169",
+        email: "tafalla@dentalnavarra.com"
+    },
+    alsasua: {
+        name: 'Clínica Dental Alsasua',
+        street: 'C/ Alzania, 1, A.',
+        city: 'Alsasua',
+        postalCode: 31800,
+        phoneNumber: '948 468 232',
+        email: 'alsasua@dentalnavarra.com'
+    },
+    milagro: {
+        name: 'Clínica Dental Milagro',
+        street: 'C/ Navas de Tolosa, 4 bajo.',
+        city: 'Milagro',
+        postalCode: 31120,
+        phoneNumber: '948 861 231',
+        email: 'milagro@dentalnavarra.com'
+    }
+};
+
+
 $(document).ready(function () {
 
 
-    var loadNotifications = function () {
+    var loadNotifications = function (patient) {
         console.log('Loading notifications about treatments...');
 
-        //  TODO : Functionality : Make this call dynamic
-        var url = 'http://localhost:8081/patients/52ef0890ca5844de1fee3d4f/notifications';
-
         var $container = $('#notifications');
-
         $.ajax({
-                   url: url,
+                   url: 'http://localhost:8081/patients/' + patient._id + '/notifications',
                    type: 'GET'
                }).done(function (notifications) {
-            console.log('Obtained: ' + notifications.length + ' notifications.');
-            $container.empty().append($('#notificationTemplate').render({notifications: notifications}));
+                           var expandNotification = function (event) {
+                               console.dir(event);
+                               var endDate = event.target.childNodes[0].childNodes[0].data;
+                               var message = event.target.childNodes[1].data;
 
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.log('There was an error getting user notifications: ' + jqXHR.status + '. Text: ' + textStatus);
-            $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las notificaciones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
+                               location.href = 'rememberNotification.html?message=' + message + '&endDate=' + endDate;
+                           };
 
-            // TODO : Unhard-code this.
-            var dummyNotifications = [
-                {message: 'Te hiciste un tratamiento de limpieza hace 5 meses, tendrías que hacerte otro dentro de 1 mes.', endDate: '01/03/2014'},
-                {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'},
-                {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
-                {message: 'Deberías concurrir para un control general.', endDate: '01/03/2014'}
-            ];
-            $container.append($('#notificationTemplate').render({notifications: dummyNotifications}));
-            $container.find('li').click(function (event) {
-                console.dir(event);
-                var endDate = event.target.childNodes[0].childNodes[0].data;
-                var message = event.target.childNodes[1].data;
+                           console.log('Obtained: ' + notifications.length + ' notifications.');
 
-                location.href = 'rememberNotification.html?message=' + message + '&endDate=' + endDate;
-            });
-        });
+                           $container.empty().append($('#notificationTemplate').render({notifications: notifications}));
+                           $container.find('li').click(expandNotification);
+                       }).fail(function (jqXHR, textStatus, errorThrown) {
+                                   console.log('There was an error getting user notifications: ' + jqXHR.status + '. Text: ' + textStatus);
+                                   $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las notificaciones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
+
+                                   // TODO : Unhard-code this.
+                                   var dummyNotifications = [
+                                       {message: 'Te hiciste un tratamiento de limpieza hace 5 meses, tendrías que hacerte otro dentro de 1 mes.', endDate: '01/03/2014'},
+                                       {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'},
+                                       {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
+                                       {message: 'Deberías concurrir para un control general.', endDate: '01/03/2014'}
+                                   ];
+                                   $container.append($('#notificationTemplate').render({notifications: dummyNotifications}));
+                                   $container.find('li').click(function (event) {
+                                       console.dir(event);
+                                       var endDate = event.target.childNodes[0].childNodes[0].data;
+                                       var message = event.target.childNodes[1].data;
+
+                                       location.href = 'rememberNotification.html?message=' + message + '&endDate=' + endDate;
+                                   });
+                               });
     };
 
     var loadPromotions = function () {
@@ -78,39 +111,26 @@ $(document).ready(function () {
                                                         });
     };
 
-    var renderContactTab = function () {
-        var contactInformationTafalla = {
-            name: 'Clínica Odontológica Tafalla',
-            street: 'C/ Diputación Foral, 4,1 A.',
-            city: 'Tafalla',
-            postalCode: 31300,
-            phoneNumber: '948 755 169',
-            email: 'tafalla@dentalnavarra.com'
-        };
+    var renderContactTab = function (patient) {
+        var officeName;
+        var eachAttribute;
+        for (eachAttribute in offices) {
+            if (offices.hasOwnProperty(eachAttribute)) {
+                if (patient.office === eachAttribute) {
+                    officeName = eachAttribute;
+                    break;
+                }
+            }
+        }
 
-        var contactInformationAlsasua = {
-            name: 'Clínica Dental Alsasua',
-            street: 'C/ Alzania, 1, A.',
-            city: 'Alsasua',
-            postalCode: 31800,
-            phoneNumber: '948 468 232',
-            email: 'alsasua@dentalnavarra.com'
-        };
+        patient.office = offices[officeName];
+        localStorage.setItem('patient', JSON.stringify(patient));
 
-        var contactInformationMilagro = {
-            name: 'Clínica Dental Milagro',
-            street: 'C/ Navas de Tolosa, 4 bajo.',
-            city: 'Milagro',
-            postalCode: 31120,
-            phoneNumber: '948 861 231',
-            email: 'milagro@dentalnavarra.com'
-        };
-
-        //  TODO : Functionality : make this a dynamic call.
-        $('#contactInformation').append($('#contactInformationTemplate').render(contactInformationAlsasua));
+        $('#contactInformation').append($('#contactInformationTemplate').render(patient.office));
     };
 
-    loadNotifications();
+    var patient = JSON.parse(localStorage.getItem('patient'));
+    loadNotifications(patient);
     loadPromotions();
-    renderContactTab();
+    renderContactTab(patient);
 });

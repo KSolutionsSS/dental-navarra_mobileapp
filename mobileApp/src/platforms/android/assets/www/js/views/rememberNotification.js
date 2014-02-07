@@ -18,4 +18,8 @@ $(document).ready(function () {
     var $view = $('#rememberNotificationView');
     $view.find('p').html(decodeURIComponent(getURLParameter('message')));
     $view.find('span.badge').html(getURLParameter('endDate'));
+
+    var patient = JSON.parse(localStorage.getItem('patient'));
+    var callLink = $view.find('a');
+    callLink.attr('href', callLink.attr('href') + patient.office.phoneNumber);
 });

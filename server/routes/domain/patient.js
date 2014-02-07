@@ -7,56 +7,65 @@ var mailSender = require('../service/mailSender');
 var passwordHash = require('password-hash');
 var generatePassword = require('password-generator');
 
-(function () {
-    var collectionName = 'patients';
+var MongoClient = require('mongodb').MongoClient;
+var mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/mydb';
 
-    var methods = {
-        findById: function (id, callback) {
-            console.log('Retrieving patient: ' + id);
+var collectionName = 'patients';
+
+var methods = {
+    findById: function (id, callback) {
+        console.log('Retrieving patient: ' + id);
+
+        MongoClient.connect(mongoUri, function (err, db) {
             db.collection(collectionName, function (err, collection) {
                 collection.findOne({'_id': new BSON.ObjectID(id)}, callback);
             });
-        },
-        getNotifications: function (patient) {
-            console.log('Checking notifications for patient: ' + patient._id);
-            //  TODO : Functionality : Calculate this.
-            return [
-                {message: 'Te hiciste un tratamiento de limpieza hace 5 meses, tendrías que hacerte otro dentro de 1 mes.', endDate: '01/03/2014'},
-                {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'},
-                {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
-                {message: 'Deberías concurrir para un control general.', endDate: '01/03/2014'}
-            ];
-        }
-    };
+        });
+    },
+    getNotifications: function (patient) {
+        console.log('Checking notifications for patient: ' + patient._id);
+        //  TODO : Functionality : Calculate this.
+        return [
+            {message: 'Te hiciste un tratamiento de limpieza hace 5 meses, tendrías que hacerte otro dentro de 1 mes.', endDate: '01/03/2014'},
+            {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'},
+            {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
+            {message: 'Deberías concurrir para un control general.', endDate: '01/03/2014'}
+        ];
+    }
+};
 
-    exports.findAll = function (req, res) {
-        console.log('Finding all patients');
+exports.findAll = function (req, res) {
+    console.log('Finding all patients');
+
+    MongoClient.connect(mongoUri, function (err, db) {
         db.collection(collectionName, function (err, collection) {
             collection.find().toArray(function (err, items) {
                 res.send(items);
             });
         });
-    };
+    });
+};
 
-    exports.findById = function (req, res) {
-        methods.findById(req.params.id, function (err, item) {
-            res.send(item);
-        });
-    };
+exports.findById = function (req, res) {
+    methods.findById(req.params.id, function (err, item) {
+        res.send(item);
+    });
+};
 
-    /**
-     * @param req In its body attribute must contain an object with: name, lastName, secondLastName, email, birthday, office.
-     * @param res A response object.
-     */
-    exports.save = function (req, res) {
-        var user = req.body;
-        console.log('Adding patient: ' + JSON.stringify(user));
+/**
+ * @param req In its body attribute must contain an object with: name, lastName, secondLastName, email, birthday, office.
+ * @param res A response object.
+ */
+exports.save = function (req, res) {
+    var user = req.body;
+    console.log('Adding patient: ' + JSON.stringify(user));
 
-        //  TODO : Unhard-code this.
+    //  TODO : Unhard-code this.
 //        var generated = generatePassword();
-        var generated = 'test';
-        user.password = passwordHash.generate(generated);
+    var generated = 'test';
+    user.password = passwordHash.generate(generated);
 
+    MongoClient.connect(mongoUri, function (err, db) {
         db.collection(collectionName, {strict: true}, function (err, collection) {
             collection.insert(user, {safe: true}, function (err, result) {
                 if (err) {
@@ -86,17 +95,19 @@ var generatePassword = require('password-generator');
                 }
             });
         });
-    };
+    });
+};
 
-    exports.update = function (req, res) {
-        var id = req.params.id;
-        var patient = req.body;
+exports.update = function (req, res) {
+    var id = req.params.id;
+    var patient = req.body;
 
-        console.log('Updating patient: ' + id);
-        console.log(JSON.stringify(patient));
+    console.log('Updating patient: ' + id);
+    console.log(JSON.stringify(patient));
 
-        patient._id = new BSON.ObjectID(id);
+    patient._id = new BSON.ObjectID(id);
 
+    MongoClient.connect(mongoUri, function (err, db) {
         db.collection(collectionName, function (err, collection) {
             collection.update({'_id': patient._id}, patient, {safe: true}, function (err, result) {
                 if (err) {
@@ -109,22 +120,25 @@ var generatePassword = require('password-generator');
                 }
             });
         });
-    };
+    });
+};
 
-    exports.findNotificationsById = function (req, res) {
-        var id = req.params.id;
-        console.log('Retrieving notifications for patient: ' + id);
-        methods.findById(id, function (err, item) {
-            res.send(methods.getNotifications(item));
-        });
-    };
+exports.findNotificationsById = function (req, res) {
+    var id = req.params.id;
+    console.log('Retrieving notifications for patient: ' + id);
+    methods.findById(id, function (err, item) {
+        res.send(methods.getNotifications(item));
+    });
+};
 
-    /**
-     * @param req
-     * @param res Will return an object with: _id, statusCode. _id is the patient _id and statusCode is the HTTP statusCode for the operation.
-     * 200: Successful login; 401: Wrong pasword; 404: There's not any patient with the specified username.
-     */
-    exports.login = function (req, res) {
+/**
+ * @param req
+ * @param res Will return an object with: _id, statusCode. _id is the patient _id and statusCode is the HTTP statusCode for the operation.
+ * 200: Successful login; 401: Wrong pasword; 404: There's not any patient with the specified username.
+ */
+exports.login = function (req, res) {
+
+    MongoClient.connect(mongoUri, function (err, db) {
         db.collection(collectionName, function (err, collection) {
             var email = req.params.username;
 
@@ -149,7 +163,6 @@ var generatePassword = require('password-generator');
                 res.send(result);
             });
         });
-    };
-
-}());
+    });
+};
 

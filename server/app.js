@@ -9,16 +9,23 @@ var appPort = 8080;
 var dbName = 'mispacientesdb';
 var dbHost = 'localhost';
 var dbPort = 27017;
+var dbCollections = {
+    patients: 'patients',
+    admins: 'admins',
+    treatments: 'treatments'
+};
 
 //  Module dependencies
 var express = require('express');
+
 var routes = require('./routes');
 
 //  Own module dependencies
 var admin = require('./routes/domain/admin');
 var patient = require('./routes/domain/patient');
 var treatment = require('./routes/domain/treatment');
-var user = require('./routes/domain/user');
+
+//  TODO : Delete this line or context.
 var wine = require('./routes/domain/wine');
 
 var http = require('http');
@@ -57,18 +64,14 @@ var auth = express.basicAuth(admin.login);
 //                      Prepare resources to expone
 //=============================================================================
 app.get('/', auth, routes.index);
-
 app.get('/patients', auth, patient.findAll);
 app.get('/patients/:id', auth, patient.findById);
 app.get('/patients/:id/notifications', patient.findNotificationsById);
+app.put('/patients/:id', auth, patient.update);
 app.post('/patients', auth, patient.save);
 app.post('/patients/:username/login', patient.login);
-app.put('/patients/:id', auth, patient.update);
 
 app.get('/treatments', auth, treatment.findAll);
-
-app.get('/users', auth, user.findAll);
-app.post('/users', auth, user.save);
 
 //  Example CRUD methods using MongoDB
 app.get('/wines', wine.findAll);
@@ -86,9 +89,158 @@ http.createServer(app).listen(app.get('port'), function () {
 });
 
 //=============================================================================
-//                      Open the database and populates it
+//                      Connect to database and populates it
 //=============================================================================
-connectToDatabase();
+
+
+var mongo = require('mongodb');
+var MongoClient = mongo.MongoClient;
+//    , format = require('util').format;
+BSON = mongo.BSONPure;
+
+var mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/mydb';
+
+MongoClient.connect(mongoUri, function (err, db) {
+    var clearCollection = function (collection, collectionName, callback) {
+        console.log('Clearing collection: ' + collectionName);
+        collection.remove({}, function (err, removed) {
+            console.log('Collection cleared ' + collectionName);
+
+            if (callback) {
+                callback(err, removed);
+            }
+        });
+    };
+    var populateCollection = function (collection, collectionName, data) {
+        clearCollection(collection, collectionName, function (err, removed) {
+            console.log('The "' + collectionName + '" collection has no records. Adding sample data...');
+
+            collection.insert(data, {safe: true}, function (err, result) {
+                console.log('Inserted ' + result.length + ' records in collection: ' + collectionName);
+            });
+        });
+    };
+    //  End of utility methods
+
+    if (err) {
+        console.log('no me pude conectar, tirando error...');
+        throw err;
+    }
+
+    db.collectionNames(function (err, collections) {
+        console.log('Available collections in DB:');
+        console.log(collections);
+    });
+
+    //  Creating collections
+    db.createCollection(dbCollections.admins, function (err, collection) {
+        if (err) {
+            console.log('An error occured while creating collection named: ' + dbCollections.admins);
+            console.log('Error: ' + err);
+            throw err;
+        }
+
+        console.log('Collection created successfuly: ' + dbCollections.admins);
+
+        populateCollection(collection, dbCollections.admins, [
+            {
+                username: 'admin', password: '1q2w3e4r'
+            },
+            {
+                username: 'test', password: 'solar'
+            }
+        ]);
+    });
+
+    db.createCollection(dbCollections.patients, function (err, collection) {
+        if (err) {
+            console.log('An error occured while creating collection named: ' + dbCollections.patients);
+            console.log('Error: ' + err);
+            throw err;
+        }
+
+        console.log('Collection created successfuly: ' + dbCollections.patients);
+    });
+
+    db.createCollection(dbCollections.treatments, function (err, collection) {
+        if (err) {
+            console.log('An error occured while creating collection named: ' + dbCollections.treatments);
+            console.log('Error: ' + err);
+            throw err;
+        }
+
+        console.log('Collection created successfuly: ' + dbCollections.admins);
+
+        populateCollection(collection, dbCollections.treatments, [
+            {
+                description: 'Limpieza (complejidad 1)', revisions: [
+                {frequency: 12}
+            ]
+            },
+            {
+                description: 'Limpieza (complejidad 2)', revisions: [
+                {frequency: 6}
+            ]
+            },
+            {
+                description: 'Limpieza (complejidad 3)', revisions: [
+                {frequency: 3}
+            ]
+            },
+            {
+                description: 'Cirugías de implantes', revisions: [
+                {sequence: 1, frequency: 2, quantity: 2, description: 'Control radiográfico'},
+                {sequence: 2, frequency: 12, description: 'Revision anual radiológica'},
+                {sequence: 2, frequency: 6, description: 'Control cada 6 meses'}
+            ]
+            },
+            {
+                description: 'Implantes', types: [
+                {description: 'Elevación de seno', revisions: [
+                    {frequency: 4.5, description: 'Control radiográfico', quantity: 2}
+                ]},
+                {description: 'Periodontal', revisions: [
+                    {sequence: 1, frequency: 2, description: 'Control'},
+                    {sequence: 2, frequency: 6, description: 'Control'},
+                    {sequence: 3, frequency: 12, description: 'Control'}
+                ]},
+                {description: 'Exodoncia', revisions: [
+                    {frequency: 3, description: 'Control radiográfico'}
+                ]}
+            ]
+            },
+            {
+                description: 'Tratamiento periodontal (complejidad 1)', revisions: [
+                {frequency: 12, description: 'Control'}
+            ]
+            },
+            {
+                description: 'Tratamiento periodontal (complejidad 2)', revisions: [
+                {frequency: 6, description: 'Control'}
+            ]
+            },
+            {
+                description: 'Tratamiento periodontal (complejidad 3)', revisions: [
+                {frequency: 3, description: 'Control'}
+            ]
+            },
+            {
+                description: 'Ortodoncia', revisions: [
+                {sequence: 1, frequency: 6, description: 'Control'},
+                {sequence: 2, frequency: 24, description: 'Control'}
+            ]
+            },
+            {
+                description: 'Control general anual', revisions: [
+                {frequency: 12, description: 'Control general anual'}
+            ]
+            }
+        ]);
+    });
+});
+
+
+//connectToDatabase();
 function connectToDatabase() {
     var mongo = require('mongodb');
 

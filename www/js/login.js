@@ -101,7 +101,7 @@ var app = {
                                                                        office: patient.office
                                                                    }));
 
-                    location.href = 'views/home.html';
+                    location.href = '../views/home.html';
                 };
 
                 switch (response.statusCode) {

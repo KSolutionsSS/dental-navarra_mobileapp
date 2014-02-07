@@ -1,4 +1,4 @@
-cordova.define("org.apache.cordova.vibration.notification", function (require, exports, module) {/*
+cordova.define("org.apache.cordova.vibration.notification", function(require, exports, module) {/*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,23 +17,23 @@ cordova.define("org.apache.cordova.vibration.notification", function (require, e
  * specific language governing permissions and limitations
  * under the License.
  *
+*/
+
+var exec = require('cordova/exec');
+
+/**
+ * Provides access to the vibration mechanism on the device.
  */
 
-    var exec = require('cordova/exec');
+module.exports = {
 
     /**
-     * Provides access to the vibration mechanism on the device.
+     * Causes the device to vibrate.
+     *
+     * @param {Integer} mills       The number of milliseconds to vibrate for.
      */
-
-    module.exports = {
-
-        /**
-         * Causes the device to vibrate.
-         *
-         * @param {Integer} mills       The number of milliseconds to vibrate for.
-         */
-        vibrate: function (mills) {
-            exec(null, null, "Vibration", "vibrate", [mills]);
-        },
-    };
+    vibrate: function(mills) {
+        exec(null, null, "Vibration", "vibrate", [mills]);
+    },
+};
 });

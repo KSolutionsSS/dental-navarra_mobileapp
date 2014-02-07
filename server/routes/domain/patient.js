@@ -52,7 +52,9 @@ var generatePassword = require('password-generator');
         var user = req.body;
         console.log('Adding patient: ' + JSON.stringify(user));
 
-        var generated = generatePassword();
+        //  TODO : Unhard-code this.
+//        var generated = generatePassword();
+        var generated = 'test';
         user.password = passwordHash.generate(generated);
 
         db.collection(collectionName, {strict: true}, function (err, collection) {
@@ -70,17 +72,17 @@ var generatePassword = require('password-generator');
                             + '</i></b></li>\n</ul>\n\n<p>¿Todav&iacute;a no tienes la aplicaci&oacute;n? Puedes descargarla desde el Play Store de tu Android ingresando a <a\n        href="https://play.google.com/store/apps/details?id=com.nbempire.android.magicannotator">este link</a>.</p>\n<p>¡Que disfrutes la aplicaci&oacute;n!</p>\n<p>Atentamente, el equipo de Dental Navarra.</p>\n<p>No olvides visitar nuestra web <a href="http://www.dentalnavarra.com">DentalNavarra.com</a>.</p>'
                     };
 
-                    //  TODO : Functionality : Put this sender dynamic.
-                    mailSender.send(user.office, mailOptions, function (error, response) {
-                        if (error) {
-                            //  TODO : Functionality : Resend the email!!
-                            console.log('The welcome message email could not be sent: ' + error);
-                        } else {
-                            console.log('Welcome message email sent to: ' + user.email);
-                        }
-
-                        res.send(result[0]);
-                    });
+                    //  TODO : Unhard-code this.
+//                    mailSender.send(user.office, mailOptions, function (error, response) {
+//                        if (error) {
+//                            //  TODO : Functionality : Resend the email!!
+//                            console.log('The welcome message email could not be sent: ' + error);
+//                        } else {
+//                            console.log('Welcome message email sent to: ' + user.email);
+//                        }
+//
+//                        res.send(result[0]);
+//                    });
                 }
             });
         });
@@ -130,7 +132,7 @@ var generatePassword = require('password-generator');
                 var result = {};
 
                 if (item) {
-                    console.log('User found: ' + email);
+                    console.log('User found: ' + email +', id: '+item._id);
 
                     if (passwordHash.verify(req.body.password, item.password)) {
                         result.statusCode = 200;

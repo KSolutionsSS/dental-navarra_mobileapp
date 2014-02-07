@@ -65,9 +65,9 @@ var generatePassword = require('password-generator');
                     var mailOptions = {
                         to: user.email,
                         subject: '¡Bienvenido a Dental Navarra! ✔',
-                        html: '<h3>¡Bienvenido a Dental Navarra!</h3>\n<p>¡Gracias por atenderte en los consultorios de Dental Navarra!</p>\n<p>Con tu direcci&oacute;n de correo electr&oacute;nico y la contraseña que te indicamos a continuaci&oacute;n podr&aacute;s iniciar sesi&oacute;n en la aplicaci&oacute;n m&oacute;vil de Dental Navarra.</p>\n<blockquote>Contraseña: <b><i>'
-                                  + generated
-                            + '</i></b></blockquote>\n<p>¿Todav&iacute;a no tienes la aplicaci&oacute;n? Puedes descargarla desde el Play Store de tu Android ingresando a <a href="https://play.google.com/store/apps/details?id=com.nbempire.android.magicannotator">este link</a>.</p>\n<p>¡Que disfrutes la aplicaci&oacute;n!</p>\n<p>Atentamente, el equipo de Dental Navarra.</p>\n<p>No olvides visitar nuestra web <a href="www.dentalnavarra.com">DentalNavarra.com</a>.</p>' // html body
+                        html: '<h3>¡Bienvenido a Dental Navarra!</h3>\n<p>¡Gracias por atenderse en los consultorios de Dental Navarra!</p>\n\n<p>A continuaci&oacute;n le indicamos los datos para iniciar sesi&oacute;n en la aplicaci&oacute;n m&oacute;vil de Dental Navarra.</p>\n\n<ul>\n    <li>Usuario: <b><i>'
+                                  + user.email + '</i></b></li>\n    <li>Contraseña: <b><i>' + generated
+                            + '</i></b></li>\n</ul>\n\n<p>¿Todav&iacute;a no tienes la aplicaci&oacute;n? Puedes descargarla desde el Play Store de tu Android ingresando a <a\n        href="https://play.google.com/store/apps/details?id=com.nbempire.android.magicannotator">este link</a>.</p>\n<p>¡Que disfrutes la aplicaci&oacute;n!</p>\n<p>Atentamente, el equipo de Dental Navarra.</p>\n<p>No olvides visitar nuestra web <a href="http://www.dentalnavarra.com">DentalNavarra.com</a>.</p>'
                     };
 
                     //  TODO : Functionality : Put this sender dynamic.
@@ -134,7 +134,7 @@ var generatePassword = require('password-generator');
 
                     if (passwordHash.verify(req.body.password, item.password)) {
                         result.statusCode = 200;
-                        result._id = item._id;
+                        result.patient = item;
                     } else {
                         result.statusCode = 401;
                         console.log('Wrong password for username: ' + email);

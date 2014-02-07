@@ -1,4 +1,4 @@
-Mis Pacientes
+Dental Navarra-mobile app
 ======
 
-Mobile app para notificar a los pacientes de una red de consultorios sobre distintas cuestiones referidas a sus tratamientos y promociones.
+Mobile app that patients of Dental Navarra will use to get notifications about their treatments, and promotions.

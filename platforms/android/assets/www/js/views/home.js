@@ -1,3 +1,4 @@
+//  TODO : Unhard-code this.
 var urlJson = 'https://spreadsheets.google.com/feeds/cells/0AqAWn1xLDRvPdDA1Y1liWHI2LUdnS2VhR1V6SHVkUVE/1/public/basic?alt=json';
 
 var offices = {

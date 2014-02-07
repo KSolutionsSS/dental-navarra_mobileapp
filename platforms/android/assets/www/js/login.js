@@ -95,6 +95,8 @@ var app = {
 
             modules.patient.login($('#email').val(), $('#password').val(), function (response) {
                 var handleSuccessfulLogin = function (patient) {
+                    console.log('User ' + patient.email + ' successfully logged');
+
                     localStorage.setItem('patient', JSON.stringify({
                                                                        _id: patient._id,
                                                                        email: patient.email,

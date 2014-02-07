@@ -37,7 +37,7 @@ $(document).ready(function () {
         var $container = $('#notifications');
         $.ajax({
 //                   url: 'http://localhost:8080/patients/' + patient._id + '/notifications',
-                   url: 'http://dentalnavarra-intranet.herokuapp.com/patients' + patient._id + '/notifications',
+                   url: 'http://dentalnavarra-intranet.herokuapp.com/patients/' + patient._id + '/notifications',
                    type: 'GET'
                }).done(function (notifications) {
                            var expandNotification = function (event) {

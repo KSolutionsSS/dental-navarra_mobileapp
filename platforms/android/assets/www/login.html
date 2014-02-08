@@ -36,58 +36,175 @@
     <div class="row clearfix">
         <div class="col-md-12 column">
 
-            <h1>
-                DENTAL NAVARRA
-            </h1>
+            <ul class="nav nav-tabs hidden" id="viewsTab">
+                <li class="active"><a href="#loginView" data-toggle="tab">LOGIN</a></li>
+                <li><a href="#homeView" data-toggle="tab">HOME</a></li>
+                <li><a href="#rememberNotificationView" data-toggle="tab">REMEMBER NOTIFICATION</a></li>
+            </ul>
 
-            <blockquote>
-                <p>
-                    "La felicidad radica, ante todo, en La S<span>alud"</span>
-                </p>
-                <small>George William Curtis</small>
-            </blockquote>
+            <!-- Tab panes -->
+            <div class="tab-content">
 
-            <form class="form-horizontal" role="form" id="loginForm">
-                <div class="alert alert-danger" id="alert-generic">Disculpe, en este momento no podemos conectarnos con el servidor, intente de nuevo
-                    m&aacute;s tarde por favor.
-                </div>
+                <div class="tab-pane active fade in" id="loginView">
+                    <h1>
+                        DENTAL NAVARRA
+                    </h1>
 
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <div class="alert alert-danger" id="alert-username">El usuario ingresado no existe.</div>
-                        <input type="email" class="form-control" id="email" placeholder="Email" maxlength="50" required="required">
-                    </div>
+                    <blockquote>
+                        <p>
+                            "La felicidad radica, ante todo, en La S<span>alud"</span>
+                        </p>
+                        <small>George William Curtis</small>
+                    </blockquote>
+
+                    <form class="form-horizontal" role="form" id="loginForm">
+                        <div class="alert alert-danger" id="alert-generic">Disculpe, en este momento no podemos conectarnos con el servidor, intente
+                            de nuevo m&aacute;s tarde por favor.
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="alert alert-danger" id="alert-username">El usuario ingresado no existe.</div>
+                                <input type="email" class="form-control" id="email" placeholder="Email" maxlength="50" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="alert alert-danger" id="alert-password">La contraseña ingresada no es v&aacute;lida.</div>
+                                <input type="password" class="form-control" id="password" placeholder="Contraseña" maxlength="10" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-large btn-default">Entrar</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <div class="alert alert-danger" id="alert-password">La contraseña ingresada no es v&aacute;lida.</div>
-                        <input type="password" class="form-control" id="password" placeholder="Contraseña" maxlength="10" required="required">
+                <!--FIN #login-->
+
+                <div class="tab-pane fade" id="homeView">
+
+                    <div class="panel-group" id="collapsable-panel">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
+                                   href="#panel-notifications">Avisos</a>
+                            </div>
+                            <div id="panel-notifications" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul class="list-unstyled" id="notifications">
+                                        <li>Cargando notificaciones...</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
+                                   href="#panel-promotions">Promociones</a>
+                            </div>
+                            <div id="panel-promotions" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul class="list-unstyled" id="promotions">
+                                        <li>Cargando promociones...</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
+                                   href="#panel-contact">Contacto</a>
+                            </div>
+                            <div id="panel-contact" class="panel-collapse collapse">
+                                <div class="panel-body" id="contactInformation">
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <button type="submit" class="btn btn-large btn-default">Entrar</button>
+                <!--FIN #home-->
+
+                <div class="tab-pane fade" id="rememberNotificationView">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Tienes 1 recordatorio nuevo</h2>
+
+                            <p></p>
+                        </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span class="badge pull-left"></span>
+                            <a class="btn btn-default pull-right" href="tel:"><span class="fa fa-phone"></span> Solicitar turno</a>
+                        </div>
+                    </div>
+
                 </div>
-            </form>
+                <!--FIN #rememberNotification-->
+            </div>
 
         </div>
     </div>
 </div>
+
+
+<!-- Templates definitions -->
+<script id="notificationTemplate" type="text/x-jsrender">
+    {{for notifications}}
+
+        <li><span class="badge pull-left">{{:endDate}}</span> {{:message}}</li>
+
+    {{/for}}
+</script>
+<script id="promotionTemplate" type="text/x-jsrender">
+    {{for promotions}}
+
+        <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(cantidadSemanas)}}</span></li>
+
+    {{/for}}
+</script>
+<script id="contactInformationTemplate" type="text/x-jsrender">
+    <address>
+        <strong>{{:name}}.</strong><br>
+        {{:street}}<br>
+        {{:city}}, {{:postalCode}}<br>
+        T: {{:phoneNumber}}<br>
+        C.E.: <a href="mailto:{{:email}}">{{:email}}</a>
+    </address>
+</script>
+
 
 <!-- Exclusive libraries for platforms-->
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" charset="utf-8" src="plugins/com.red_folder.phonegap.plugin.backgroundservice/www/backgroundservice.js"></script>
 <script type="text/javascript" charset="utf-8" src="plugins/com.phonegap.plugins.statusbarnotification/statusbarnotification.js"></script>
 
-<!-- My scripts -->
+
+<!--Libraries-->
+<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/lib/jsrender.min.js"></script>
+<script type="text/javascript" src="js/lib/google-docs-simple-parser.js"></script>
+
+
+<!--My libraries-->
 <script type="text/javascript" src="js/modules/modules.js"></script>
 <script type="text/javascript" src="js/modules/patient/patient.js"></script>
 
+
+<!-- My scripts -->
 <script type="text/javascript" src="js/login.js"></script>
-<script type="text/javascript">
-    app.initialize();
-</script>
+<script type="text/javascript" src="js/views/home.js"></script>
+<script type="text/javascript" src="js/views/rememberNotification.js"></script>
 
 </body>
 </html>

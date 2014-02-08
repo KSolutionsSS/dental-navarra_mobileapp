@@ -17,33 +17,89 @@
  * under the License.
  */
 var PATIENT_KEY = 'patient';
+var $viewsTab;
 
-var displayNextView = function () {
-    location.href = 'views/home.html';
+var displayNextView = function (selector, param1, param2) {
+    switch (selector) {
+        case '#homeView':
+            console.log('home vale: ' + home);
+            home.init();
+            break;
+        case '#rememberNotificationView':
+            rememberNotification.render(param1, param2);
+            break;
+    }
+
+    $viewsTab.find('a[href=' + selector + ']').tab('show');
 };
 
-$(document).ready(function () {
-    /**
-     * Check for logged user...
-     */
-    (function () {
-        if (localStorage.getItem(PATIENT_KEY)) {
-            console.log('User already logged, skipping login view');
-            this.displayNextView();
-        } else {
-            console.log('User not logged, waiting user to login');
-            app.bindEvents();
-        }
-    });
+var login = (function () {
 
-    //  TODO : Delete this line or context.
-    app.bindEvents();
-});
+
+    return {
+        init: function () {
+            /**
+             * Check for logged user...
+             */
+            (function () {
+                if (localStorage.getItem(PATIENT_KEY)) {
+                    console.log('User already logged, skipping login view');
+                    displayNextView('#homeView');
+                } else {
+                    console.log('User not logged, waiting user to login');
+                    app.bindEvents();
+                }
+            });
+
+            //  TODO : Delete this line or context.
+            app.bindEvents();
+        },
+        bindEvents: function () {
+
+            $('form').submit(function (event) {
+                event.preventDefault();
+
+                $('.alert').fadeOut();
+
+                modules.patient.login($('#email').val(), $('#password').val(), function (response) {
+                    var handleSuccessfulLogin = function (patient) {
+                        console.log('User ' + patient.email + ' successfully logged');
+                        console.log('User information: ' + patient._id + ', office: ' + patient.office);
+
+                        localStorage.setItem(PATIENT_KEY, JSON.stringify({
+                                                                             _id: patient._id,
+                                                                             email: patient.email,
+                                                                             office: patient.office
+                                                                         }));
+                        displayNextView('#homeView');
+                    };
+
+                    switch (response.statusCode) {
+                        case 200:
+                            handleSuccessfulLogin(response.patient);
+                            break;
+                        case 404:
+                            $('#alert-username').fadeIn();
+                            break;
+                        case 401:
+                            $('#alert-password').fadeIn();
+                    }
+                }, function (jqXHR) {
+                    console.log('No se pudo realizar la petición de login: ' + jqXHR.status);
+                    $('#alert-generic').fadeIn();
+                });
+            });
+        }
+    };
+}());
+
 
 var app = {
     // Application Constructor
     initialize: function () {
         console.log('--> initialize...');
+
+        $viewsTab = $('#viewsTab');
 
         /**
          * Initialize background service
@@ -233,39 +289,7 @@ var app = {
 
         document.addEventListener('deviceready', this.onDeviceReady, false);
 
-        $('form').submit(function (event) {
-            event.preventDefault();
-
-            $('.alert').fadeOut();
-
-            modules.patient.login($('#email').val(), $('#password').val(), function (response) {
-                var handleSuccessfulLogin = function (patient) {
-                    console.log('User ' + patient.email + ' successfully logged');
-                    console.log('User information: ' + patient._id + ', office: ' + patient.office);
-
-                    localStorage.setItem(PATIENT_KEY, JSON.stringify({
-                                                                         _id: patient._id,
-                                                                         email: patient.email,
-                                                                         office: patient.office
-                                                                     }));
-                    this.displayNextView();
-                };
-
-                switch (response.statusCode) {
-                    case 200:
-                        handleSuccessfulLogin(response.patient);
-                        break;
-                    case 404:
-                        $('#alert-username').fadeIn();
-                        break;
-                    case 401:
-                        $('#alert-password').fadeIn();
-                }
-            }, function (jqXHR) {
-                console.log('No se pudo realizar la petición de login: ' + jqXHR.status);
-                $('#alert-generic').fadeIn();
-            });
-        });
+        login.bindEvents();
     },
     // deviceready Event Handler
     //
@@ -288,3 +312,9 @@ var app = {
         console.log('Received Event: ' + id);
     }
 };
+
+
+$(document).ready(function () {
+    app.initialize();
+    login.init();
+});

@@ -27,17 +27,15 @@ var offices = {
     }
 };
 
-
-$(document).ready(function () {
-
-
+var home = {};
+home.init = function () {
     var loadRemembers = function (patient) {
         var expandRemember = function (event) {
             console.dir(event);
             var endDate = event.target.childNodes[0].childNodes[0].data;
             var message = event.target.childNodes[1].data;
 
-            location.href = 'rememberNotification.html?message=' + message + '&endDate=' + endDate;
+            showNextView('#rememberNotificationView', message, endDate);
         };
 
         var list = [];
@@ -131,4 +129,4 @@ $(document).ready(function () {
     loadRemembers(patient);
     loadPromotions();
     renderContactTab(patient);
-});
+};

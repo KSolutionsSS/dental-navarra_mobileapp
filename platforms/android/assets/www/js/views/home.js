@@ -1,4 +1,3 @@
-//  TODO : Unhard-code this.
 var urlJson = 'https://spreadsheets.google.com/feeds/cells/0AqAWn1xLDRvPdDA1Y1liWHI2LUdnS2VhR1V6SHVkUVE/1/public/basic?alt=json';
 
 var offices = {
@@ -32,47 +31,42 @@ var offices = {
 $(document).ready(function () {
 
 
-    var loadNotifications = function (patient) {
-        console.log('Loading notifications about treatments...');
+    var loadRemembers = function (patient) {
+        var expandRemember = function (event) {
+            console.dir(event);
+            var endDate = event.target.childNodes[0].childNodes[0].data;
+            var message = event.target.childNodes[1].data;
 
-        var $container = $('#notifications');
-        $.ajax({
-//                   url: 'http://localhost:8080/patients/' + patient._id + '/notifications',
-                   url: 'http://dentalnavarra-intranet.herokuapp.com/patients/' + patient._id + '/notifications',
-                   type: 'GET'
-               }).done(function (notifications) {
-                           var expandNotification = function (event) {
-                               console.dir(event);
-                               var endDate = event.target.childNodes[0].childNodes[0].data;
-                               var message = event.target.childNodes[1].data;
+            location.href = 'rememberNotification.html?message=' + message + '&endDate=' + endDate;
+        };
 
-                               location.href = 'rememberNotification.html?message=' + message + '&endDate=' + endDate;
-                           };
+        var list = [];
+        if (patient.remembers) {
+            console.log('Obtained: ' + patient.remembers.length + ' remembers about treatments.');
+            list = patient.remembers;
+        } else {
+            console.log('0 remembers obtained from local storage.');
+        }
 
-                           console.log('Obtained: ' + notifications.length + ' notifications.');
+        var $container = $('#notifications').empty();
 
-                           $container.empty().append($('#notificationTemplate').render({notifications: notifications}));
-                           $container.find('li').click(expandNotification);
-                       }).fail(function (jqXHR, textStatus, errorThrown) {
-                                   console.log('There was an error getting user notifications: ' + jqXHR.status + '. Text: ' + textStatus);
-                                   $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las notificaciones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
+        // TODO : Unhard-code this 'cuz if for testing
+//        if (list.length === 0) {
+//            list = [
+//                {message: 'Te hiciste un tratamiento de limpieza hace 5 meses, tendrías que hacerte otro dentro de 1 mes.', endDate: '01/03/2014'},
+//                {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'},
+//                {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
+//                {message: 'Deberías concurrir para un control general.', endDate: '01/03/2014'}
+//            ];
+//        }
 
-                                   // TODO : Unhard-code this.
-                                   var dummyNotifications = [
-                                       {message: 'Te hiciste un tratamiento de limpieza hace 5 meses, tendrías que hacerte otro dentro de 1 mes.', endDate: '01/03/2014'},
-                                       {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'},
-                                       {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
-                                       {message: 'Deberías concurrir para un control general.', endDate: '01/03/2014'}
-                                   ];
-                                   $container.append($('#notificationTemplate').render({notifications: dummyNotifications}));
-                                   $container.find('li').click(function (event) {
-                                       console.dir(event);
-                                       var endDate = event.target.childNodes[0].childNodes[0].data;
-                                       var message = event.target.childNodes[1].data;
-
-                                       location.href = 'rememberNotification.html?message=' + message + '&endDate=' + endDate;
-                                   });
-                               });
+        if (list.length > 0) {
+            $container.append($('#notificationTemplate').render({notifications: list}));
+            $container.find('li').click(expandRemember);
+        } else {
+            console.log('There is no remembers to display to the user, showing a message');
+            $container.empty().html('<div class="alert alert-info">\n    Parece que usted a&uacute;n no tiene recordatorios.\n</div>');
+        }
     };
 
     var loadPromotions = function () {
@@ -125,6 +119,8 @@ $(document).ready(function () {
             }
         }
 
+        console.log('Storing office information: ' + officeName);
+
         patient.office = offices[officeName];
         localStorage.setItem('patient', JSON.stringify(patient));
 
@@ -132,7 +128,7 @@ $(document).ready(function () {
     };
 
     var patient = JSON.parse(localStorage.getItem('patient'));
-    loadNotifications(patient);
+    loadRemembers(patient);
     loadPromotions();
     renderContactTab(patient);
 });

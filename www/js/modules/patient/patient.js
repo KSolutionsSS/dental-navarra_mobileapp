@@ -11,8 +11,8 @@ modules.patient = (function () {
 
         $.ajax({
                    type: "POST",
-//                   url: 'http://localhost:8080/patients/' + username + '/login',
-                   url: 'http://dentalnavarra-intranet.herokuapp.com/patients/' + username + '/login',
+                   url: 'http://localhost:5000/patients/' + username + '/login',
+//                   url: 'http://dentalnavarra-intranet.herokuapp.com/patients/' + username + '/login',
                    data: {password: password}
                }).done(onSuccess).fail(onError);
     };

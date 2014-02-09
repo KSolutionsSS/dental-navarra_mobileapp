@@ -13,6 +13,7 @@
     <!--append ‘#!watch’ to the browser URL, then refresh the page. -->
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -84,6 +85,8 @@
                 <!--FIN #login-->
 
                 <div class="tab-pane fade" id="homeView">
+
+                    <a onclick="localStorage.removeItem('patient');console.log('LS borrado');" class="btn btn-lg">BORRAR LS</a>
 
                     <div class="panel-group" id="collapsable-panel">
 

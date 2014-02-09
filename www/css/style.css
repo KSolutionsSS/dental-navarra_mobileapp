@@ -15,6 +15,10 @@ h1 {
     font-weight: bolder;
 }
 
+h2{
+    color: #ffffff;
+}
+
 p {
     color: #ffffff;
 }
@@ -83,6 +87,7 @@ a:hover {
 #rememberNotificationView .btn-default {
     color: #FFF;
     background-color: #00DA09;
+    font-size: x-large;
 }
 
 /***********************************************/
@@ -90,6 +95,6 @@ a:hover {
 /***********************************************/
 
 #rememberNotificationView span.badge {
-    margin-top: 3px;
+    margin-top: 9px;
     font-size: x-large;
 }

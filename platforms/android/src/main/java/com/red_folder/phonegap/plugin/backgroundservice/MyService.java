@@ -1,5 +1,6 @@
 package com.red_folder.phonegap.plugin.backgroundservice;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -34,7 +35,7 @@ public class MyService extends BackgroundService {
             String msg = "Hello " + this.mHelloTo + " - its currently " + now;
             result.put("Message", "{\"id\":\"hola\", \"value\":\"nahuel\", \"mensaje\":\"" + msg + "\"}");
 
-//            showNotification();
+            showNotification("This is the title!!", "This is the text of the notification ;)");
 
             Log.d(TAG, msg);
         } catch (JSONException e) {
@@ -44,11 +45,13 @@ public class MyService extends BackgroundService {
         return result;
     }
 
-    private void showNotification() {
+    private void showNotification(String title, String text) {
+        Log.d(TAG, "Building notification...");
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.notification)
-                .setContentTitle("My notification")
-                .setContentText("Hello World!");
+                .setContentTitle(title)
+                .setContentText(text);
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, DentalNavarraActivity.class);
@@ -66,12 +69,16 @@ public class MyService extends BackgroundService {
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
+
+        Notification notification = mBuilder.build();
+        notification.defaults |= Notification.DEFAULT_ALL;
+
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // mId allows you to update the notification later on.
-        mNotificationManager.notify(44, mBuilder.build());
+        mNotificationManager.notify(44, notification);
 
-        Log.d(TAG, "ya tire la notificacion");
+        Log.d(TAG, "Notification sent");
     }
 
     @Override

@@ -3,12 +3,18 @@
  * Created on 06/02/14, at 17:34.
  */
 
-var rememberNotification = {};
+var app = app || {};
+app.views = app.views || {};
 
-rememberNotification.render = function (message, endDate) {
+app.views.rememberNotification = (function () {
     var $view = $('#rememberNotificationView');
-    $view.find('p').html(message);
 
-    var callLink = $view.find('a');
-    callLink.attr('href', callLink.attr('href') + patient.office.phoneNumber);
-};
+    return {
+        render: function (message, endDate) {
+            $view.find('p').html(message);
+
+            var callLink = $view.find('a');
+            callLink.attr('href', callLink.attr('href') + patient.office.phoneNumber);
+        }
+    };
+}());

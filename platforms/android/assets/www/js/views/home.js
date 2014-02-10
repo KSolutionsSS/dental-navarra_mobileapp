@@ -27,45 +27,30 @@ var offices = {
     }
 };
 
-var home = {};
-home.init = function () {
-    var loadRemembers = function (patient) {
-        var expandRemember = function (event) {
-            console.dir(event);
-            var endDate = event.target.childNodes[0].childNodes[0].data;
-            var message = event.target.childNodes[1].data;
+var loadRemembers = function () {
+    var expandRemember = function (event) {
+        $liSpan = $(event.target);
 
-            showNextView('#rememberNotificationView', message, endDate);
-        };
+        var endDate = $liSpan.find('.badge').html();
+        var message = $liSpan.text();
 
-        var list = [];
-        if (patient.remembers) {
-            console.log('Obtained: ' + patient.remembers.length + ' remembers about treatments.');
-            list = patient.remembers;
-        } else {
-            console.log('0 remembers obtained from local storage.');
-        }
-
-        var $container = $('#notifications').empty();
-
-        // TODO : Unhard-code this 'cuz if for testing
-//        if (list.length === 0) {
-//            list = [
-//                {message: 'Te hiciste un tratamiento de limpieza hace 5 meses, tendrías que hacerte otro dentro de 1 mes.', endDate: '01/03/2014'},
-//                {message: 'Tienes que hacerte un control radiográfico dentro de 1 mes.', endDate: '01/03/2014'},
-//                {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
-//                {message: 'Deberías concurrir para un control general.', endDate: '01/03/2014'}
-//            ];
-//        }
-
-        if (list.length > 0) {
-            $container.append($('#notificationTemplate').render({notifications: list}));
-            $container.find('li').click(expandRemember);
-        } else {
-            console.log('There is no remembers to display to the user, showing a message');
-            $container.empty().html('<div class="alert alert-info">\n    Parece que usted a&uacute;n no tiene recordatorios.\n</div>');
-        }
+        displayNextView('#rememberNotificationView', message, endDate);
     };
+
+    var $container = $('#notifications').empty();
+    if (patient.remembers) {
+        console.log('Obtained: ' + patient.remembers.length + ' remembers about treatments.');
+
+        $container.append($('#notificationTemplate').render({notifications: patient.remembers}));
+        $container.find('li').click(expandRemember);
+    } else {
+        console.log('There is no remembers to display to the user, showing a message');
+        $container.empty().html('<div class="alert alert-info">\n    Parece que usted a&uacute;n no tiene recordatorios.\n</div>');
+    }
+};
+
+var home = {};
+home.init = function (patient) {
 
     var loadPromotions = function () {
         console.log('Loading promotions...');
@@ -105,28 +90,48 @@ home.init = function () {
                                                         });
     };
 
-    var renderContactTab = function (patient) {
+    var renderContactTab = function () {
         var officeName;
         var eachAttribute;
-        for (eachAttribute in offices) {
-            if (offices.hasOwnProperty(eachAttribute)) {
-                if (patient.office === eachAttribute) {
-                    officeName = eachAttribute;
-                    break;
+
+        if (typeof patient.office === 'string') {
+            console.log('Looking for patient.office: ' + patient.office);
+
+            for (eachAttribute in offices) {
+                if (offices.hasOwnProperty(eachAttribute)) {
+                    if (patient.office === eachAttribute) {
+                        officeName = eachAttribute;
+                        break;
+                    }
                 }
             }
+
+            if (officeName) {
+                console.log('Storing office information: ' + officeName);
+
+                patient.office = offices[officeName];
+                localStorage.setItem('patient', JSON.stringify(patient));
+
+                $('#contactInformation').html($('#contactInformationTemplate').render(patient.office));
+            } else {
+                console.log('Can\'t display office information, an error ocurred while looking for patient.office: ' + patient.office);
+            }
         }
-
-        console.log('Storing office information: ' + officeName);
-
-        patient.office = offices[officeName];
-        localStorage.setItem('patient', JSON.stringify(patient));
-
-        $('#contactInformation').append($('#contactInformationTemplate').render(patient.office));
     };
 
-    var patient = JSON.parse(localStorage.getItem('patient'));
-    loadRemembers(patient);
+    //  TODO : Delete this line or context.
+//    patient.remembers = [
+//        {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
+//        {message: 'deberías concurrir para un control general.', endDate: '01/03/2014'}
+//    ];
+//    localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
+
+    loadRemembers();
     loadPromotions();
-    renderContactTab(patient);
+    renderContactTab();
+};
+
+home.updateRemembers = function () {
+    loadRemembers();
+
 };

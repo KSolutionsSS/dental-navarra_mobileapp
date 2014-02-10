@@ -1,5 +1,10 @@
 @charset "utf-8";
 
+@font-face {
+    font-family: 'Fauna One';
+    src: url(../fonts/FaunaOne-Regular.ttf);
+}
+
 button {
     width: 100%;
 }

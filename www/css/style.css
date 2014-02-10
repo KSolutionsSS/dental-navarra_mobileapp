@@ -6,6 +6,7 @@ button {
 
 body {
     background-color: #1E6653;
+    padding-bottom: 70px;
 }
 
 h1 {
@@ -17,10 +18,12 @@ h1 {
 
 h2 {
     color: #ffffff;
+    font-family: 'Fauna One', serif;
 }
 
 p {
     color: #ffffff;
+    font-size: larger;
 }
 
 blockquote small {
@@ -60,6 +63,10 @@ a:hover {
     width: 100%;
 }
 
+.navbar-fixed-bottom {
+    bottom: 2%;
+}
+
 /************************************************************************************************************/
 /************************************************ My styles *************************************************/
 /************************************************************************************************************/
@@ -90,7 +97,9 @@ a:hover {
 /***********************************************/
 
 #rememberNotificationView .btn-default {
+    width: 100%;
     color: #FFF;
     background-color: #00DA09;
     font-size: x-large;
 }
+

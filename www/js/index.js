@@ -39,7 +39,7 @@ var app = (function () {
      * Bind any events that are required on startup. Common events are: 'load', 'deviceready', 'offline', and 'online'.
      */
     var bindGenericEvents = function () {
-        console.log('Binding events... deviceready, form.submit...');
+        console.log('Binding generic events  like deviceready, backbutton...');
 
         document.addEventListener('deviceready', this.onDeviceReady, false);
         document.addEventListener("backbutton", function (event) {
@@ -52,6 +52,9 @@ var app = (function () {
                     break;
             }
         }, false);
+
+        // TODO : Unhard-code this.
+//        this.onDeviceReady();
     };
 
     /**
@@ -85,7 +88,7 @@ var app = (function () {
                         console.log('Displaying status bar notification: ' + message);
 //                        navigator.notification.vibrate(1000);
 //                        navigator.notification.beep(1);
-                        window.plugins.statusBarNotification.notify(header, message);
+//                        window.plugins.statusBarNotification.notify(header, message);
                     };
 
                     console.log('Obtained: ' + notifications.length + ' notifications.');
@@ -134,6 +137,7 @@ var app = (function () {
                 console.log(JSON.stringify(error));
             };
 
+///*
             var myService = cordova.require('com.red_folder.phonegap.plugin.backgroundservice.BackgroundService');
             var startService = function (data) {
                 if (data.ServiceRunning) {
@@ -174,6 +178,7 @@ var app = (function () {
                 }
             };
             myService.getStatus(startService, onError);
+//*/
         }());
     };
 

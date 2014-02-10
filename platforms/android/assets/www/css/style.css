@@ -15,7 +15,7 @@ h1 {
     font-weight: bolder;
 }
 
-h2{
+h2 {
     color: #ffffff;
 }
 
@@ -78,23 +78,19 @@ a:hover {
 #notifications > li:not(:last-child), #promotions > li:not(:last-child) {
     border-bottom: dashed #000000 1px;
     margin-bottom: 5px;
-}
-
-#promotions > li:not(:last-child) {
     padding-bottom: 5px;
 }
 
-#rememberNotificationView .btn-default {
-    color: #FFF;
-    background-color: #00DA09;
-    font-size: x-large;
+#notifications > li:last-child, #promotions > li:last-child {
+    margin-top: -2px;
 }
 
 /***********************************************/
 /*          NOTIFICATION VIEW                  */
 /***********************************************/
 
-#rememberNotificationView span.badge {
-    margin-top: 9px;
+#rememberNotificationView .btn-default {
+    color: #FFF;
+    background-color: #00DA09;
     font-size: x-large;
 }

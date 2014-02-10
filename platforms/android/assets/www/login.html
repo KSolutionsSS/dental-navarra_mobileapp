@@ -13,6 +13,7 @@
     <!--append ‘#!watch’ to the browser URL, then refresh the page. -->
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -85,6 +86,8 @@
 
                 <div class="tab-pane fade" id="homeView">
 
+                    <a onclick="localStorage.removeItem('patient');console.log('LS borrado');" class="btn btn-lg">BORRAR LS</a>
+
                     <div class="panel-group" id="collapsable-panel">
 
                         <div class="panel panel-default">
@@ -92,7 +95,7 @@
                                 <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
                                    href="#panel-notifications">Avisos</a>
                             </div>
-                            <div id="panel-notifications" class="panel-collapse collapse">
+                            <div id="panel-notifications" class="panel-collapse in">
                                 <div class="panel-body">
                                     <ul class="list-unstyled" id="notifications">
                                         <li>Cargando notificaciones...</li>
@@ -120,7 +123,7 @@
                                 <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
                                    href="#panel-contact">Contacto</a>
                             </div>
-                            <div id="panel-contact" class="panel-collapse collapse">
+                            <div id="panel-contact" class="panel-collapse">
                                 <div class="panel-body" id="contactInformation">
                                 </div>
                             </div>
@@ -143,7 +146,6 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <span class="badge pull-left"></span>
                             <a class="btn btn-default pull-right" href="tel:"><span class="fa fa-phone"></span> Solicitar turno</a>
                         </div>
                     </div>
@@ -161,7 +163,9 @@
 <script id="notificationTemplate" type="text/x-jsrender">
     {{for notifications}}
 
-        <li><span class="badge pull-left">{{:endDate}}</span> {{:message}}</li>
+        <li>
+            <span>El d&iacute;a <span class="badge">{{:endDate}}</span> {{:message}} </span>
+        </li>
 
     {{/for}}
 </script>

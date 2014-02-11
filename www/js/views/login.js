@@ -56,7 +56,7 @@ app.views.login = (function () {
                     console.log('User already logged, skipping login view');
                     app.displayNextView('#homeView');
                 } else {
-                    console.log('User not logged, waiting user to login');
+                    console.log('User is not logged, displaying login form...');
                 }
 
                 bindLoginFormEvents();

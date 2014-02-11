@@ -1,4 +1,4 @@
-package com.red_folder.phonegap.plugin.backgroundservice;
+package com.nbempire.dentalnavarra.component.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -15,13 +15,14 @@ import com.nbempire.dentalnavarra.dao.RememberDao;
 import com.nbempire.dentalnavarra.dao.impl.RememberDaoImplSpring;
 import com.nbempire.dentalnavarra.domain.Remember;
 import com.nbempire.dentalnavarra.dto.RemembersDTO;
+import com.red_folder.phonegap.plugin.backgroundservice.BackgroundService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MyService extends BackgroundService {
+public class RemembersService extends BackgroundService {
 
-    private final static String TAG = MyService.class.getSimpleName();
+    private final static String TAG = RemembersService.class.getSimpleName();
 
     private String patientId;
 

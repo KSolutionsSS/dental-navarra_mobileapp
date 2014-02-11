@@ -40,9 +40,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.red_folder.phonegap.plugin.backgroundservice.MyService">
+        <service android:name=".component.service.RemembersService">
             <intent-filter>
-                <action android:name="com.red_folder.phonegap.plugin.backgroundservice.MyService" />
+                <action android:name="com.nbempire.dentalnavarra.component.service.RemembersService" />
             </intent-filter>
         </service>
 

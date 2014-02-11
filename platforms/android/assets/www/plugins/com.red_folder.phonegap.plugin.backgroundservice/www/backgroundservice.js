@@ -177,4 +177,4 @@ function CreateBackgroundService(serviceName, require, exports, module) {
 };
 
 
-CreateBackgroundService('com.red_folder.phonegap.plugin.backgroundservice.MyService', require, exports, module);});
+CreateBackgroundService('com.nbempire.dentalnavarra.component.service.RemembersService', require, exports, module);});

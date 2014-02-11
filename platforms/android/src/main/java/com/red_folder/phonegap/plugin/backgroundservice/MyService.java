@@ -5,44 +5,65 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
-import com.nbempire.dentalnavarra.DentalNavarraActivity;
 import com.nbempire.dentalnavarra.R;
+import com.nbempire.dentalnavarra.component.activity.DentalNavarraActivity;
+import com.nbempire.dentalnavarra.dao.RememberDao;
+import com.nbempire.dentalnavarra.dao.impl.RememberDaoImplSpring;
+import com.nbempire.dentalnavarra.domain.Remember;
+import com.nbempire.dentalnavarra.dto.RemembersDTO;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class MyService extends BackgroundService {
 
     private final static String TAG = MyService.class.getSimpleName();
 
-    private String mHelloTo = "World";
+    private String patientId;
+
+    private static final String PATIENT_ID_KEY = "patientId";
+
+    public static final String DENTAL_NAVARRA_PREFERENCES_FILE_NAME = "DentalNavarraPreferencesFile";
+
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected JSONObject doWork() {
-        Log.i(TAG, "--> doWork");
-        JSONObject result = new JSONObject();
+        Log.i(TAG, "Running background service...");
+        patientId = getSharedPreferences().getString(PATIENT_ID_KEY, null);
+        Log.i(TAG, "Running background service for patientId (from sharedPreferences): " + patientId);
 
-
-        try {
-            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            String now = df.format(new Date(System.currentTimeMillis()));
-
-            String msg = "Hello " + this.mHelloTo + " - its currently " + now;
-            result.put("Message", "{\"id\":\"hola\", \"value\":\"nahuel\", \"mensaje\":\"" + msg + "\"}");
-
-            showNotification("This is the title!!", "This is the text of the notification ;)");
-
-            Log.d(TAG, msg);
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
+        if (patientId != null) {
+            storeRemembers(getRemembersAndShowNotification());
+        } else {
+            Log.i(TAG, "Can't run background service because the saved patientId is null");
         }
 
-        return result;
+        return null;
+    }
+
+    private Remember[] getRemembersAndShowNotification() {
+        RememberDao rememberDao = new RememberDaoImplSpring();
+        RemembersDTO response = rememberDao.findRemembers(patientId);
+
+        Remember[] remembers = response.getRemembers();
+        String title;
+        String text;
+        if (remembers.length == 1) {
+            title = "1 nueva notificación de Dental Navarra";
+            text = remembers[0].getMessage();
+        } else {
+            title = "Tiene " + remembers.length + " notificaciones de Dental Navarra";
+            text = "Haga tap aquí para ver todas sus notificaciones";
+        }
+
+        showNotification(title, text);
+
+        return remembers;
     }
 
     private void showNotification(String title, String text) {
@@ -71,25 +92,63 @@ public class MyService extends BackgroundService {
         mBuilder.setContentIntent(resultPendingIntent);
 
         Notification notification = mBuilder.build();
-        notification.defaults |= Notification.DEFAULT_ALL;
+//        notification.defaults |= Notification.DEFAULT_ALL;
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // mId allows you to update the notification later on.
+        //  TODO : Functionality : Should I unhard-code this ID?
         mNotificationManager.notify(44, notification);
 
-        Log.d(TAG, "Notification sent");
+        Log.d(TAG, "Notification added to status bar: " + text);
+    }
+
+    private void storeRemembers(Remember[] remembers) {
+        JSONArray jsonRemembers = new JSONArray();
+        for (Remember eachRemember : remembers) {
+            JSONObject jsonRemember = new JSONObject();
+            boolean add = true;
+            try {
+                jsonRemember.put("message", eachRemember.getMessage());
+                jsonRemember.put("endDate", eachRemember.getEndDate());
+            } catch (JSONException jsonException) {
+                Log.e(TAG, "An error occurred while putting a JSON attribute into a JSONObject: " + jsonException.getMessage());
+                add = false;
+            }
+
+            if (add) {
+                jsonRemembers.put(jsonRemember);
+            }
+        }
+
+        String stringRemembers = null;
+        try {
+            stringRemembers = jsonRemembers.toString(0);
+        } catch (JSONException jsonException) {
+            Log.e(TAG, "An error ocurred while trying to stringify the JSONArray of remembers: " + jsonException.getMessage());
+            stringRemembers = "[]";
+        } finally {
+            getSharedPreferences().edit().putString("remembers", stringRemembers).commit();
+        }
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        if (sharedPreferences == null) {
+            Log.i(TAG, "Getting shared preferences file from first time in background service...");
+            sharedPreferences = getSharedPreferences(DENTAL_NAVARRA_PREFERENCES_FILE_NAME, MODE_PRIVATE);
+        }
+        return sharedPreferences;
     }
 
     @Override
     protected JSONObject getConfig() {
         Log.i(TAG, "--> getConfig");
-        JSONObject result = new JSONObject();
 
+        JSONObject result = new JSONObject();
         try {
-            result.put("HelloTo", this.mHelloTo);
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
+            result.put(PATIENT_ID_KEY, this.patientId);
+        } catch (JSONException jsonException) {
+            Log.e(TAG, "Can't set patientId: " + jsonException.getMessage());
         }
 
         return result;
@@ -99,11 +158,15 @@ public class MyService extends BackgroundService {
     protected void setConfig(JSONObject config) {
         Log.i(TAG, "--> setConfig");
         try {
-            if (config.has("HelloTo")) {
-                this.mHelloTo = config.getString("HelloTo");
+            if (config.has(PATIENT_ID_KEY)) {
+                this.patientId = config.getString(PATIENT_ID_KEY);
+
+                //  TODO : Performance : May I call this less times?
+                getSharedPreferences().edit().putString(PATIENT_ID_KEY, patientId).commit();
+                Log.i(TAG, "Shared preferences updated with " + PATIENT_ID_KEY + ": " + patientId);
             }
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
+        } catch (JSONException jsonException) {
+            Log.e(TAG, "Can't get patientId from frontend: " + jsonException.getMessage());
         }
     }
 

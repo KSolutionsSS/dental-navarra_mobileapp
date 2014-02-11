@@ -71,67 +71,45 @@ var app = (function () {
             var milliseconds = 30000;
 
             var updateNotificationsHandler = function (data) {
-                var showNotifications = function (notifications) {
-                    var notify = function (notifications) {
-                        var header = '1 nueva notificación de Dental Navarra';
-                        var message;
-                        if (notifications.length === 1) {
-                            message = notifications[0].message;
-                        } else {
-                            header = 'Tiene ' + notifications.length + ' notificaciones de Dental Navarra';
-                            message = 'Haga tap aquí para ver todas sus notificaciones';
-                        }
-
-                        console.log('Displaying status bar notification: ' + message);
-//                        navigator.notification.vibrate(1000);
-//                        navigator.notification.beep(1);
-                        window.plugins.statusBarNotification.notify(header, message);
-                    };
-
-                    console.log('Obtained: ' + notifications.length + ' notifications.');
-
-                    if (notifications.length > 0) {
-                        //  TODO : Functionality : Put newer remembers first!
-                        if (patient.remembers) {
-                            patient.remembers = patient.remembers.concat(notifications);
-                        } else {
-                            patient.remembers = notifications;
-                        }
-                        notify(notifications);
-                        updateView = true;
-                    }
-                };
+                console.log('On update remembers handler...');
 
                 var localStoragePatient = localStorage.getItem(PATIENT_KEY);
                 if (localStoragePatient) {
                     var updateView;
-                    console.log('Getting user notifications and saving them to local storage system...');
-                    patient = JSON.parse(localStoragePatient);
 
-                    var url = SERVER_URL + 'patients/' + patient._id + '/notifications';
-                    console.log('GET to: ' + url);
-                    $.ajax({
-                               url: url,
-                               type: 'GET'
-                           }).done(showNotifications).fail(function (jqXHR, textStatus) {
-                                                               console.log('There was an error getting user notifications: ' + jqXHR.status
-                                                                               + '. Text: ' + textStatus);
-                                                               updateView = false;
-                                                           }).always(function () {
-                                                                         console.log('Saving updated patient to local storage');
-                                                                         localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
-                                                                         if (updateView) {
-                                                                             app.views.home.updateRemembers(patient);
-                                                                         }
-                                                                     });
+                    console.log('Getting remembers from bridge...');
+                    var remembers = JSON.parse(window.bridge.getPreference("remembers"));
+
+                    if (remembers === 'null') {
+                        console.log('Obtained "null" instead of an array of empty remembers.');
+                    } else {
+                        console.log('Obtained: ' + remembers.length + ' remembers, saving them to local storage system....');
+
+                        patient = JSON.parse(localStoragePatient);
+                        if (remembers.length > 0) {
+                            //  TODO : Functionality : Put newer remembers first!
+                            if (patient.remembers) {
+                                patient.remembers = patient.remembers.concat(remembers);
+                            } else {
+                                patient.remembers = remembers;
+                            }
+                            updateView = true;
+                        }
+
+                        console.log('Saving updated patient to local storage');
+                        localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
+                        if (updateView) {
+                            app.views.home.updateRemembers();
+                        }
+                    }
                 } else {
                     console.log('User has never been logged, waiting for it to start receiving notifications from server...');
                 }
             };
 
             var onError = function (error) {
+                console.log('Error object: ' + JSON.stringify(error));
                 console.log('An error occurred with the background service: ' + error.ErrorMessage);
-                console.log(JSON.stringify(error));
             };
 
             var myService = cordova.require('com.red_folder.phonegap.plugin.backgroundservice.BackgroundService');
@@ -141,7 +119,36 @@ var app = (function () {
                     enableTimer(data);
                 } else {
                     console.log('Background service is starting its service...');
-                    myService.startService(enableTimer, onError);
+                    myService.startService(configureService, onError);
+                }
+            };
+
+            var configureService = function (data) {
+                console.log('Background service is running, trying to configure it...');
+                var localStoragePatient = localStorage.getItem(PATIENT_KEY);
+                if (localStoragePatient) {
+                    console.log('Configuring background service for patient: ' + localStoragePatient);
+                    patient = JSON.parse(localStoragePatient);
+
+                    myService.setConfiguration({patientId: patient._id}, function (data) {
+                        console.log('Background service configured successfully');
+                        enableTimer(data);
+                    }, function (error) {
+                        console.log('acá tengo un error!!');
+                        console.log('error: ' + error);
+                        console.dir('error: ' + error);
+
+                        onError(error);
+                    });
+                } else {
+                    var waitFor = 5000;
+                    console.log('Background service can\'t be configured because the user has never been logged, waiting ' + waitFor / 1000
+                                    + ' seconds to try again...');
+
+                    //  TODO : Functionality : When user is logged, cancel this timeout to get notifications inmediately
+                    setTimeout(function () {
+                        configureService(data);
+                    }, waitFor);
                 }
             };
 

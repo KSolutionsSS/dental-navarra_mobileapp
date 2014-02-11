@@ -17,13 +17,20 @@
        under the License.
  */
 
-package com.nbempire.dentalnavarra;
+package com.nbempire.dentalnavarra.component.activity;
 
 import android.os.Bundle;
+import android.util.Log;
+import com.nbempire.dentalnavarra.cordova.WebViewBackendBridge;
 import org.apache.cordova.Config;
 import org.apache.cordova.CordovaActivity;
 
 public class DentalNavarraActivity extends CordovaActivity {
+
+    /**
+     * Tag for class' log.
+     */
+    private static final String TAG = DentalNavarraActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,9 @@ public class DentalNavarraActivity extends CordovaActivity {
         // Set by <content src="login.html" /> in config.xml
         super.loadUrl(Config.getStartUrl());
         //super.loadUrl("file:///android_asset/www/login.html")
+
+        Log.d(TAG, "Adding Javascript interface for WebViewBackendBridge...");
+        appView.addJavascriptInterface(new WebViewBackendBridge(this), "bridge");
     }
 }
 

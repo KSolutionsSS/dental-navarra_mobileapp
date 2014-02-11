@@ -122,6 +122,8 @@ app.views.home = (function () {
                     } else {
                         console.log('Can\'t display office information, an error ocurred while looking for patient.office: ' + patient.office);
                     }
+                } else {
+                    console.log('Contact information should be already visible');
                 }
             };
 

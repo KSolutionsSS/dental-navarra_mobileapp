@@ -68,6 +68,7 @@ var app = (function () {
          * Initialize background service
          */
         (function () {
+//            var milliseconds = 345600000;//   4 days: 1000*60*60*24*4
             var milliseconds = 30000;
 
             var updateNotificationsHandler = function (data) {
@@ -79,10 +80,7 @@ var app = (function () {
 
                     console.log('Getting remembers from bridge...');
                     var remembers = JSON.parse(window.bridge.getPreference("remembers"));
-
-                    if (remembers === 'null') {
-                        console.log('Obtained "null" instead of an array of empty remembers.');
-                    } else {
+                    if (remembers) {
                         console.log('Obtained: ' + remembers.length + ' remembers, saving them to local storage system....');
 
                         patient = JSON.parse(localStoragePatient);
@@ -101,6 +99,8 @@ var app = (function () {
                         if (updateView) {
                             app.views.home.updateRemembers();
                         }
+                    } else {
+                        console.log('Obtained an invalid result from bridge instead of an array of empty remembers.');
                     }
                 } else {
                     console.log('User has never been logged, waiting for it to start receiving notifications from server...');

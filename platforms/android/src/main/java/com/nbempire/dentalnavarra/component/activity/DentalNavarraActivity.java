@@ -36,9 +36,18 @@ public class DentalNavarraActivity extends CordovaActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.init();
+
+        String params = "";
+//        String viewToShow = getIntent().getStringExtra("viewToShow");
+//        if (viewToShow != null) {
+//            Log.d(TAG, "Showing view: " + viewToShow);
+//            params = "?viewToShow=" + viewToShow;
+//        } else {
+//            Log.d(TAG, "viewToShow is null");
+//        }
+
         // Set by <content src="login.html" /> in config.xml
-        super.loadUrl(Config.getStartUrl());
-        //super.loadUrl("file:///android_asset/www/login.html")
+        super.loadUrl(Config.getStartUrl() + params);
 
         Log.d(TAG, "Adding Javascript interface for WebViewBackendBridge...");
         appView.addJavascriptInterface(new WebViewBackendBridge(this), "bridge");

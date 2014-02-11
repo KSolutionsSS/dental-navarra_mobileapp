@@ -77,6 +77,7 @@ public class RemembersService extends BackgroundService {
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, DentalNavarraActivity.class);
+//        resultIntent.putExtra("viewToShow", "#rememberNotificationView");
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.

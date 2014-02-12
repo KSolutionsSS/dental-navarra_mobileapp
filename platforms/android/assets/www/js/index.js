@@ -52,6 +52,9 @@ var app = (function () {
                     break;
             }
         }, false);
+
+        //  TODO : Delete this line or context.
+//        this.onDeviceReady();
     };
 
     /**
@@ -62,7 +65,66 @@ var app = (function () {
 
         $viewsTab = $('#viewsTab');
 
-        app.views.login.init();
+        /**
+         * Check what should be the first view
+         */
+        (function () {
+            /**
+             * Check if there is a parameter viewToShow in the URL. In that case, the app must display that view instead of the login/home view.
+             * @returns {*}
+             */
+            var startingFromNotification = function () {
+                var viewToShow;
+
+                var key = 'viewToShow=';
+                var url = location.href;
+                var position = url.indexOf(key);
+                if (position > 0) {
+                    viewToShow = url.substring(position + key.length);
+                }
+
+                return viewToShow;
+            };
+
+            /**
+             * Check for logged user...
+             */
+            var checkForLoggedUser = function () {
+                //  TODO : Delete this line or context.
+//                patient = {"_id": "52f5036af687300200acd105", "email": "barrios.nahuel@gmail.com", "office": "tafalla"};
+//                localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
+
+                var isLogged;
+
+                patient = JSON.parse(localStorage.getItem(PATIENT_KEY));
+                if (patient) {
+                    console.log('User already logged, skipping login view.');
+                    isLogged = true;
+                }
+
+                return isLogged;
+            };
+
+            var nextView = startingFromNotification();
+            if (nextView) {
+                console.log('Displaying view: ' + nextView);
+                console.log('patient vale: ' + JSON.stringify(patient));
+                console.log('desde LS vale: ' + localStorage.getItem(PATIENT_KEY));
+                patient = JSON.parse(localStorage.getItem(PATIENT_KEY));
+                console.log('nuevo patient vale: ' + JSON.stringify(patient));
+                app.displayNextView(nextView);
+            } else {
+                nextView = checkForLoggedUser();
+                if (nextView) {
+                    console.log('Displaying home view because the user is already logged.');
+                    app.displayNextView('#homeView');
+                } else {
+                    console.log('Displaying login...');
+                    app.views.login.init();
+                }
+            }
+        }());
+
 
         /**
          * Initialize background service

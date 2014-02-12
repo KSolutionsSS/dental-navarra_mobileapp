@@ -41,26 +41,6 @@ app.views.login = (function () {
     };
 
     return {
-        init: function () {
-            /**
-             * Check for logged user...
-             */
-            (function () {
-                //  TODO : Delete this line or context.
-//                patient = {"_id": "52f5036af687300200acd105", "email": "barrios.nahuel@gmail.com", "office": "tafalla"};
-//                localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
-
-
-                patient = JSON.parse(localStorage.getItem(PATIENT_KEY));
-                if (patient) {
-                    console.log('User already logged, skipping login view');
-                    app.displayNextView('#homeView');
-                } else {
-                    console.log('User is not logged, displaying login form...');
-                }
-
-                bindLoginFormEvents();
-            }());
-        }
+        init: bindLoginFormEvents
     };
 }());

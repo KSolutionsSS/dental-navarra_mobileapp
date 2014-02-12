@@ -54,20 +54,22 @@ public class RemembersService extends BackgroundService {
         Remember[] remembers = response.getRemembers();
         String title;
         String text;
+        boolean customView = true;
         if (remembers.length == 1) {
             title = "1 nueva notificación de Dental Navarra";
             text = remembers[0].getMessage();
         } else {
             title = "Tiene " + remembers.length + " notificaciones de Dental Navarra";
             text = "Haga tap aquí para ver todas sus notificaciones";
+            customView = false;
         }
 
-        showNotification(title, text);
+        showNotification(title, text, customView);
 
         return remembers;
     }
 
-    private void showNotification(String title, String text) {
+    private void showNotification(String title, String text, boolean customView) {
         Log.d(TAG, "Building notification...");
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
@@ -77,7 +79,9 @@ public class RemembersService extends BackgroundService {
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, DentalNavarraActivity.class);
-//        resultIntent.putExtra("viewToShow", "#rememberNotificationView");
+        if (customView) {
+            resultIntent.putExtra("viewToShow", "#rememberNotificationView");
+        }
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.

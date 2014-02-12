@@ -38,13 +38,13 @@ public class DentalNavarraActivity extends CordovaActivity {
         super.init();
 
         String params = "";
-//        String viewToShow = getIntent().getStringExtra("viewToShow");
-//        if (viewToShow != null) {
-//            Log.d(TAG, "Showing view: " + viewToShow);
-//            params = "?viewToShow=" + viewToShow;
-//        } else {
-//            Log.d(TAG, "viewToShow is null");
-//        }
+        String viewToShow = getIntent().getStringExtra("viewToShow");
+        if (viewToShow != null) {
+            Log.d(TAG, "Showing view: " + viewToShow);
+            params = "?viewToShow=" + viewToShow;
+        } else {
+            Log.d(TAG, "viewToShow is null");
+        }
 
         // Set by <content src="login.html" /> in config.xml
         super.loadUrl(Config.getStartUrl() + params);

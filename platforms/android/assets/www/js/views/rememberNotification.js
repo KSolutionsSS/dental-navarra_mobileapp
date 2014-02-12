@@ -10,11 +10,18 @@ app.views.rememberNotification = (function () {
     var $view = $('#rememberNotificationView');
 
     return {
-        render: function (message, endDate) {
+        render: function (message) {
             $view.find('p').html(message);
 
-            var callLink = $view.find('a');
-            callLink.attr('href', callLink.attr('href') + patient.office.phoneNumber);
+            if (patient) {
+                if (patient.office) {
+                    var callLink = $view.find('a');
+                    callLink.attr('href', callLink.attr('href') + patient.office.phoneNumber);
+                } else {
+                    console.log('There is no office information in the patient object, hiding button...');
+                    $view.find('div.row:nth-child(2)').hide();
+                }
+            }
         }
     };
 }());

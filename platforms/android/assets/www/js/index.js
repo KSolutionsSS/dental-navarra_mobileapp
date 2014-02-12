@@ -74,16 +74,16 @@ var app = (function () {
              * @returns {*}
              */
             var startingFromNotification = function () {
-                var viewToShow;
+                var notificationMessage;
 
-                var key = 'viewToShow=';
+                var key = 'message=';
                 var url = location.href;
                 var position = url.indexOf(key);
                 if (position > 0) {
-                    viewToShow = url.substring(position + key.length);
+                    notificationMessage = url.substring(position + key.length);
                 }
 
-                return viewToShow;
+                return decodeURI(notificationMessage);
             };
 
             /**
@@ -105,17 +105,14 @@ var app = (function () {
                 return isLogged;
             };
 
-            var nextView = startingFromNotification();
-            if (nextView) {
-                console.log('Displaying view: ' + nextView);
-                console.log('patient vale: ' + JSON.stringify(patient));
-                console.log('desde LS vale: ' + localStorage.getItem(PATIENT_KEY));
+            var result = startingFromNotification();
+            if (result) {
+                console.log('Displaying remember notification view...');
                 patient = JSON.parse(localStorage.getItem(PATIENT_KEY));
-                console.log('nuevo patient vale: ' + JSON.stringify(patient));
-                app.displayNextView(nextView);
+                app.displayNextView('#rememberNotificationView', result);
             } else {
-                nextView = checkForLoggedUser();
-                if (nextView) {
+                result = checkForLoggedUser();
+                if (result) {
                     console.log('Displaying home view because the user is already logged.');
                     app.displayNextView('#homeView');
                 } else {

@@ -54,7 +54,7 @@ var app = (function () {
         }, false);
 
         //  TODO : Delete this line or context.
-        this.onDeviceReady();
+//        this.onDeviceReady();
     };
 
     /**
@@ -240,7 +240,7 @@ var app = (function () {
                 }
             };
             myService.getStatus(startService, onError);
-        });
+        }());
     };
 
     var displayNextView = function (selector, message, endDate) {

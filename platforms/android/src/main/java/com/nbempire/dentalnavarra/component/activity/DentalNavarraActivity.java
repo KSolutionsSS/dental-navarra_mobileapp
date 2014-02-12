@@ -21,10 +21,18 @@ package com.nbempire.dentalnavarra.component.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import com.nbempire.dentalnavarra.component.service.RemembersService;
 import com.nbempire.dentalnavarra.cordova.WebViewBackendBridge;
 import org.apache.cordova.Config;
 import org.apache.cordova.CordovaActivity;
 
+/**
+ * TODO : Javadoc for
+ * <p/>
+ * Created on 1/8/14, at 6:45 AM.
+ *
+ * @author Nahuel Barrios <barrios.nahuel@gmail.com>.
+ */
 public class DentalNavarraActivity extends CordovaActivity {
 
     /**
@@ -38,15 +46,13 @@ public class DentalNavarraActivity extends CordovaActivity {
         super.init();
 
         String params = "";
-        String viewToShow = getIntent().getStringExtra("viewToShow");
-        if (viewToShow != null) {
-            Log.d(TAG, "Showing view: " + viewToShow);
-            params = "?viewToShow=" + viewToShow;
-        } else {
-            Log.d(TAG, "viewToShow is null");
+        String message = getIntent().getStringExtra(RemembersService.NOTIFICATION_INTENT_PARAMETER_MESSAGE);
+        if (message != null) {
+            Log.d(TAG, "Adding parameter " + RemembersService.NOTIFICATION_INTENT_PARAMETER_MESSAGE + " to app URL: " + message);
+            params = "?" + RemembersService.NOTIFICATION_INTENT_PARAMETER_MESSAGE + "=" + message;
         }
 
-        // Set by <content src="login.html" /> in config.xml
+        // Set by <content src="index.html" /> in config.xml
         super.loadUrl(Config.getStartUrl() + params);
 
         Log.d(TAG, "Adding Javascript interface for WebViewBackendBridge...");

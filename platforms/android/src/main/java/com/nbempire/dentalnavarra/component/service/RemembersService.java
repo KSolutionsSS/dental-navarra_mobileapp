@@ -20,15 +20,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * TODO : Javadoc for
+ * <p/>
+ * Created on 2/1/14, at 4:27 PM.
+ *
+ * @author Nahuel Barrios <barrios.nahuel@gmail.com>.
+ */
 public class RemembersService extends BackgroundService {
 
     private final static String TAG = RemembersService.class.getSimpleName();
 
-    private String patientId;
+    public static final String DENTAL_NAVARRA_PREFERENCES_FILE_NAME = "DentalNavarraPreferencesFile";
+
+    public static final String NOTIFICATION_INTENT_PARAMETER_MESSAGE = "message";
 
     private static final String PATIENT_ID_KEY = "patientId";
 
-    public static final String DENTAL_NAVARRA_PREFERENCES_FILE_NAME = "DentalNavarraPreferencesFile";
+    private static final String REMEMBERS_KEY = "remembers";
+
+    private String patientId;
 
     private SharedPreferences sharedPreferences;
 
@@ -36,12 +47,12 @@ public class RemembersService extends BackgroundService {
     protected JSONObject doWork() {
         Log.i(TAG, "Running background service...");
         patientId = getSharedPreferences().getString(PATIENT_ID_KEY, null);
-        Log.i(TAG, "Running background service for patientId (from sharedPreferences): " + patientId);
+        Log.d(TAG, "Running background service for patientId (from sharedPreferences): " + patientId);
 
         if (patientId != null) {
             storeRemembers(getRemembersAndShowNotification());
         } else {
-            Log.i(TAG, "Can't run background service because the saved patientId is null");
+            Log.d(TAG, "Can't run background service because the saved patientId is null");
         }
 
         return null;
@@ -51,20 +62,23 @@ public class RemembersService extends BackgroundService {
         RememberDao rememberDao = new RememberDaoImplSpring();
         RemembersDTO response = rememberDao.findRemembers(patientId);
 
-        Remember[] remembers = response.getRemembers();
-        String title;
-        String text;
-        boolean customView = true;
-        if (remembers.length == 1) {
-            title = "1 nueva notificación de Dental Navarra";
-            text = remembers[0].getMessage();
-        } else {
-            title = "Tiene " + remembers.length + " notificaciones de Dental Navarra";
-            text = "Haga tap aquí para ver todas sus notificaciones";
-            customView = false;
-        }
+        Remember[] remembers = new Remember[0];
+        if (response != null) {
+            remembers = response.getRemembers();
+            String title;
+            String text;
+            boolean customView = true;
+            if (remembers.length == 1) {
+                title = "1 nueva notificación de Dental Navarra";
+                text = remembers[0].getMessage();
+            } else {
+                title = "Tiene " + remembers.length + " notificaciones de Dental Navarra";
+                text = "Haga tap aquí para ver todas sus notificaciones";
+                customView = false;
+            }
 
-        showNotification(title, text, customView);
+            showNotification(title, text, customView);
+        }
 
         return remembers;
     }
@@ -80,7 +94,8 @@ public class RemembersService extends BackgroundService {
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, DentalNavarraActivity.class);
         if (customView) {
-            resultIntent.putExtra("viewToShow", "#rememberNotificationView");
+            Log.i(TAG, "Adding extra parameter to notification result intent");
+            resultIntent.putExtra(NOTIFICATION_INTENT_PARAMETER_MESSAGE, text);
         }
 
         // The stack builder object will contain an artificial back stack for the
@@ -98,7 +113,7 @@ public class RemembersService extends BackgroundService {
         mBuilder.setContentIntent(resultPendingIntent);
 
         Notification notification = mBuilder.build();
-//        notification.defaults |= Notification.DEFAULT_ALL;
+        notification.defaults |= Notification.DEFAULT_ALL;
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -134,7 +149,7 @@ public class RemembersService extends BackgroundService {
             Log.e(TAG, "An error ocurred while trying to stringify the JSONArray of remembers: " + jsonException.getMessage());
             stringRemembers = "[]";
         } finally {
-            getSharedPreferences().edit().putString("remembers", stringRemembers).commit();
+            getSharedPreferences().edit().putString(REMEMBERS_KEY, stringRemembers).commit();
         }
     }
 

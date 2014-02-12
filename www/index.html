@@ -85,9 +85,6 @@
                 <!--FIN #login-->
 
                 <div class="tab-pane fade" id="homeView">
-
-                    <a onclick="localStorage.removeItem('patient');console.log('LS borrado');" class="btn btn-lg">BORRAR LS</a>
-
                     <h2>Dental Navarra</h2>
 
                     <div class="panel-group" id="collapsable-panel">
@@ -176,6 +173,7 @@
         </li>
 
     {{/for}}
+
 </script>
 <script id="promotionTemplate" type="text/x-jsrender">
     {{for promotions}}
@@ -183,6 +181,7 @@
         <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(cantidadSemanas)}}</span></li>
 
     {{/for}}
+
 </script>
 <script id="contactInformationTemplate" type="text/x-jsrender">
     <address>
@@ -192,6 +191,7 @@
         T: {{:phoneNumber}}<br>
         C.E.: <a href="mailto:{{:email}}">{{:email}}</a>
     </address>
+
 </script>
 
 

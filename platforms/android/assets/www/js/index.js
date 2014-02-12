@@ -80,10 +80,10 @@ var app = (function () {
                 var url = location.href;
                 var position = url.indexOf(key);
                 if (position > 0) {
-                    notificationMessage = url.substring(position + key.length);
+                    notificationMessage = decodeURI(url.substring(position + key.length));
                 }
 
-                return decodeURI(notificationMessage);
+                return notificationMessage;
             };
 
             /**
@@ -128,7 +128,7 @@ var app = (function () {
          */
         (function () {
 //            var milliseconds = 345600000000;//   4 days???
-            var milliseconds = 60000;
+            var milliseconds = 120000;
 
             var updateNotificationsHandler = function (data) {
                 console.log('On update remembers handler...');

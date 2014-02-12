@@ -11,10 +11,10 @@ public class Remember {
 
     private String message;
 
-    private String endDate;
+    private String meetingDate;
 
-    public String getEndDate() {
-        return endDate;
+    public String getMeetingDate() {
+        return meetingDate;
     }
 
     public String getMessage() {

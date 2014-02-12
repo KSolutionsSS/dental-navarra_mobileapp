@@ -74,16 +74,29 @@ var app = (function () {
              * @returns {*}
              */
             var startingFromNotification = function () {
-                var notificationMessage;
+                //  TODO : Refactor :  Extract this function
+                var getQueryStringValue = function (key) {
+                    var searchString = window.location.search.substring(1);
+                    var variableArray = searchString.split('&');
+                    for (var i = 0; i < variableArray.length; i++) {
+                        var keyValuePair = variableArray[i].split('=');
+                        if (keyValuePair[0] == key) {
+                            return decodeURI(keyValuePair[1]);
+                        }
+                    }
+                };
 
-                var key = 'message=';
-                var url = location.href;
-                var position = url.indexOf(key);
-                if (position > 0) {
-                    notificationMessage = decodeURI(url.substring(position + key.length));
+                var result;
+
+                var message = getQueryStringValue('message');
+                if (message) {
+                    result = {
+                        message: message,
+                        meetingDate: getQueryStringValue('meetingDate')
+                    };
                 }
 
-                return notificationMessage;
+                return result;
             };
 
             /**
@@ -107,9 +120,10 @@ var app = (function () {
 
             var result = startingFromNotification();
             if (result) {
+                console.log('Obtained from URL meetingDate: ' + result.meetingDate + ', message: ' + result.message);
                 console.log('Displaying remember notification view...');
                 patient = JSON.parse(localStorage.getItem(PATIENT_KEY));
-                app.displayNextView('#rememberNotificationView', result);
+                app.displayNextView('#rememberNotificationView', result.message, result.meetingDate);
             } else {
                 result = checkForLoggedUser();
                 if (result) {
@@ -243,13 +257,13 @@ var app = (function () {
         }());
     };
 
-    var displayNextView = function (selector, message, endDate) {
+    var displayNextView = function (selector, message, meetingDate) {
         switch (selector) {
             case '#homeView':
                 app.views.home.init(patient);
                 break;
             case '#rememberNotificationView':
-                app.views.rememberNotification.render(message, endDate);
+                app.views.rememberNotification.render(message, meetingDate);
                 break;
         }
 

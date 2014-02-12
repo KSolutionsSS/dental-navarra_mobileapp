@@ -35,6 +35,8 @@ public class RemembersService extends BackgroundService {
 
     public static final String NOTIFICATION_INTENT_PARAMETER_MESSAGE = "message";
 
+    public static final String NOTIFICATION_INTENT_PARAMETER_MEETING_DATE = "meetingDate";
+
     private static final String PATIENT_ID_KEY = "patientId";
 
     private static final String REMEMBERS_KEY = "remembers";
@@ -67,23 +69,25 @@ public class RemembersService extends BackgroundService {
             remembers = response.getRemembers();
             String title;
             String text;
+            Remember detail = null;
             boolean customView = true;
             if (remembers.length == 1) {
-                title = "1 nueva notificación de Dental Navarra";
-                text = remembers[0].getMessage();
+                title = "Tiene 1 nuevo recordatorio de Dental Navarra";
+                text = "Le corresponde una cita de revisión, vea el detalle.";
+                detail = remembers[0];
             } else {
-                title = "Tiene " + remembers.length + " notificaciones de Dental Navarra";
-                text = "Haga tap aquí para ver todas sus notificaciones";
+                title = "Tiene " + remembers.length + " recordatorios de Dental Navarra";
+                text = "Haga tap aquí para ver todos sus recordatorios.";
                 customView = false;
             }
 
-            showNotification(title, text, customView);
+            showNotification(title, text, detail);
         }
 
         return remembers;
     }
 
-    private void showNotification(String title, String text, boolean customView) {
+    private void showNotification(String title, String text, Remember remember) {
         Log.d(TAG, "Building notification...");
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
@@ -93,9 +97,10 @@ public class RemembersService extends BackgroundService {
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, DentalNavarraActivity.class);
-        if (customView) {
+        if (remember != null) {
             Log.i(TAG, "Adding extra parameter to notification result intent");
-            resultIntent.putExtra(NOTIFICATION_INTENT_PARAMETER_MESSAGE, text);
+            resultIntent.putExtra(NOTIFICATION_INTENT_PARAMETER_MESSAGE, remember.getMessage());
+            resultIntent.putExtra(NOTIFICATION_INTENT_PARAMETER_MEETING_DATE, remember.getMeetingDate());
         }
 
         // The stack builder object will contain an artificial back stack for the
@@ -131,7 +136,7 @@ public class RemembersService extends BackgroundService {
             boolean add = true;
             try {
                 jsonRemember.put("message", eachRemember.getMessage());
-                jsonRemember.put("endDate", eachRemember.getEndDate());
+                jsonRemember.put("endDate", eachRemember.getMeetingDate());
             } catch (JSONException jsonException) {
                 Log.e(TAG, "An error occurred while putting a JSON attribute into a JSONObject: " + jsonException.getMessage());
                 add = false;

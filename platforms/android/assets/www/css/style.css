@@ -28,14 +28,14 @@ h2, h3 {
 
 p {
     color: #ffffff;
-    font-size: larger;
+    font-size: x-large;
 }
 
 blockquote small {
     color: #000000;
 }
 
-address a{
+address a {
     color: #000000;
 }
 
@@ -118,3 +118,7 @@ a:hover {
     font-size: x-large;
 }
 
+#rememberNotificationView blockquote p .badge {
+    font-size: x-large;
+    margin-left: 1%;
+}

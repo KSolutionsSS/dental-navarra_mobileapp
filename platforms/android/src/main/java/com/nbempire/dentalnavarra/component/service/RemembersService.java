@@ -70,15 +70,13 @@ public class RemembersService extends BackgroundService {
             String title;
             String text;
             Remember detail = null;
-            boolean customView = true;
             if (remembers.length == 1) {
-                title = "Tiene 1 nuevo recordatorio de Dental Navarra";
-                text = "Le corresponde una cita de revisión, vea el detalle.";
+                title = "1 nuevo recordatorio de Dental Navarra";
+                text = "Le corresponde una cita de revisión, ver detalle.";
                 detail = remembers[0];
             } else {
-                title = "Tiene " + remembers.length + " recordatorios de Dental Navarra";
+                title = remembers.length + " recordatorios de Dental Navarra";
                 text = "Haga tap aquí para ver todos sus recordatorios.";
-                customView = false;
             }
 
             showNotification(title, text, detail);

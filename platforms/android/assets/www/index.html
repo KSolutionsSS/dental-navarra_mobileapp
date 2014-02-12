@@ -141,7 +141,10 @@
 
                             <h3>Tienes 1 recordatorio nuevo</h3>
                             <hr>
-                            <p></p>
+                            <p id="rememberDetail"></p>
+                            <blockquote>
+                                <p>Pr&oacute;xima revision el <span class="badge"></span></p>
+                            </blockquote>
                         </div>
                     </div>
 
@@ -169,10 +172,11 @@
     {{for notifications}}
 
         <li>
-            <span>El d&iacute;a <span class="badge">{{:endDate}}</span> {{:message}} </span>
+            <span>{{:message}}</span>
         </li>
 
     {{/for}}
+
 
 </script>
 <script id="promotionTemplate" type="text/x-jsrender">
@@ -181,6 +185,7 @@
         <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(cantidadSemanas)}}</span></li>
 
     {{/for}}
+
 
 </script>
 <script id="contactInformationTemplate" type="text/x-jsrender">
@@ -191,6 +196,7 @@
         T: {{:phoneNumber}}<br>
         C.E.: <a href="mailto:{{:email}}">{{:email}}</a>
     </address>
+
 
 </script>
 

@@ -255,6 +255,8 @@ var app = (function () {
             };
             myService.getStatus(startService, onError);
         }());
+
+        app.views.changePassword.init();
     };
 
     var displayNextView = function (selector, message, meetingDate) {

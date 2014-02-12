@@ -97,7 +97,14 @@ a:hover {
 .panel-default > .panel-heading {
     /* color: #FFFFFF; */
     background-color: #024E68;
+}
 
+.btn-primary{
+    background-color: #3AAACF;
+}
+
+.navbar-fixed-bottom * {
+    font-size: x-large;
 }
 
 /************************************************************************************************************/
@@ -133,10 +140,17 @@ a:hover {
     width: 100%;
     color: #FFF;
     background-color: #00DA09;
-    font-size: x-large;
 }
 
 #rememberNotificationView blockquote p .badge {
     font-size: x-large;
     margin-left: 1%;
+}
+
+/***********************************************/
+/*          NOTIFICATION VIEW                  */
+/***********************************************/
+
+#changePasswordView .has-feedback .form-control-feedback {
+    top: 0;
 }

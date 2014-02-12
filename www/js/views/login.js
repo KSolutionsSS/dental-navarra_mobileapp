@@ -21,8 +21,10 @@ app.views = app.views || {};
 
 app.views.login = (function () {
 
+    var $view = $('#loginView');
+
     var bindLoginFormEvents = function () {
-        $('form').submit(function (event) {
+        $view.find('form').submit(function (event) {
             event.preventDefault();
 
             $('.alert').fadeOut();

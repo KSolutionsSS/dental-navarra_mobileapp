@@ -55,10 +55,11 @@
     <div class="row clearfix">
         <div class="col-md-12 column">
 
-            <ul class="nav nav-tabs hidden" id="viewsTab">
+            <ul class="nav nav-tabs " id="viewsTab">
                 <li class="active"><a href="#loginView" data-toggle="tab">LOGIN</a></li>
                 <li><a href="#homeView" data-toggle="tab">HOME</a></li>
                 <li><a href="#rememberNotificationView" data-toggle="tab">REMEMBER NOTIFICATION</a></li>
+                <li><a href="#changePasswordView" data-toggle="tab">CHANGE PASSWORD</a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -95,7 +96,11 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <button type="submit" class="btn btn-large btn-default">Entrar</button>
+                                <div class="navbar-fixed-bottom">
+                                    <div class="container">
+                                        <button type="submit" class="btn btn-large btn-primary">Entrar</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -178,6 +183,40 @@
 
                 </div>
                 <!--FIN #rememberNotification-->
+
+                <div class="tab-pane fade" id="changePasswordView">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Dental Navarra</h2>
+
+                            <form role="form">
+                                <div class="form-group has-feedback">
+                                    <input type="password" class="form-control" id="currentPassword" placeholder="Contraseña actual">
+                                    <span class="glyphicon form-control-feedback"></span>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <input type="password" class="form-control" id="newPassword1" placeholder="Nueva contraseña">
+                                    <span class="glyphicon form-control-feedback"></span>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <input type="password" class="form-control" id="newPassword2" placeholder="Repita su nueva contraseña" disabled>
+                                    <span class="glyphicon form-control-feedback"></span>
+                                </div>
+
+                                <div class="navbar-fixed-bottom">
+                                    <div class="container">
+                                        <button type="submit" class="btn btn-primary">Cambiar</button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!--FIN #changePasswordView-->
             </div>
 
         </div>
@@ -195,6 +234,7 @@
         </li>
 
     {{/for}}
+
 </script>
 <script id="promotionTemplate" type="text/x-jsrender">
     {{for promotions}}
@@ -202,6 +242,7 @@
         <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(cantidadSemanas)}}</span></li>
 
     {{/for}}
+
 </script>
 <script id="contactInformationTemplate" type="text/x-jsrender">
     <address>
@@ -211,6 +252,7 @@
         T: {{:phoneNumber}}<br>
         C.E.: <a href="mailto:{{:email}}">{{:email}}</a>
     </address>
+
 </script>
 
 
@@ -237,6 +279,7 @@
 <script type="text/javascript" src="js/views/login.js"></script>
 <script type="text/javascript" src="js/views/home.js"></script>
 <script type="text/javascript" src="js/views/rememberNotification.js"></script>
+<script type="text/javascript" src="js/views/changePassword.js"></script>
 
 <!-- Initialize app -->
 <script type="text/javascript">

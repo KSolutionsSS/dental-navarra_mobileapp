@@ -114,8 +114,9 @@ public class RemembersService extends BackgroundService {
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, DentalNavarraActivity.class);
         if (remember != null) {
-            Log.i(TAG, "Adding extra parameter to notification result intent");
+            Log.i(TAG, "Adding extra parameter to notification result intent, message: " + remember.getMessage());
             resultIntent.putExtra(NOTIFICATION_INTENT_PARAMETER_MESSAGE, remember.getMessage());
+            Log.i(TAG, "Adding extra parameter to notification result intent, meetingDate: " + remember.getMeetingDate());
             resultIntent.putExtra(NOTIFICATION_INTENT_PARAMETER_MEETING_DATE, remember.getMeetingDate());
         }
 
@@ -151,8 +152,8 @@ public class RemembersService extends BackgroundService {
             JSONObject jsonRemember = new JSONObject();
             boolean add = true;
             try {
-                jsonRemember.put("message", eachRemember.getMessage());
-                jsonRemember.put("endDate", eachRemember.getMeetingDate());
+                jsonRemember.put(NOTIFICATION_INTENT_PARAMETER_MESSAGE, eachRemember.getMessage());
+                jsonRemember.put(NOTIFICATION_INTENT_PARAMETER_MEETING_DATE, eachRemember.getMeetingDate());
             } catch (JSONException jsonException) {
                 Log.e(TAG, "An error occurred while putting a JSON attribute into a JSONObject: " + jsonException.getMessage());
                 add = false;

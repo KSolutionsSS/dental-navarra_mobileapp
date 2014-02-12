@@ -52,19 +52,19 @@ app.views.home = (function () {
 
     var loadRemembers = function () {
         var expandRemember = function (event) {
-            $liSpan = $(event.target);
+            var $li = $(event.target).parent();
 
-            var endDate = $liSpan.find('.badge').html();
-            var message = $liSpan.text();
+            var meetingDate = $li.find('.hidden').html();
+            var message = $li.find('span:not(.hidden)').text();
 
-            app.displayNextView('#rememberNotificationView', message, endDate);
+            app.displayNextView('#rememberNotificationView', message, meetingDate);
         };
 
         var $container = $('#notifications').empty();
         if (patient.remembers) {
             console.log('Obtained: ' + patient.remembers.length + ' remembers about treatments.');
 
-            $container.append($('#notificationTemplate').render({notifications: patient.remembers}));
+            $container.append($('#notificationTemplate').render({remembers: patient.remembers}));
             $container.find('li').click(expandRemember);
         } else {
             console.log('There is no remembers to display to the user, showing a message');
@@ -146,11 +146,11 @@ app.views.home = (function () {
             };
 
             //  TODO : Delete this line or context.
-//    patient.remembers = [
-//        {message: 'Tienes que hacerte el segundo implante.', endDate: '01/03/2014'},
-//        {message: 'deberías concurrir para un control general.', endDate: '01/03/2014'}
-//    ];
-//    localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
+//            patient.remembers = [
+//                {message: 'Tienes que hacerte el segundo implante.', meetingDate: '01/03/2014'},
+//                {message: 'deberías concurrir para un control general.', meetingDate: '01/03/2014'}
+//            ];
+//            localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
 
             loadRemembers();
             loadPromotions();

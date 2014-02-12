@@ -154,6 +154,7 @@ var app = (function () {
                     var remembers = JSON.parse(window.bridge.getPreference("remembers"));
                     if (remembers) {
                         console.log('Obtained: ' + remembers.length + ' remembers, saving them to local storage system....');
+                        console.log('Obtained remembers from native module: ' + JSON.stringify(remembers));
 
                         patient = JSON.parse(localStoragePatient);
                         if (remembers.length > 0) {

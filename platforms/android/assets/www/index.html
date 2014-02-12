@@ -187,15 +187,14 @@
 
 <!-- Templates definitions -->
 <script id="notificationTemplate" type="text/x-jsrender">
-    {{for notifications}}
+    {{for remembers}}
 
         <li>
             <span>{{:message}}</span>
+            <span class="hidden">{{:meetingDate}}</span>
         </li>
 
     {{/for}}
-
-
 </script>
 <script id="promotionTemplate" type="text/x-jsrender">
     {{for promotions}}
@@ -203,8 +202,6 @@
         <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(cantidadSemanas)}}</span></li>
 
     {{/for}}
-
-
 </script>
 <script id="contactInformationTemplate" type="text/x-jsrender">
     <address>
@@ -214,8 +211,6 @@
         T: {{:phoneNumber}}<br>
         C.E.: <a href="mailto:{{:email}}">{{:email}}</a>
     </address>
-
-
 </script>
 
 

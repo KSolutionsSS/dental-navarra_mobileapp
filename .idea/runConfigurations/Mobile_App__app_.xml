@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Mobile App (app)" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7.0.42" ALTERNATIVE_JRE_ENABLED="false" ALTERNATIVE_JRE_PATH="">
-    <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/login.html" />
+    <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/index.html" />
     <option name="UPDATING_POLICY" value="restart-server" />
     <deployment>
-      <file path="$PROJECT_DIR$/src/www">
+      <file path="$PROJECT_DIR$/www">
         <settings>
           <option name="CONTEXT_PATH" value="/" />
         </settings>
@@ -12,8 +12,8 @@
     <server-settings>
       <option name="BASE_DIRECTORY_NAME" value="Mobile_App_(maquetas)_(1)_misPacientes" />
     </server-settings>
-    <predefined_log_file id="Tomcat" enabled="true" />
-    <predefined_log_file id="Tomcat Catalina" enabled="true" />
+    <predefined_log_file id="Tomcat" enabled="false" />
+    <predefined_log_file id="Tomcat Catalina" enabled="false" />
     <predefined_log_file id="Tomcat Manager" enabled="false" />
     <predefined_log_file id="Tomcat Host Manager" enabled="false" />
     <predefined_log_file id="Tomcat Localhost Access" enabled="false" />

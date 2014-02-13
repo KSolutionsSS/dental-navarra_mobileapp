@@ -27,7 +27,11 @@ app.views.changePassword = (function () {
 
     var $view = $('#changePasswordView');
 
-    var init = function () {
+    var hideResultMessages = function () {
+        $view.find('.alert').hide();
+    };
+
+    var bindEvents = function () {
         var getClassNameToRemove = function ($element, includePreffix, exclude) {
             var toReturn = '';
             var classes = $element.attr('class').split(' ');
@@ -101,18 +105,54 @@ app.views.changePassword = (function () {
         $newPassword2.focusout(function () {
             clearFocusState($newPassword2);
             validateInput($newPassword2, function (value) {
-                console.log('Validating new password...');
+                console.log('Validating that two new password matches...');
                 return value === $('#newPassword1').val();
             });
         });
 
         $view.find('form').submit(function (event) {
             event.preventDefault();
-            //  TODO : Functionality : Submit password change
+            hideResultMessages();
+
+            var onSuccess = function (data) {
+                console.log('onSuccess()');
+                console.log('data vale: ' + JSON.stringify(data));
+                if (data.statusCode) {
+                    if (data.statusCode === 401) {
+                        console.log('Showing warning message');
+                        $view.find('.alert-warning').show();
+                    } else {
+                        console.log('Showing error message');
+                        onError(data);
+                    }
+                } else {
+                    console.log('Password successfully updated');
+                    $view.find('.alert-success').show();
+                }
+            };
+            var onError = function (jqXHR) {
+                console.log('Can\'t update user password:' + jqXHR.statusCode);
+                $view.find('.alert-danger').show();
+            };
+
+
+            console.log('salgo con current: ' + $currentPassword.val() + ', nueva: ' + $newPassword1.val());
+            modules.patient.changePassword({
+                                               _id: patient._id,
+                                               email: patient.email,
+                                               currentPassword: $currentPassword.val(),
+                                               newPassword: $newPassword1.val()
+                                           }, onSuccess, onError);
+
             console.log('Submit change!!');
         });
 
         console.log('Change password form events set.');
+    };
+
+    var init = function () {
+        hideResultMessages();
+        bindEvents();
     };
 
     return {

@@ -145,6 +145,14 @@ app.views.home = (function () {
                 }
             };
 
+
+            var bindEventsForSettingsTab = function () {
+                $settings = $('#settings');
+                $settings.find('button:nth-child(1)').click(function (event) {
+                    app.displayNextView('#changePasswordView');
+                });
+            };
+
             //  TODO : Delete this line or context.
 //            patient.remembers = [
 //                {message: 'Tienes que hacerte el segundo implante.', meetingDate: '01/03/2014'},
@@ -155,6 +163,7 @@ app.views.home = (function () {
             loadRemembers();
             loadPromotions();
             renderContactTab();
+            bindEventsForSettingsTab();
         },
         updateRemembers: function () {
             loadRemembers();

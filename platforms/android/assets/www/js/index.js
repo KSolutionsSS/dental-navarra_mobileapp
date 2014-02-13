@@ -141,7 +141,7 @@ var app = (function () {
          */
         (function () {
 //            var milliseconds = 345600000000;//   4 days???
-            var milliseconds = 120000;
+            var milliseconds = 180000;
 
             var updateNotificationsHandler = function (data) {
                 console.log('On update remembers handler...');
@@ -267,6 +267,8 @@ var app = (function () {
             case '#rememberNotificationView':
                 app.views.rememberNotification.render(message, meetingDate);
                 break;
+            case '#changePasswordView':
+                app.views.changePassword.init();
         }
 
         $viewsTab.find('a[href=' + selector + ']').tab('show');

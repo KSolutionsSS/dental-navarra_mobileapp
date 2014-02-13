@@ -95,11 +95,11 @@ a:hover {
 }
 
 .panel-default > .panel-heading {
-    /* color: #FFFFFF; */
+    color: #FFFFFF;
     background-color: #024E68;
 }
 
-.btn-primary{
+.btn-primary {
     background-color: #3AAACF;
 }
 

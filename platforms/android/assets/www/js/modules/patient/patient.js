@@ -34,8 +34,24 @@ modules.patient = (function () {
                }).done(onSuccess).fail(onError);
     };
 
+    /**
+     * @param patient Must contains attributes: _id, email, currentPassword, newPassword
+     */
+    var changePassword = function (patient, onSuccess, onError) {
+        console.log('Trying to change user password for user: ' + patient.email);
+
+        delete patient.email;
+
+        $.ajax({
+                   type: "PUT",
+                   url: SERVER_URL + 'patients/' + patient._id + '/changePassword',
+                   data: patient
+               }).done(onSuccess).fail(onError);
+    };
+
     return {
-        login: login
+        login: login,
+        changePassword: changePassword
     };
 
 }());

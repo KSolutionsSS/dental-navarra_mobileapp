@@ -46,6 +46,7 @@ var app = (function () {
 
             switch ($viewsTab.find('li.active>a').attr('href')) {
                 case '#rememberNotificationView':
+                case '#changePasswordView':
                     console.log('Going back to home...');
                     app.displayNextView('#homeView');
                     break;

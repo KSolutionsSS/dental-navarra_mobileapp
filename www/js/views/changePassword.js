@@ -135,8 +135,17 @@ app.views.changePassword = (function () {
             hideResultMessages();
 
             var onSuccess = function (data) {
-                console.log('onSuccess()');
-                console.log('data vale: ' + JSON.stringify(data));
+                var resetFields = function () {
+                    var resetField = function ($element) {
+                        $element.val('');
+                        clearState($element);
+                    };
+
+                    resetField($currentPassword);
+                    resetField($newPassword1);
+                    resetField($newPassword2);
+                };
+
                 if (data.statusCode) {
                     if (data.statusCode === 401) {
                         console.log('Showing warning message');
@@ -147,7 +156,8 @@ app.views.changePassword = (function () {
                     }
                 } else {
                     console.log('Password successfully updated');
-                    $view.find('.alert-success').show();
+                    $view.find('.alert-success').fadeIn();
+                    resetFields();
                 }
             };
             var onError = function (jqXHR) {
@@ -155,16 +165,12 @@ app.views.changePassword = (function () {
                 $view.find('.alert-danger').show();
             };
 
-
-            console.log('salgo con current: ' + $currentPassword.val() + ', nueva: ' + $newPassword1.val());
             modules.patient.changePassword({
                                                _id: patient._id,
                                                email: patient.email,
                                                currentPassword: $currentPassword.val(),
                                                newPassword: $newPassword1.val()
                                            }, onSuccess, onError);
-
-            console.log('Submit change!!');
         });
 
         console.log('Change password form events set.');

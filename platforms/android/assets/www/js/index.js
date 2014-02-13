@@ -141,7 +141,7 @@ var app = (function () {
          */
         (function () {
 //            var milliseconds = 345600000000;//   4 days???
-            var milliseconds = 180000;
+            var milliseconds = 1800000000;
 
             var updateNotificationsHandler = function (data) {
                 console.log('On update remembers handler...');

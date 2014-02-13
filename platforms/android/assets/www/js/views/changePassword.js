@@ -26,6 +26,7 @@ app.views = app.views || {};
 app.views.changePassword = (function () {
 
     var $view = $('#changePasswordView');
+    var $button = $view.find('button');
 
     var hideResultMessages = function () {
         $view.find('.alert').hide();
@@ -52,7 +53,7 @@ app.views.changePassword = (function () {
             return toReturn;
         };
 
-        var clearFocusState = function ($element) {
+        var clearState = function ($element) {
             var $div = $element.parent();
 
             $div.removeClass(getClassNameToRemove($div, 'has-', 'has-feedback'));
@@ -61,9 +62,14 @@ app.views.changePassword = (function () {
             $span.removeClass(getClassNameToRemove($span, 'glyphicon-[a-z][A-Z]*'));
         };
 
+        /**
+         * @param validator function that returns true/false
+         * @returns true/false if the value is valid or not
+         */
         var validateInput = function ($element, validator) {
-            var $div = $element.parent();
+            clearState($element);
 
+            var $div = $element.parent();
             var isValid = validator($element.val());
             if (isValid) {
                 $div.addClass('has-success');
@@ -80,35 +86,49 @@ app.views.changePassword = (function () {
         var $newPassword1 = $view.find('#newPassword1');
         var $newPassword2 = $view.find('#newPassword2');
 
-//        $currentPassword.focusout(function () {
-//            clearFocusState($currentPassword);
-//            validateInput($currentPassword, function (value) {
-//                console.log('Validating current password against input value: ' + value);
-//                //  TODO : Functionality : Validate current password
-//                return true;
-//            });
-//        });
+        /**
+         * Events for newPassword1 input element
+         */
+        (function () {
+            var isValidInput = function (value) {
+                return value !== '' && value.length > 5;
+            };
 
-        $newPassword1.focusout(function () {
-            clearFocusState($newPassword1);
+            $newPassword1.keyup(function (event) {
+                console.log('keyup');
+                var value = $newPassword1.val();
 
-            if ($newPassword1.val() === '') {
-                clearFocusState($newPassword2);
-                $newPassword2.attr('disabled', 'disabled');
-            } else if (validateInput($newPassword1, function (value) {
-                return value !== '';
-            })) {
-                $newPassword2.removeAttr('disabled');
-            }
-        });
+                if (validateInput($newPassword1, isValidInput)) {
+                    $newPassword2.removeAttr('disabled');
+                } else {
+                    $newPassword2.attr('disabled', 'disabled');
+                    $newPassword2.val('');
+                    clearState($newPassword2);
+                }
+            });
+        }());
 
-        $newPassword2.focusout(function () {
-            clearFocusState($newPassword2);
-            validateInput($newPassword2, function (value) {
+
+        /**
+         * Events for newPassword2 input element
+         */
+        (function () {
+            var validateNewPasswords = function (value) {
                 console.log('Validating that two new password matches...');
                 return value === $('#newPassword1').val();
+            };
+
+            $newPassword2.keyup(function (event) {
+                console.log('key up: ' + event);
+                console.dir(event);
+
+                if (validateInput($newPassword2, validateNewPasswords)) {
+                    $button.removeAttr('disabled');
+                } else {
+                    $button.attr('disabled', 'disabled');
+                }
             });
-        });
+        }());
 
         $view.find('form').submit(function (event) {
             event.preventDefault();
@@ -151,6 +171,7 @@ app.views.changePassword = (function () {
     };
 
     var init = function () {
+        $button.attr('disabled', 'disabled');
         hideResultMessages();
         bindEvents();
     };

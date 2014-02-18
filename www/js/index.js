@@ -44,12 +44,18 @@ var app = (function () {
         document.addEventListener("backbutton", function (event) {
             event.preventDefault();
 
+            var goHome = function () {
+                console.log('Going back to home...');
+                app.displayNextView('#homeView');
+            };
+
             switch ($viewsTab.find('li.active>a').attr('href')) {
                 case '#rememberNotificationView':
-                case '#changePasswordView':
-                    console.log('Going back to home...');
-                    app.displayNextView('#homeView');
+                    goHome();
                     break;
+                case '#changePasswordView':
+                    goHome();
+                    app.views.changePassword.reset();
             }
         }, false);
 
@@ -142,7 +148,7 @@ var app = (function () {
          */
         (function () {
 //            var milliseconds = 345600000000;//   4 days???
-            var milliseconds = 180000;
+            var milliseconds = 180000000000000;
 
             var updateNotificationsHandler = function (data) {
                 console.log('On update remembers handler...');
@@ -263,13 +269,17 @@ var app = (function () {
     var displayNextView = function (selector, message, meetingDate) {
         switch (selector) {
             case '#homeView':
-                app.views.home.init(patient);
+                if (!app.views.home.isInitialised()) {
+                    app.views.home.init(patient);
+                }
                 break;
             case '#rememberNotificationView':
                 app.views.rememberNotification.render(message, meetingDate);
                 break;
             case '#changePasswordView':
-                app.views.changePassword.init();
+                if (!app.views.changePassword.isInitialised()) {
+                    app.views.changePassword.init();
+                }
         }
 
         $viewsTab.find('a[href=' + selector + ']').tab('show');

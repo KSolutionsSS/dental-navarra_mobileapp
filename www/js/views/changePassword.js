@@ -25,43 +25,19 @@ app.views = app.views || {};
 
 app.views.changePassword = (function () {
 
+    var isInitialised;
     var $view = $('#changePasswordView');
     var $button = $view.find('button');
+
+    var $currentPassword = $view.find('#currentPassword');
+    var $newPassword1 = $view.find('#newPassword1');
+    var $newPassword2 = $view.find('#newPassword2');
 
     var hideResultMessages = function () {
         $view.find('.alert').hide();
     };
 
     var bindEvents = function () {
-        var getClassNameToRemove = function ($element, includePreffix, exclude) {
-            var toReturn = '';
-            var classes = $element.attr('class').split(' ');
-
-            var stringRegExp = '(' + includePreffix + ')';
-            if (exclude) {
-                stringRegExp = '(?!' + exclude + ')' + stringRegExp;
-            }
-
-            var regExp = new RegExp(stringRegExp);
-            for (var index = 0; index < classes.length; index++) {
-                if (regExp.test(classes[index])) {
-                    toReturn += classes[index] + ' ';
-                    //  TODO : Functionality : Check this, I'm using only one result!
-                }
-            }
-
-            return toReturn;
-        };
-
-        var clearState = function ($element) {
-            var $div = $element.parent();
-
-            $div.removeClass(getClassNameToRemove($div, 'has-', 'has-feedback'));
-
-            var $span = $div.find('span');
-            $span.removeClass(getClassNameToRemove($span, 'glyphicon-[a-z][A-Z]*'));
-        };
-
         /**
          * @param validator function that returns true/false
          * @returns true/false if the value is valid or not
@@ -82,10 +58,6 @@ app.views.changePassword = (function () {
             return isValid;
         };
 
-        var $currentPassword = $view.find('#currentPassword');
-        var $newPassword1 = $view.find('#newPassword1');
-        var $newPassword2 = $view.find('#newPassword2');
-
         /**
          * Events for newPassword1 input element
          */
@@ -95,7 +67,6 @@ app.views.changePassword = (function () {
             };
 
             $newPassword1.keyup(function (event) {
-                console.log('keyup');
                 var value = $newPassword1.val();
 
                 if (validateInput($newPassword1, isValidInput)) {
@@ -119,9 +90,6 @@ app.views.changePassword = (function () {
             };
 
             $newPassword2.keyup(function (event) {
-                console.log('key up: ' + event);
-                console.dir(event);
-
                 if (validateInput($newPassword2, validateNewPasswords)) {
                     $button.removeAttr('disabled');
                 } else {
@@ -135,16 +103,17 @@ app.views.changePassword = (function () {
             hideResultMessages();
 
             var onSuccess = function (data) {
-                var resetFields = function () {
-                    var resetField = function ($element) {
-                        $element.val('');
-                        clearState($element);
-                    };
 
-                    resetField($currentPassword);
-                    resetField($newPassword1);
-                    resetField($newPassword2);
-                };
+
+                console.log('data._id: ' + data._id);
+                console.log('data.statusCode: ' + data.statusCode);
+                console.log('data.name: ' + data.name);
+                console.log('data.lastName: ' + data.lastName);
+                console.log('data.secondLastName: ' + data.secondLastName);
+                console.log('data.email: ' + data.email);
+                console.log('data.birthdat: ' + data.birthday);
+                console.log('data.office: ' + data.office);
+                console.log('data.password: ' + data.password);
 
                 if (data.statusCode) {
                     if (data.statusCode === 401) {
@@ -161,9 +130,12 @@ app.views.changePassword = (function () {
                 }
             };
             var onError = function (jqXHR) {
-                console.log('Can\'t update user password:' + jqXHR.statusCode);
+                console.log('Can\'t update user password:' + jqXHR.status);
                 $view.find('.alert-danger').show();
             };
+
+            console.log('cambio la pass con curre: ' + $currentPassword.val());
+            console.log('cambio la pass con nueva: ' + $newPassword1.val());
 
             modules.patient.changePassword({
                                                _id: patient._id,
@@ -180,9 +152,58 @@ app.views.changePassword = (function () {
         $button.attr('disabled', 'disabled');
         hideResultMessages();
         bindEvents();
+        isInitialised = true;
+    };
+
+
+    var getClassNameToRemove = function ($element, includePreffix, exclude) {
+        var toReturn = '';
+        var classes = $element.attr('class').split(' ');
+
+        var stringRegExp = '(' + includePreffix + ')';
+        if (exclude) {
+            stringRegExp = '(?!' + exclude + ')' + stringRegExp;
+        }
+
+        var regExp = new RegExp(stringRegExp);
+        for (var index = 0; index < classes.length; index++) {
+            if (regExp.test(classes[index])) {
+                toReturn += classes[index] + ' ';
+                //  TODO : Functionality : Check this, I'm using only one result!
+            }
+        }
+
+        return toReturn;
+    };
+
+    var clearState = function ($element) {
+        var $div = $element.parent();
+
+        $div.removeClass(getClassNameToRemove($div, 'has-', 'has-feedback'));
+
+        var $span = $div.find('span');
+        $span.removeClass(getClassNameToRemove($span, 'glyphicon-[a-z][A-Z]*'));
+    };
+
+    var resetFields = function () {
+        var resetField = function ($element) {
+            $element.val('');
+            clearState($element);
+        };
+
+        resetField($currentPassword);
+        resetField($newPassword1);
+        resetField($newPassword2);
     };
 
     return {
-        init: init
+        init: init,
+        isInitialised: function () {
+            return isInitialised;
+        },
+        reset: function(){
+            hideResultMessages();
+            resetFields();
+        }
     };
 }());

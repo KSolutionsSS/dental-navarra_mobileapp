@@ -50,6 +50,8 @@ app.views = app.views || {};
 
 app.views.home = (function () {
 
+    var isInitialised;
+
     var loadRemembers = function () {
         var expandRemember = function (event) {
             var $li = $(event.target).parent();
@@ -164,9 +166,14 @@ app.views.home = (function () {
             loadPromotions();
             renderContactTab();
             bindEventsForSettingsTab();
+            isInitialised = true;
         },
         updateRemembers: function () {
             loadRemembers();
+        },
+        isInitialised: function () {
+            console.log('isInitialised: ' + isInitialised);
+            return isInitialised;
         }
     };
 }());

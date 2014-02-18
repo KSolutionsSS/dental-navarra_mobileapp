@@ -40,6 +40,9 @@ modules.patient = (function () {
     var changePassword = function (patient, onSuccess, onError) {
         console.log('Trying to change user password for user: ' + patient.email);
 
+        console.log('current: ' + patient.currentPassword);
+        console.log('new:' + patient.newPassword);
+
         delete patient.email;
 
         $.ajax({

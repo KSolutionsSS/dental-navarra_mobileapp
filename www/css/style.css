@@ -44,7 +44,7 @@ h1, h2, h3 {
 
 p {
     color: #ffffff;
-    font-size: x-large;
+    font-size: large;
 }
 
 blockquote small {
@@ -55,16 +55,21 @@ address a {
     color: #000000;
 }
 
+hr.secondary {
+    border-style: dashed;
+}
+
 /************************************************************************************************************/
 /****************************************** Sobreescribo Bootstrap ******************************************/
 /************************************************************************************************************/
 
 a {
-    color: white;
+    color: #ffffff;
 }
 
-a:hover {
-    color: #104473;
+a:hover, a:focus {
+    color: #ffffff;
+    text-decoration: inherit;
 }
 
 .badge {
@@ -96,6 +101,7 @@ a:hover {
 .panel-default > .panel-heading {
     color: #FFFFFF;
     background-color: #3D6385;
+    font-family: 'Fauna One', sans-serif;
 }
 
 .btn-primary {
@@ -132,7 +138,7 @@ a:hover {
 }
 
 /***********************************************/
-/*          NOTIFICATION VIEW                  */
+/*          REMEMBER VIEW                      */
 /***********************************************/
 
 #rememberNotificationView .btn-default {
@@ -141,9 +147,12 @@ a:hover {
     background-color: #00DA09;
 }
 
-#rememberNotificationView blockquote p .badge {
+#rememberNotificationView blockquote p, #rememberNotificationView blockquote p .badge {
     font-size: x-large;
-    margin-left: 1%;
+}
+
+#rememberNotificationView blockquote p .badge {
+    margin-left: 0.5%;
 }
 
 /***********************************************/

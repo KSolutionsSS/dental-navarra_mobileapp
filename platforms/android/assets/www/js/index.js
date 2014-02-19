@@ -147,8 +147,7 @@ var app = (function () {
          * Initialize background service
          */
         (function () {
-//            var milliseconds = 345600000000;//   4 days???
-            var milliseconds = 180000000000000;
+            var milliseconds = 180000;
 
             var updateNotificationsHandler = function (data) {
                 console.log('On update remembers handler...');

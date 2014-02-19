@@ -45,8 +45,9 @@ modules.patient = (function () {
 
         delete patient.email;
 
+        //  TODO : Refactor :  Change this to PUT HTTP method (browser is caching the request, or it's rejected by the server (I don't know)
         $.ajax({
-                   type: "PUT",
+                   type: "POST",
                    url: SERVER_URL + 'patients/' + patient._id + '/changePassword',
                    data: patient
                }).done(onSuccess).fail(onError);

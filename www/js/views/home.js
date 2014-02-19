@@ -138,13 +138,12 @@ app.views.home = (function () {
                         patient.office = offices[officeName];
                         localStorage.setItem('patient', JSON.stringify(patient));
 
-                        $('#contactInformation').html($('#contactInformationTemplate').render(patient.office));
                     } else {
                         console.log('Can\'t display office information, an error ocurred while looking for patient.office: ' + patient.office);
                     }
-                } else {
-                    console.log('Contact information should be already visible');
                 }
+
+                $('#contactInformation').html($('#contactInformationTemplate').render(patient.office));
             };
 
 

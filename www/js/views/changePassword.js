@@ -103,18 +103,6 @@ app.views.changePassword = (function () {
             hideResultMessages();
 
             var onSuccess = function (data) {
-
-
-                console.log('data._id: ' + data._id);
-                console.log('data.statusCode: ' + data.statusCode);
-                console.log('data.name: ' + data.name);
-                console.log('data.lastName: ' + data.lastName);
-                console.log('data.secondLastName: ' + data.secondLastName);
-                console.log('data.email: ' + data.email);
-                console.log('data.birthdat: ' + data.birthday);
-                console.log('data.office: ' + data.office);
-                console.log('data.password: ' + data.password);
-
                 if (data.statusCode) {
                     if (data.statusCode === 401) {
                         console.log('Showing warning message');
@@ -133,9 +121,6 @@ app.views.changePassword = (function () {
                 console.log('Can\'t update user password:' + jqXHR.status);
                 $view.find('.alert-danger').show();
             };
-
-            console.log('cambio la pass con curre: ' + $currentPassword.val());
-            console.log('cambio la pass con nueva: ' + $newPassword1.val());
 
             modules.patient.changePassword({
                                                _id: patient._id,

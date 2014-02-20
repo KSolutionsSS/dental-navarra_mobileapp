@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!--
+<?xml version='1.0' encoding='utf-8'?><!--
   ~ Dental Navarra mobile app - Mobile app that patients of Dental Navarra will use to get notifications about their treatments, as well as promotions.
   ~     Copyright (C) 2014  Nahuel Barrios
   ~
@@ -42,6 +41,8 @@
                value="com.phonegap.plugins.statusBarNotification.StatusBarNotification" />
     </feature>
     <access origin="http://127.0.0.1*" />
+    <access origin="http://dentalnavarra-intranet.herokuapp.com" />
+    <access origin="https://spreadsheets.google.com"/>
     <preference name="useBrowserHistory"
                 value="true" />
     <preference name="exit-on-suspend"

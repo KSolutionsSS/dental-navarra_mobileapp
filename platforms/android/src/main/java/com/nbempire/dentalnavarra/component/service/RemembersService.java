@@ -109,7 +109,8 @@ public class RemembersService extends BackgroundService {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.notification)
                 .setContentTitle(title)
-                .setContentText(text);
+                .setContentText(text)
+                .setAutoCancel(true);
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, DentalNavarraActivity.class);

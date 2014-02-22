@@ -113,7 +113,14 @@ a:hover, a:focus {
 }
 
 .help-block {
-    color: #C5C5C5;
+    color: #AFAFAF;
+    background-color: white;
+    padding: 3px 10px;
+    display: inline-block;
+    border-radius: 12px;
+    font-style: italic;
+    float: right;
+    font-size: medium;
 }
 
 /************************************************************************************************************/
@@ -163,6 +170,10 @@ a:hover, a:focus {
 /*          CHANGE PASSWORD VIEW               */
 /***********************************************/
 
-#changePasswordView .has-feedback .form-control-feedback {
+#changePasswordView .has-feedback:nth-child(2) .form-control-feedback {
     top: 0;
+}
+
+#changePasswordView .has-feedback:nth-child(3) .form-control-feedback {
+    top: 28px;
 }

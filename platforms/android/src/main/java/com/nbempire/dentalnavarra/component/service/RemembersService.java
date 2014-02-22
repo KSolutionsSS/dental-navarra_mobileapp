@@ -88,16 +88,19 @@ public class RemembersService extends BackgroundService {
             String title;
             String text;
             Remember detail = null;
-            if (remembers.length == 1) {
-                title = "1 nuevo recordatorio de Dental Navarra";
-                text = "Le corresponde una cita de revisión, ver detalle.";
-                detail = remembers[0];
-            } else {
-                title = remembers.length + " recordatorios de Dental Navarra";
-                text = "Haga tap aquí para ver todos sus recordatorios.";
-            }
 
-            showNotification(title, text, detail);
+            if (remembers.length > 0) {
+                if (remembers.length == 1) {
+                    title = "1 nuevo recordatorio de Dental Navarra";
+                    text = "Le corresponde una cita de revisión, ver detalle.";
+                    detail = remembers[0];
+                } else {
+                    title = remembers.length + " recordatorios de Dental Navarra";
+                    text = "Haga tap aquí para ver todos sus recordatorios.";
+                }
+
+                showNotification(title, text, detail);
+            }
         }
 
         return remembers;

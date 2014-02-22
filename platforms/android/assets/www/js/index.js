@@ -18,7 +18,7 @@
 var PATIENT_KEY = 'patient';
 //var SERVER_URL = 'http://localhost:5000/';
 var SERVER_URL = 'http://dentalnavarra-intranet.herokuapp.com/';
-var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0Als-7pL8K4VidGdWa0gtMnBBYTA1bWpiZGlTZm9YREE';
+var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0AgqeUj0Ks3f6dGNNMERIRnpjd2JTb1UzUWdzTXlDU2c';
 
 var patient;
 var $viewsTab;

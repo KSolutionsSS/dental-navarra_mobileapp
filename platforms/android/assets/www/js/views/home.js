@@ -148,7 +148,7 @@ app.views.home = (function () {
 
 
             var bindEventsForSettingsTab = function () {
-                $settings = $('#settings');
+                var $settings = $('#settings');
                 $settings.find('button:nth-child(1)').click(function (event) {
                     app.displayNextView('#changePasswordView');
                 });

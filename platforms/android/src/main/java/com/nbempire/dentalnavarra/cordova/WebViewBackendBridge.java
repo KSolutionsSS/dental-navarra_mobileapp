@@ -19,6 +19,7 @@
 package com.nbempire.dentalnavarra.cordova;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import com.nbempire.dentalnavarra.component.service.RemembersService;
 import org.apache.cordova.CordovaActivity;
@@ -61,7 +62,14 @@ public class WebViewBackendBridge {
      */
     public String getPreference(String preference) {
         Log.i(TAG, "Getting preference from shared preferences file: " + preference);
-        return cordovaActivity.getSharedPreferences(RemembersService.DENTAL_NAVARRA_PREFERENCES_FILE_NAME, Context.MODE_PRIVATE)
-                              .getString(preference, "null");
+
+        SharedPreferences sharedPreferences =
+                cordovaActivity.getSharedPreferences(RemembersService.DENTAL_NAVARRA_PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
+
+        String result = sharedPreferences.getString(preference, "null");
+
+        sharedPreferences.edit().putString(preference, "[]").commit();
+
+        return result;
     }
 }

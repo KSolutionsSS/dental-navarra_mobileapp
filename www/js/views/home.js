@@ -53,13 +53,22 @@ app.views.home = (function () {
     var isInitialised;
 
     var loadRemembers = function () {
-        var expandRemember = function (event) {
+        var expandRemember = function (remembers, event) {
             var $li = $(event.target).parent();
 
-            var meetingDate = $li.find('.hidden').html();
-            var message = $li.find('span:not(.hidden)').text();
+            var meetingDate = $li.attr('data-meetingDate');
+            var remember = remembers.filter(function (each) {
+                return each.meetingDate === meetingDate;
+            })[0];
 
-            app.displayNextView('#rememberNotificationView', message, meetingDate);
+            console.log('remember: ');
+            console.log(remember.meetingDate);
+            console.log(remember.message);
+            console.log(remember.treatments);
+
+            remember.treatments = remember.treatments.split(',');
+
+            app.displayNextView('#rememberNotificationView', remember);
         };
 
         var $container = $('#notifications').empty();
@@ -67,7 +76,7 @@ app.views.home = (function () {
             console.log('Obtained: ' + patient.remembers.length + ' remembers about treatments.');
 
             $container.append($('#notificationTemplate').render({remembers: patient.remembers}));
-            $container.find('li').click(expandRemember);
+            $container.find('li').click(expandRemember.bind(undefined, patient.remembers));
         } else {
             console.log('There is no remembers to display to the user, showing a message');
             $container.empty().html('<div class="alert alert-info">\n    Parece que usted a&uacute;n no tiene recordatorios.\n</div>');

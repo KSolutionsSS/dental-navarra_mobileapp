@@ -31,11 +31,17 @@ public class Remember {
 
     private String meetingDate;
 
+    private String treatments;
+
     public String getMeetingDate() {
         return meetingDate;
     }
 
     public String getMessage() {
         return message;
+    }
+
+    public String getTreatments() {
+        return treatments;
     }
 }

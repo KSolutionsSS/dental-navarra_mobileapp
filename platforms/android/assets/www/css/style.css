@@ -42,6 +42,10 @@ h1, h2, h3 {
     font-family: 'Fauna One', serif;
 }
 
+h4{
+    color: #ffffff;
+}
+
 p {
     color: #ffffff;
     font-size: large;
@@ -164,6 +168,10 @@ a:hover, a:focus {
 
 #rememberNotificationView blockquote p .badge {
     margin-left: 0.5%;
+}
+
+#rememberNotificationView ul {
+    color: #ffffff;
 }
 
 /***********************************************/

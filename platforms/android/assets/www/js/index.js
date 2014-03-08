@@ -98,7 +98,8 @@ var app = (function () {
                 if (message) {
                     result = {
                         message: message,
-                        meetingDate: getQueryStringValue('meetingDate')
+                        meetingDate: getQueryStringValue('meetingDate'),
+                        treatments: getQueryStringValue('treatments').split(',')
                     };
                 }
 
@@ -129,7 +130,7 @@ var app = (function () {
                 console.log('Obtained from URL meetingDate: ' + result.meetingDate + ', message: ' + result.message);
                 console.log('Displaying remember notification view...');
                 patient = JSON.parse(localStorage.getItem(PATIENT_KEY));
-                app.displayNextView('#rememberNotificationView', result.message, result.meetingDate);
+                app.displayNextView('#rememberNotificationView', result);
             } else {
                 result = checkForLoggedUser();
                 if (result) {
@@ -265,7 +266,7 @@ var app = (function () {
         app.views.changePassword.init();
     };
 
-    var displayNextView = function (selector, message, meetingDate) {
+    var displayNextView = function (selector, remember) {
         switch (selector) {
             case '#homeView':
                 if (!app.views.home.isInitialised()) {
@@ -273,7 +274,7 @@ var app = (function () {
                 }
                 break;
             case '#rememberNotificationView':
-                app.views.rememberNotification.render(message, meetingDate);
+                app.views.rememberNotification.render(remember);
                 break;
             case '#changePasswordView':
                 if (!app.views.changePassword.isInitialised()) {

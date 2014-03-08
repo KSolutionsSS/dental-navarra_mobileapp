@@ -55,6 +55,8 @@ public class RemembersService extends BackgroundService {
 
     public static final String NOTIFICATION_INTENT_PARAMETER_MEETING_DATE = "meetingDate";
 
+    public static final String NOTIFICATION_INTENT_PARAMETER_TREATMENTS = "treatments";
+
     private static final String PATIENT_ID_KEY = "patientId";
 
     private static final String REMEMBERS_KEY = "remembers";
@@ -122,6 +124,8 @@ public class RemembersService extends BackgroundService {
             resultIntent.putExtra(NOTIFICATION_INTENT_PARAMETER_MESSAGE, remember.getMessage());
             Log.i(TAG, "Adding extra parameter to notification result intent, meetingDate: " + remember.getMeetingDate());
             resultIntent.putExtra(NOTIFICATION_INTENT_PARAMETER_MEETING_DATE, remember.getMeetingDate());
+            Log.i(TAG, "Adding extra parameter to notification result intent, treatments: " + remember.getTreatments());
+            resultIntent.putExtra(NOTIFICATION_INTENT_PARAMETER_TREATMENTS, remember.getTreatments());
         }
 
         // The stack builder object will contain an artificial back stack for the
@@ -158,6 +162,7 @@ public class RemembersService extends BackgroundService {
             try {
                 jsonRemember.put(NOTIFICATION_INTENT_PARAMETER_MESSAGE, eachRemember.getMessage());
                 jsonRemember.put(NOTIFICATION_INTENT_PARAMETER_MEETING_DATE, eachRemember.getMeetingDate());
+                jsonRemember.put(NOTIFICATION_INTENT_PARAMETER_TREATMENTS, eachRemember.getTreatments());
             } catch (JSONException jsonException) {
                 Log.e(TAG, "An error occurred while putting a JSON attribute into a JSONObject: " + jsonException.getMessage());
                 add = false;

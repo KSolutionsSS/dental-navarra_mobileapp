@@ -47,9 +47,12 @@ public class DentalNavarraActivity extends CordovaActivity {
         String params = "";
         String message = getIntent().getStringExtra(RemembersService.NOTIFICATION_INTENT_PARAMETER_MESSAGE);
         String meetingDate = getIntent().getStringExtra(RemembersService.NOTIFICATION_INTENT_PARAMETER_MEETING_DATE);
+        String treatments = getIntent().getStringExtra(RemembersService.NOTIFICATION_INTENT_PARAMETER_TREATMENTS);
         if (message != null) {
             Log.d(TAG, "Adding parameter " + RemembersService.NOTIFICATION_INTENT_PARAMETER_MESSAGE + " to app URL: " + message);
-            params = "?" + RemembersService.NOTIFICATION_INTENT_PARAMETER_MESSAGE + "=" + message + "&meetingDate=" + meetingDate;
+            params = "?" + RemembersService.NOTIFICATION_INTENT_PARAMETER_MESSAGE + "=" + message + "&" +
+                     RemembersService.NOTIFICATION_INTENT_PARAMETER_MEETING_DATE + "=" + meetingDate + "&" +
+                     RemembersService.NOTIFICATION_INTENT_PARAMETER_TREATMENTS + "=" + treatments;
         }
 
         // Set by <content src="index.html" /> in config.xml

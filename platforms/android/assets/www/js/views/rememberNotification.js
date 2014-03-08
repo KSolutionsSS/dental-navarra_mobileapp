@@ -28,10 +28,10 @@ app.views.rememberNotification = (function () {
     var $view = $('#rememberNotificationView');
 
     return {
-        render: function (message, meetingDate) {
-            console.log('Rendering view with message: ' + message + ', meetingDate: ' + meetingDate);
-            $view.find('#rememberDetail').html(message);
-            $view.find('.badge').html(meetingDate.substring(0, meetingDate.lastIndexOf('/')));
+        render: function (remember) {
+            console.log('Rendering view with message: ' + remember.message + ', meetingDate: ' + remember.meetingDate);
+
+            $('#rememberContainer').html($('#rememberTemplate').render(remember));
 
             if (patient) {
                 if (patient.office) {

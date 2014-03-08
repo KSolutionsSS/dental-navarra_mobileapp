@@ -178,11 +178,7 @@
 
                             <h3>1 recordatorio nuevo</h3>
                             <hr class="secondary">
-                            <p id="rememberDetail"></p>
-                            <p>Comun&iacute;quese con nosotros en un plazo de 48hs para concretar su turno, gracias.</p>
-                            <blockquote>
-                                <p>Su pr&oacute;xima revision le corresponder&iacute;a el <span class="badge"></span></p>
-                            </blockquote>
+                            <div id="rememberContainer"></div>
                         </div>
                     </div>
 
@@ -258,13 +254,11 @@
 <script id="notificationTemplate" type="text/x-jsrender">
     {{for remembers}}
 
-        <li>
+        <li data-meetingDate="{{:meetingDate}}">
             <span>{{:message}}</span>
-            <span class="hidden">{{:meetingDate}}</span>
         </li>
 
     {{/for}}
-
 </script>
 <script id="promotionTemplate" type="text/x-jsrender">
     {{for promotions}}
@@ -272,7 +266,6 @@
         <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(cantidadSemanas)}}</span></li>
 
     {{/for}}
-
 </script>
 <script id="contactInformationTemplate" type="text/x-jsrender">
     <address>
@@ -282,9 +275,24 @@
         T: {{:phoneNumber}}<br>
         C.E.: <a href="mailto:{{:email}}">{{:email}}</a>
     </address>
-
 </script>
 
+<script id="rememberTemplate" type="text/x-jsrender">
+    <p>{{:message}}</p>
+
+    <h4>Tratamientos a realizar:</h4>
+    <ul>
+        {{for treatments}}
+            <li>{{:#data}}</li>
+        {{/for}}
+    </ul>
+
+    <p>Comun&iacute;quese con nosotros en un plazo de 48hs para concretar su turno, gracias.</p>
+
+    <blockquote>
+        <p>Su pr&oacute;xima revision le corresponder&iacute;a el <span class="badge">{{:meetingDate}}</span></p>
+    </blockquote>
+</script>
 
 <!-- Exclusive libraries for platforms-->
 <script type="text/javascript" src="cordova.js"></script>

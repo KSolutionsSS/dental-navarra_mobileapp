@@ -78,47 +78,47 @@ app.views.home = (function () {
         }
     };
 
+    var loadPromotions = function () {
+        console.log('Loading promotions...');
+
+        var $container = $('#promotions');
+
+        googleDocsSimpleParser.parseSpreadsheetCellsUrl({
+                                                            url: urlJson,
+                                                            done: function (promotions) {
+                                                                var renderPromotions = function (promotions, container) {
+                                                                    $.templates({
+                                                                                    promotions: {
+                                                                                        markup: "#promotionTemplate",
+                                                                                        helpers: {
+                                                                                            calculateEndDate: function (numberOfWeeks) {
+                                                                                                var now = new Date();
+                                                                                                now.setDate(now.getDate() + numberOfWeeks
+                                                                                                    * 7);
+
+                                                                                                return now.getDate() + '/' + (now.getMonth()
+                                                                                                    + 1) + '/' + now.getFullYear();
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                });
+
+                                                                    container.html($.render.promotions({promotions: promotions}));
+                                                                };
+
+                                                                console.log('Obtained: ' + promotions.length + ' promotions.');
+                                                                renderPromotions(promotions, $container);
+                                                            },
+                                                            fail: function (jqXHR, textStatus, errorThrown) {
+                                                                console.log('There was an error getting promotions: ' + jqXHR.status
+                                                                                + '. Text: ' + textStatus);
+                                                                $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las promociones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
+                                                            }
+                                                        });
+    };
+
     return {
         init: function (patient) {
-
-            var loadPromotions = function () {
-                console.log('Loading promotions...');
-
-                var $container = $('#promotions');
-
-                googleDocsSimpleParser.parseSpreadsheetCellsUrl({
-                                                                    url: urlJson,
-                                                                    done: function (promotions) {
-                                                                        var renderPromotions = function (promotions, container) {
-                                                                            $.templates({
-                                                                                            promotions: {
-                                                                                                markup: "#promotionTemplate",
-                                                                                                helpers: {
-                                                                                                    calculateEndDate: function (numberOfWeeks) {
-                                                                                                        var now = new Date();
-                                                                                                        now.setDate(now.getDate() + numberOfWeeks
-                                                                                                            * 7);
-
-                                                                                                        return now.getDate() + '/' + (now.getMonth()
-                                                                                                            + 1) + '/' + now.getFullYear();
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        });
-
-                                                                            container.html($.render.promotions({promotions: promotions}));
-                                                                        };
-
-                                                                        console.log('Obtained: ' + promotions.length + ' promotions.');
-                                                                        renderPromotions(promotions, $container);
-                                                                    },
-                                                                    fail: function (jqXHR, textStatus, errorThrown) {
-                                                                        console.log('There was an error getting promotions: ' + jqXHR.status
-                                                                                        + '. Text: ' + textStatus);
-                                                                        $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las promociones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
-                                                                    }
-                                                                });
-            };
 
             var renderContactTab = function () {
                 var officeName;
@@ -177,6 +177,7 @@ app.views.home = (function () {
         isInitialised: function () {
             console.log('isInitialised: ' + isInitialised);
             return isInitialised;
-        }
+        },
+        checkForNewPromotions: loadPromotions
     };
 }());

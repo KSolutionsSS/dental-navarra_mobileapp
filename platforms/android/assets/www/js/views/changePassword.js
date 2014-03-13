@@ -102,24 +102,20 @@ app.views.changePassword = (function () {
             event.preventDefault();
             hideResultMessages();
 
-            var onSuccess = function (data) {
-                if (data.statusCode) {
-                    if (data.statusCode === 401) {
-                        console.log('Showing warning message');
-                        $view.find('.alert-warning').show();
-                    } else {
-                        console.log('Showing error message');
-                        onError(data);
-                    }
-                } else {
-                    console.log('Password successfully updated');
-                    $view.find('.alert-success').fadeIn();
-                    resetFields();
-                }
+            var onSuccess = function () {
+                console.log('Password successfully updated');
+                $view.find('.alert-success').fadeIn();
+                resetFields();
             };
             var onError = function (jqXHR) {
                 console.log('Can\'t update user password:' + jqXHR.status);
-                $view.find('.alert-danger').show();
+                if (jqXHR.status === 401) {
+                    console.log('Showing warning message');
+                    $view.find('.alert-warning').show();
+                } else {
+                    console.log('Showing error message');
+                    $view.find('.alert-danger').show();
+                }
             };
 
             modules.patient.changePassword({
@@ -186,7 +182,7 @@ app.views.changePassword = (function () {
         isInitialised: function () {
             return isInitialised;
         },
-        reset: function(){
+        reset: function () {
             hideResultMessages();
             resetFields();
         }

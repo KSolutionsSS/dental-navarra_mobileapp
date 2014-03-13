@@ -29,7 +29,7 @@ app.views.login = (function () {
 
             $('.alert').fadeOut();
 
-            modules.patient.login($('#email').val(), $('#password').val(), function (response) {
+            modules.patient.login($('#email').val(), $('#password').val(), function (data, textStatus, jqXHR) {
                 var handleSuccessfulLogin = function (patientFromServer) {
                     console.log('User ' + patientFromServer.email + ' successfully logged');
                     console.log('User information: ' + patientFromServer._id + ', office: ' + patientFromServer.office);
@@ -43,19 +43,23 @@ app.views.login = (function () {
                     app.displayNextView('#homeView');
                 };
 
-                switch (response.statusCode) {
+                switch (jqXHR.status) {
                     case 200:
-                        handleSuccessfulLogin(response.patient);
-                        break;
+                        handleSuccessfulLogin(data);
+                }
+            }, function (jqXHR) {
+                console.log('No se pudo realizar la petición de login: ' + jqXHR.status);
+                switch (jqXHR.status) {
                     case 404:
                         $('#alert-username').fadeIn();
                         break;
                     case 401:
                         $('#alert-password').fadeIn();
+                        break;
+                    default:
+                        $('#alert-generic').fadeIn();
                 }
-            }, function (jqXHR) {
-                console.log('No se pudo realizar la petición de login: ' + jqXHR.status);
-                $('#alert-generic').fadeIn();
+
             });
         });
     };

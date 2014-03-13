@@ -19,6 +19,7 @@ var PATIENT_KEY = 'patient';
 //var SERVER_URL = 'http://localhost:5000/';
 var SERVER_URL = 'http://dentalnavarra-intranet.herokuapp.com/';
 var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0AgqeUj0Ks3f6dGNNMERIRnpjd2JTb1UzUWdzTXlDU2c';
+var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 120000;
 
 var patient;
 var $viewsTab;
@@ -148,8 +149,6 @@ var app = (function () {
          * Initialize background service
          */
         (function () {
-            var milliseconds = 180000;
-
             var updateNotificationsHandler = function (data) {
                 console.log('On update remembers handler...');
 
@@ -238,7 +237,7 @@ var app = (function () {
                     registerForBootStart(data);
                 } else {
                     console.log('Background service is enabling its timer...');
-                    myService.enableTimer(milliseconds, registerForBootStart, onError);
+                    myService.enableTimer(CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL, registerForBootStart, onError);
                 }
             };
 

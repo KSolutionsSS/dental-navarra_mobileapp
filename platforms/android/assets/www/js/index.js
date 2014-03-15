@@ -61,7 +61,7 @@ var app = (function () {
         }, false);
 
         //  TODO : Delete this line or context. It's used when testing from desktop browser.
-        this.onDeviceReady();
+//        this.onDeviceReady();
     };
 
     /**

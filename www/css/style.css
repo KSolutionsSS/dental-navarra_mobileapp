@@ -56,6 +56,10 @@ blockquote small {
     color: #000000;
 }
 
+blockquote p span {
+    text-transform: capitalize;
+}
+
 address a {
     color: #83B0D8;
 }

@@ -42,7 +42,7 @@ h1, h2, h3 {
     font-family: 'Fauna One', serif;
 }
 
-h4{
+h4 {
     color: #ffffff;
 }
 
@@ -72,8 +72,11 @@ a {
 }
 
 a:hover, a:focus {
-    color: #ffffff;
     text-decoration: inherit;
+}
+
+a.panel-title:hover , a.panel-title:focus {
+    color: #ffffff;
 }
 
 .badge {

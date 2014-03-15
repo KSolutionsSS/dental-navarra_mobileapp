@@ -60,8 +60,8 @@ var app = (function () {
             }
         }, false);
 
-        //  TODO : Delete this line or context.
-//        this.onDeviceReady();
+        //  TODO : Delete this line or context. It's used when testing from desktop browser.
+        this.onDeviceReady();
     };
 
     /**
@@ -111,8 +111,29 @@ var app = (function () {
              * Check for logged user...
              */
             var checkForLoggedUser = function () {
-                //  TODO : Delete this line or context.
-//                patient = {"_id": "52f5036af687300200acd105", "email": "barrios.nahuel@gmail.com", "office": "tafalla"};
+                //  TODO : Delete this line or context. It's used when testing from desktop browser.
+//                patient = {
+//                    "_id": "53194c7a0f0f8d02002b6742",
+//                    "email": "barrios.nahuel@gmail.com",
+//                    "office": "tafalla",
+//                    "remembers": [
+//                        {
+//                            "message": "Han pasado 4 meses y medio desde su visita y le corresponde una cita de revisión en 2 semanas.",
+//                            "meetingDate": "29/7",
+//                            "treatments": "Ortodoncia"
+//                        },
+//                        {
+//                            "message": "Han pasado 4 meses y medio desde su visita y le corresponde una cita de revisión en 2 semanas.",
+//                            "meetingDate": "29/7",
+//                            "treatments": "Ortodoncia"
+//                        },
+//                        {
+//                            "message": "Han pasado 3 meses desde su visita y le corresponde una cita de revisión en 2 semanas.",
+//                            "meetingDate": "15/6",
+//                            "treatments": "Cirugía de implantes,Extracción"
+//                        }
+//                    ]
+//                };
 //                localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
 
                 var isLogged;

@@ -21,7 +21,7 @@ var SERVER_URL = 'http://dentalnavarra-intranet.herokuapp.com/';
 var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0AgqeUj0Ks3f6dGNNMERIRnpjd2JTb1UzUWdzTXlDU2c';
 var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 120000;
 
-var patient;
+var patient = patient || {};
 var $viewsTab;
 
 var app = (function () {
@@ -30,6 +30,26 @@ var app = (function () {
      * The application constructor
      */
     var initialize = function () {
+        $.templates({
+                        contactInformation: {
+                            markup: "#contactInformationTemplate",
+                            helpers: {
+                                encodeURI: encodeURI
+                            }
+                        },
+                        promotions: {
+                            markup: "#promotionTemplate",
+                            helpers: {
+                                calculateEndDate: function (numberOfWeeks) {
+                                    var now = new Date();
+                                    now.setDate(now.getDate() + numberOfWeeks * 7);
+
+                                    return now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
+                                }
+                            }
+                        }
+                    });
+
         console.log('Initialising Dental Navarra app...');
         app.bindEvents();
     };
@@ -171,6 +191,15 @@ var app = (function () {
          */
         (function () {
             var updateNotificationsHandler = function (data) {
+                var fromCommaSeparatedToArray = function (eachRemember) {
+
+                    if (typeof eachRemember.treatments === 'string') {
+                        eachRemember.treatments = eachRemember.treatments.split(',');
+                    }
+
+                    return eachRemember;
+                };
+
                 console.log('On update remembers handler...');
 
                 var localStoragePatient = localStorage.getItem(PATIENT_KEY);
@@ -185,6 +214,8 @@ var app = (function () {
 
                         patient = JSON.parse(localStoragePatient);
                         if (remembers.length > 0) {
+                            remembers = remembers.map(fromCommaSeparatedToArray);
+
                             //  TODO : Functionality : Put newer remembers first!
                             if (patient.remembers) {
                                 patient.remembers = patient.remembers.concat(remembers);
@@ -290,7 +321,7 @@ var app = (function () {
         switch (selector) {
             case '#homeView':
                 if (!app.views.home.isInitialised()) {
-                    app.views.home.init(patient);
+                    app.views.home.init();
                 }
                 break;
             case '#rememberNotificationView':

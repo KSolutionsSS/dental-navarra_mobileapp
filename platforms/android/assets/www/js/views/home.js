@@ -21,7 +21,9 @@ var urlJson = 'https://spreadsheets.google.com/feeds/cells/' + PROMOTIONS_GOOGLE
 var offices = {
     tafalla: {
         name: "Clínica Odontológica Tafalla",
-        street: "C/ Diputación Foral, 4,1 A.",
+        street: "C/ Diputación Foral",
+        number: 4,
+        apartment: "1 A",
         city: "Tafalla",
         postalCode: 31300,
         phoneNumber: "948 755 169",
@@ -29,7 +31,9 @@ var offices = {
     },
     alsasua: {
         name: 'Clínica Dental Alsasua',
-        street: 'C/ Alzania, 1, A.',
+        street: 'C/ Alzania',
+        number: 1,
+        apartment: "A",
         city: 'Alsasua',
         postalCode: 31800,
         phoneNumber: '948 468 232',
@@ -37,13 +41,17 @@ var offices = {
     },
     milagro: {
         name: 'Clínica Dental Milagro',
-        street: 'C/ Navas de Tolosa, 4 bajo.',
+        street: 'C/ Navas de Tolosa',
+        number: 4,
+        apartment: "bajo",
         city: 'Milagro',
         postalCode: 31120,
         phoneNumber: '948 861 231',
         email: 'milagro@dentalnavarra.com'
     }
 };
+
+var patient = patient || {};
 
 var app = app || {};
 app.views = app.views || {};
@@ -60,8 +68,6 @@ app.views.home = (function () {
             var remember = remembers.filter(function (each) {
                 return each.meetingDate === meetingDate;
             })[0];
-
-            remember.treatments = remember.treatments.split(',');
 
             app.displayNextView('#rememberNotificationView', remember);
         };
@@ -86,39 +92,19 @@ app.views.home = (function () {
         googleDocsSimpleParser.parseSpreadsheetCellsUrl({
                                                             url: urlJson,
                                                             done: function (promotions) {
-                                                                var renderPromotions = function (promotions, container) {
-                                                                    $.templates({
-                                                                                    promotions: {
-                                                                                        markup: "#promotionTemplate",
-                                                                                        helpers: {
-                                                                                            calculateEndDate: function (numberOfWeeks) {
-                                                                                                var now = new Date();
-                                                                                                now.setDate(now.getDate() + numberOfWeeks
-                                                                                                    * 7);
-
-                                                                                                return now.getDate() + '/' + (now.getMonth()
-                                                                                                    + 1) + '/' + now.getFullYear();
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                });
-
-                                                                    container.html($.render.promotions({promotions: promotions}));
-                                                                };
-
                                                                 console.log('Obtained: ' + promotions.length + ' promotions.');
-                                                                renderPromotions(promotions, $container);
+                                                                $container.html($.render.promotions({promotions: promotions}));
                                                             },
                                                             fail: function (jqXHR, textStatus, errorThrown) {
-                                                                console.log('There was an error getting promotions: ' + jqXHR.status
-                                                                                + '. Text: ' + textStatus);
+                                                                console.log('There was an error getting promotions: ' + jqXHR.status + '. Text: '
+                                                                                + textStatus);
                                                                 $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las promociones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
                                                             }
                                                         });
     };
 
     return {
-        init: function (patient) {
+        init: function () {
 
             var renderContactTab = function () {
                 var officeName;
@@ -149,7 +135,6 @@ app.views.home = (function () {
 
                 $('#contactInformation').html($('#contactInformationTemplate').render(patient.office));
             };
-
 
             var bindEventsForSettingsTab = function () {
                 var $settings = $('#settings');

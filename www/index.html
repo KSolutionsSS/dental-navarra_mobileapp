@@ -260,15 +260,27 @@
 </script>
 <script id="contactInformationTemplate" type="text/x-jsrender">
     <address>
-        <strong>{{:name}}.</strong><br>
-        {{:street}}<br>
-        {{:city}}, {{:postalCode}}<br>
-        <span class="fa fa-phone"></span> <a href="tel:{{:phoneNumber}}">{{:phoneNumber}}</a><br>
-        <span class="fa fa-envelope"></span> <a href="mailto:{{:email}}">{{:email}}</a><br>
-        <span class="fa fa-globe"></span> <a href="http://www.dentalnavarra.com">dentalnavarra.com</a>
+        <strong>{{:name}}.</strong>
+        <ul>
+            <li>
+                <span class="fa fa-map-marker"></span>
+                <a href="geo:0,0?q={{:~encodeURI(street+' '+number+' '+city)}}">{{:street}}, {{:number}}, {{:apartment}}, {{:city}}, {{:postalCode}}</a>
+            </li>
+            <li>
+                <span class="fa fa-phone"></span>
+                <a href="tel:{{:phoneNumber}}">{{:phoneNumber}}</a>
+            </li>
+            <li>
+                <span class="fa fa-envelope"></span>
+                <a href="mailto:{{:email}}">{{:email}}</a>
+            </li>
+            <li>
+                <span class="fa fa-globe"></span>
+                <a href="http://www.dentalnavarra.com">dentalnavarra.com</a>
+            </li>
+        </ul>
     </address>
 </script>
-
 <script id="rememberTemplate" type="text/x-jsrender">
     <p>{{:message}}</p>
 

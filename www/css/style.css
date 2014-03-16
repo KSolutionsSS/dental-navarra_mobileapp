@@ -64,6 +64,21 @@ address a {
     color: #83B0D8;
 }
 
+address > ul {
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+address > ul > li {
+    margin: 5px 0;
+}
+
+address > ul > li > span {
+    width: 25px;
+    text-align: center;
+}
+
 hr.secondary {
     border-style: dashed;
 }

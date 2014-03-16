@@ -40,6 +40,24 @@
 
 <body>
 <div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <header>
+                <div class="logo">
+                    <h1>
+                        Dental
+                    </h1>
+
+                    <h1>
+                        Navarra
+                    </h1>
+                </div>
+                <hr>
+            </header>
+        </div>
+    </div>
+
     <div class="row clearfix">
         <div class="col-md-12 column">
 
@@ -54,13 +72,6 @@
             <div class="tab-content">
 
                 <div class="tab-pane active fade in" id="loginView">
-                    <div class="logo">
-                        <h1>
-                            Dental Navarra
-                        </h1>
-                    </div>
-                    <hr>
-
                     <blockquote>
                         <p>
                             "La felicidad radica, ante todo, en <span>la salud</span>"
@@ -81,7 +92,9 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <div class="alert alert-danger" id="alert-password">La contraseña ingresada <strong>no</strong> es v&aacute;lida.</div>
+                                <div class="alert alert-danger" id="alert-password">
+                                    La contraseña ingresada <strong>no</strong> es v&aacute;lida.
+                                </div>
                                 <input type="password" class="form-control" id="password" placeholder="Contraseña" maxlength="10" required="required">
                             </div>
                         </div>
@@ -99,9 +112,6 @@
                 <!--FIN #login-->
 
                 <div class="tab-pane fade" id="homeView">
-                    <h2>Dental Navarra</h2>
-                    <hr>
-
                     <div class="panel-group" id="collapsable-panel">
 
                         <div class="panel panel-default">
@@ -164,10 +174,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <h2>Dental Navarra</h2>
-                            <hr>
-
-                            <h3>1 recordatorio nuevo</h3>
+                            <h2>1 recordatorio nuevo</h2>
                             <hr class="secondary">
                             <div id="rememberContainer"></div>
                         </div>
@@ -190,10 +197,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <h2>Dental Navarra</h2>
-                            <hr>
-
-                            <h3>Cambiar contraseña</h3>
+                            <h2>Cambiar contraseña</h2>
                             <hr class="secondary">
 
                             <div class="alert alert-danger">
@@ -284,7 +288,7 @@
 <script id="rememberTemplate" type="text/x-jsrender">
     <p>{{:message}}</p>
 
-    <h4>Tratamientos a realizar:</h4>
+    <h3>Tratamientos a realizar:</h3>
     <ul>
         {{for treatments}}
             <li>{{:#data}}</li>

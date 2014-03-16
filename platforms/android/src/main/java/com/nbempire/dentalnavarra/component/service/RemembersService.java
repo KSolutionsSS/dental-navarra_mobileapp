@@ -105,6 +105,7 @@ public class RemembersService extends BackgroundService {
             }
         }
 
+        Log.d(TAG, "Obtained remembers: " + remembers.length);
         return remembers;
     }
 
@@ -157,19 +158,16 @@ public class RemembersService extends BackgroundService {
     private void storeRemembers(Remember[] remembers) {
         JSONArray jsonRemembers = new JSONArray();
         for (Remember eachRemember : remembers) {
-            JSONObject jsonRemember = new JSONObject();
-            boolean add = true;
             try {
+                JSONObject jsonRemember = new JSONObject();
+
                 jsonRemember.put(NOTIFICATION_INTENT_PARAMETER_MESSAGE, eachRemember.getMessage());
                 jsonRemember.put(NOTIFICATION_INTENT_PARAMETER_MEETING_DATE, eachRemember.getMeetingDate());
                 jsonRemember.put(NOTIFICATION_INTENT_PARAMETER_TREATMENTS, eachRemember.getTreatments());
+
+                jsonRemembers.put(jsonRemember);
             } catch (JSONException jsonException) {
                 Log.e(TAG, "An error occurred while putting a JSON attribute into a JSONObject: " + jsonException.getMessage());
-                add = false;
-            }
-
-            if (add) {
-                jsonRemembers.put(jsonRemember);
             }
         }
 
@@ -180,6 +178,7 @@ public class RemembersService extends BackgroundService {
             Log.e(TAG, "An error ocurred while trying to stringify the JSONArray of remembers: " + jsonException.getMessage());
             stringRemembers = "[]";
         } finally {
+            Log.i(TAG, "Storing remembers: " + jsonRemembers.length());
             getSharedPreferences().edit().putString(REMEMBERS_KEY, stringRemembers).commit();
         }
     }
@@ -216,6 +215,8 @@ public class RemembersService extends BackgroundService {
                 //  TODO : Performance : May I call this less times?
                 getSharedPreferences().edit().putString(PATIENT_ID_KEY, patientId).commit();
                 Log.i(TAG, "Shared preferences updated with " + PATIENT_ID_KEY + ": " + patientId);
+            } else {
+                Log.i(TAG, "Backgound service can't be configured yet. Parameter patientId is required.");
             }
         } catch (JSONException jsonException) {
             Log.e(TAG, "Can't get patientId from frontend: " + jsonException.getMessage());

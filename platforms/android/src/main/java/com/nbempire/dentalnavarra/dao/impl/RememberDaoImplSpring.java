@@ -50,6 +50,7 @@ public class RememberDaoImplSpring implements RememberDao {
         restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 
         String urlString = "http://dentalnavarra-intranet.herokuapp.com/patients/" + patientId + "/notifications";
+        Log.d(TAG, "Getting resource: " + urlString);
 
         RemembersDTO response = null;
         URI url = null;
@@ -64,6 +65,6 @@ public class RememberDaoImplSpring implements RememberDao {
             Log.e(TAG, restClientException.getMessage());
         }
 
-        return response;
+        return response != null ? response : new RemembersDTO();
     }
 }

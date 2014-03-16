@@ -34,4 +34,11 @@ public class RemembersDTO {
     public Remember[] getRemembers() {
         return remembers;
     }
+
+    /**
+     * Default constructor that initializes the remembers array to prevent {@code NullPointerException}.
+     */
+    public RemembersDTO() {
+        this.remembers = new Remember[0];
+    }
 }

@@ -40,12 +40,7 @@ var app = (function () {
                         promotions: {
                             markup: "#promotionTemplate",
                             helpers: {
-                                calculateEndDate: function (numberOfWeeks) {
-                                    var now = new Date();
-                                    now.setDate(now.getDate() + numberOfWeeks * 7);
-
-                                    return now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
-                                }
+                                calculateEndDate: modules.promotion.calculateEndDate
                             }
                         }
                     });

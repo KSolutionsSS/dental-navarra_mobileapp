@@ -258,7 +258,7 @@
 <script id="promotionTemplate" type="text/x-jsrender">
     {{for promotions}}
 
-        <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(cantidadSemanas)}}</span></li>
+        <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(#view.data)}}</span></li>
 
     {{/for}}
 </script>
@@ -318,6 +318,7 @@
 <!--My libraries-->
 <script type="text/javascript" src="js/modules/modules.js"></script>
 <script type="text/javascript" src="js/modules/patient/patient.js"></script>
+<script type="text/javascript" src="js/modules/promotion/promotion.js"></script>
 
 
 <!-- My scripts -->

@@ -93,7 +93,11 @@ app.views.home = (function () {
                                                             url: urlJson,
                                                             done: function (promotions) {
                                                                 console.log('Obtained: ' + promotions.length + ' promotions.');
-                                                                $container.html($.render.promotions({promotions: promotions}));
+
+                                                                $container.html($.render.promotions({
+                                                                                                        promotions: modules.patient.getPersonalizedPromotions(patient,
+                                                                                                                                                              promotions)
+                                                                                                    }));
                                                             },
                                                             fail: function (jqXHR, textStatus, errorThrown) {
                                                                 console.log('There was an error getting promotions: ' + jqXHR.status + '. Text: '

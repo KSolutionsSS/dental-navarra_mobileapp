@@ -24,6 +24,24 @@ var modules = modules || {};
 
 modules.patient = (function () {
 
+    var AGES = Object.freeze({
+                                 CHILD: {
+                                     id: 'niños',
+                                     maximumAge: 15
+                                 },
+                                 TEEN: {
+                                     id: 'adolescentes',
+                                     maximumAge: 25
+                                 },
+                                 ADULT: {
+                                     id: 'adultos',
+                                     maximumAge: 64
+                                 },
+                                 RETIRED: {
+                                     id: 'jubilados'
+                                 }
+                             });
+
     var login = function (username, password, onSuccess, onError) {
         console.log('Trying to login user: ' + username);
 
@@ -53,9 +71,41 @@ modules.patient = (function () {
                }).done(onSuccess).fail(onError);
     };
 
+    var isOfficeIn = function (patient, offices) {
+        return offices.some(function (eachOffice) {
+            return patient.office.city.toLowerCase() === eachOffice.toLowerCase();
+        });
+    };
+
+    var isAgeAllowed = function (patient, promotion) {
+        //  TODO : Functionality : Finish isAgeAllowed functionality to filter promotions based on patient's age.
+        return true;
+    };
+
+    var getPersonalizedPromotions = function (patient, promotions) {
+        return promotions.filter(function (eachPromotion) {
+            var show = false;
+
+            if (eachPromotion.activa === 'si') {
+                show = isOfficeIn(patient, eachPromotion.clinicas.split(','));
+
+                if (show) {
+                    show = modules.promotion.isVisible(eachPromotion);
+
+                    if (show) {
+                        show = isAgeAllowed(patient, eachPromotion);
+                    }
+                }
+            }
+
+            return show;
+        });
+    };
+
     return {
         login: login,
-        changePassword: changePassword
+        changePassword: changePassword,
+        getPersonalizedPromotions: getPersonalizedPromotions
     };
 
 }());

@@ -73,14 +73,9 @@ app.views.home = (function () {
         };
 
         var $container = $('#notifications').empty();
+        $container.append($.render.remembers({remembers: patient.remembers || []}));
         if (patient.remembers) {
-            console.log('Obtained: ' + patient.remembers.length + ' remembers about treatments.');
-
-            $container.append($('#notificationTemplate').render({remembers: patient.remembers}));
             $container.find('li').click(expandRemember.bind(undefined, patient.remembers));
-        } else {
-            console.log('There is no remembers to display to the user, showing a message');
-            $container.empty().html('<div class="alert alert-info">\n    Parece que usted a&uacute;n no tiene recordatorios.\n</div>');
         }
     };
 

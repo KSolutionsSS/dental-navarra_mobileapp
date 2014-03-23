@@ -27,18 +27,36 @@ modules.patient = (function () {
     var AGES = Object.freeze({
                                  CHILD: {
                                      id: 'niños',
+                                     minimumAge: 0,
                                      maximumAge: 15
                                  },
                                  TEEN: {
                                      id: 'adolescentes',
+                                     minimumAge: 16,
                                      maximumAge: 25
                                  },
                                  ADULT: {
                                      id: 'adultos',
+                                     minimumAge: 26,
                                      maximumAge: 64
                                  },
                                  RETIRED: {
-                                     id: 'jubilados'
+                                     id: 'jubilados',
+                                     minimumAge: 65
+                                 },
+                                 get: function (id) {
+                                     var result;
+
+                                     for (var eachAttribute in AGES) {
+                                         if (AGES.hasOwnProperty(eachAttribute)) {
+                                             if (AGES[eachAttribute].id === id) {
+                                                 result = AGES[eachAttribute];
+                                                 break;
+                                             }
+                                         }
+                                     }
+
+                                     return result;
                                  }
                              });
 
@@ -78,8 +96,9 @@ modules.patient = (function () {
     };
 
     var isAgeAllowed = function (patient, promotion) {
-        //  TODO : Functionality : Finish isAgeAllowed functionality to filter promotions based on patient's age.
-        return true;
+        var range = AGES.get(promotion.rangoEtario);
+
+        return range ? patient.age >= range.minimumAge && patient.age <= range.maximumAge : false;
     };
 
     var getPersonalizedPromotions = function (patient, promotions) {

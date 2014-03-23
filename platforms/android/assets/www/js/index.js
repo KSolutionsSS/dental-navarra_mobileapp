@@ -32,16 +32,19 @@ var app = (function () {
     var initialize = function () {
         $.templates({
                         contactInformation: {
-                            markup: "#contactInformationTemplate",
+                            markup: '#contactInformationTemplate',
                             helpers: {
                                 encodeURI: encodeURI
                             }
                         },
                         promotions: {
-                            markup: "#promotionTemplate",
+                            markup: '#promotionsTemplate',
                             helpers: {
                                 calculateEndDate: modules.promotion.calculateEndDate
                             }
+                        },
+                        remembers: {
+                            markup: '#remembersTemplate'
                         }
                     });
 
@@ -130,6 +133,7 @@ var app = (function () {
 //                patient = {
 //                    "_id": "53194c7a0f0f8d02002b6742",
 //                    "email": "barrios.nahuel@gmail.com",
+//                    "age": "15",
 //                    "office": "tafalla",
 //                    "remembers": [
 //                        {

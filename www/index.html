@@ -246,21 +246,29 @@
 
 
 <!-- Templates definitions -->
-<script id="notificationTemplate" type="text/x-jsrender">
-    {{for remembers}}
-
-        <li data-meetingDate="{{:meetingDate}}">
-            <span>{{:message}}</span>
-        </li>
-
-    {{/for}}
+<script id="remembersTemplate" type="text/x-jsrender">
+    {{if remembers.length>0}}
+        {{for remembers}}
+            <li data-meetingDate="{{:meetingDate}}">
+                <span>{{:message}}</span>
+            </li>
+        {{/for}}
+    {{else}}
+        <div class="alert alert-info">
+            Parece que usted a&uacute;n no tiene recordatorios.
+        </div>
+    {{/if}}
 </script>
-<script id="promotionTemplate" type="text/x-jsrender">
-    {{for promotions}}
-
-        <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(#view.data)}}</span></li>
-
-    {{/for}}
+<script id="promotionsTemplate" type="text/x-jsrender">
+    {{if promotions.length>0}}
+        {{for promotions}}
+            <li>{{:descripcion}} !! <span class="badge">vence el  {{:~calculateEndDate(#view.data)}}</span></li>
+        {{/for}}
+    {{else}}
+        <div class="alert alert-info">
+            Hoy no tenemos promociones activas, ¡tal vez mañana si!
+        </div>
+    {{/if}}
 </script>
 <script id="contactInformationTemplate" type="text/x-jsrender">
     <address>

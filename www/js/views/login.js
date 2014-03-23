@@ -21,6 +21,19 @@ app.views = app.views || {};
 
 app.views.login = (function () {
 
+    /**
+     * Calculate age from given birthday date.
+     *
+     * Taken from: <a href="http://stackoverflow.com/a/21984136/1898043">StackOverflow answer</a>
+     * @param birthday A Date object.
+     * @returns {number} The age integer.
+     */
+    function calculateAge(birthday) {
+        var ageDifMs = Date.now() - birthday.getTime();
+        var ageDate = new Date(ageDifMs);
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
+
     var $view = $('#loginView');
 
     var bindLoginFormEvents = function () {
@@ -37,6 +50,7 @@ app.views.login = (function () {
                     patient = {
                         _id: patientFromServer._id,
                         email: patientFromServer.email,
+                        age: calculateAge(new Date(Date.parse(patientFromServer.birthday))),
                         office: patientFromServer.office
                     };
                     localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));

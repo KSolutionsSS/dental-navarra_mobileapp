@@ -81,6 +81,7 @@ public class RemembersService extends BackgroundService {
     }
 
     private Remember[] getRemembersAndShowNotification() {
+        //  TODO : Refactor :  Move this, and its context to a .service package (BusinessObject)
         RememberDao rememberDao = new RememberDaoImplSpring();
         RemembersDTO response = rememberDao.findRemembers(patientId);
 

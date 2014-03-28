@@ -17,7 +17,7 @@
   ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<project name="MisPacientes"
+<project name="Dental Navarra (Mobile App)"
          default="help">
 
     <!-- The local.properties file is created and updated by the 'android' tool.

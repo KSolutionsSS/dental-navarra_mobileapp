@@ -29,13 +29,29 @@ var app = (function () {
 
     var analytics;
 
+    var handleGoogleAnalyticsConfigurationError = function (analytics) {
+        //  TODO : Functionality : Try to send this error to support.
+        console.log('Google Analytics Plugin is not configured well (navigator.analytics is "' + analytics
+                        + '"), can\'t send app usage statistics to analytics.');
+    };
+
     /**
      * The application constructor
      */
     var initialize = function () {
-        analytics = navigator.analytics;
-        console.log('analytics vale: ' + analytics);
-//        analytics.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
+        /**
+         * This implementation is now using CMackay Google Analytics Plugin for Android and iOS: https://github.com/cmackay/google-analytics-plugin
+         */
+        var configureGoogleAnalytics = function () {
+            analytics = navigator.analytics;
+            if (analytics) {
+                analytics.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
+            } else {
+                handleGoogleAnalyticsConfigurationError(analytics);
+            }
+        };
+
+        configureGoogleAnalytics();
 
         $.templates({
                         contactInformation: {
@@ -327,14 +343,14 @@ var app = (function () {
         if (analytics) {
             analytics.sendAppView(pageName, function () {
                 //  onSuccess
-                console.log('mando bien: ' + pageName);
+                console.log('Added Google Analytics page view for: ' + pageName);
             }, function (error) {
                 //  onError
-                console.log('fallo: ' + pageName + '; Error:');
+                console.log('Error while sending Google Analytics page view for: ' + pageName + '; Error:');
                 console.log(error);
             });
         } else {
-            console.log('navigator.analytics is not configured well, can\'t send app usage statistics to analytics.');
+            handleGoogleAnalyticsConfigurationError(analytics);
         }
     };
 

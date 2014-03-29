@@ -37,6 +37,11 @@ app.views.rememberNotification = (function () {
                 if (patient.office) {
                     var callLink = $view.find('a');
                     callLink.attr('href', callLink.attr('href') + patient.office.phoneNumber);
+
+                    var onClick = analytics.execute.sendEvent.bind(undefined, analytics.keys.CATEGORY_ACTIONS, analytics.keys.ACTION_CALL_OFFICE,
+                                                                   patient.office.city);
+                    callLink.click(onClick);
+
                 } else {
                     console.log('There is no office information in the patient object, hiding button...');
                     $view.find('div.row:nth-child(2)').hide();

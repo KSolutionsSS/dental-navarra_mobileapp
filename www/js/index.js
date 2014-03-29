@@ -22,6 +22,50 @@ var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0AgqeUj0Ks3f6dGNNMERIRnpjd2JTb1UzUWdzTX
 var GOOGLE_ANALYTICS_TRACKING_ID = 'UA-32410648-5';
 var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 120000;
 
+/**
+ * @type {patient|*|{}}; Example:
+ *    [
+ *       {
+ *           "name": "Nahuel",
+ *           "lastName": "Barrios",
+ *           "secondLastName": "Safranchik",
+ *          "email": "barrios.nahuel@gmail.com",
+ *           "birthday": "1989/10/16",
+ *           "office": "tafalla",
+ *           "password": "sha1$0a799115$1$27088d3dc17db87703d6ef443a16c3633fb88485",
+ *           "_id": "532f621b0219c8020008cca1",
+ *           "fullName": "Barrios Safranchik, Nahuel",
+ *           "medicalHistory": [
+ *               {
+ *                   "date": "Sun Mar 23 2014 19:46:51 GMT-0300 (ART)",
+ *                   "treatments": [
+ *                       {
+ *                           "_id": "531a4c09beb57e0200bbf955"
+ *                       },
+ *                       {
+ *                           "_id": "531a4c09beb57e0200bbf954"
+ *                       }
+ *                   ],
+ *                   "nextMeetingMonthsNumber": "2",
+ *                   "active": "false"
+ *               },
+ *               {
+ *                   "date": "Fri Mar 28 2014 10:55:15 GMT-0300 (ART)",
+ *                   "treatments": [
+ *                       {
+ *                           "_id": "531a4c09beb57e0200bbf958"
+ *                       },
+ *                       {
+ *                           "_id": "531a4c09beb57e0200bbf94f"
+ *                       }
+ *                   ],
+ *                   "nextMeetingMonthsNumber": "2",
+ *                   "active": false
+ *              }
+ *           ]
+ *       }
+ *   ]
+ */
 var patient = patient || {};
 var $viewsTab;
 
@@ -107,9 +151,16 @@ var app = (function () {
         (function () {
             analytics.api = navigator.analytics;
             if (analytics.api) {
+                analytics.api.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
+
                 analytics.keys = Object.freeze({
-                                                   CATEGORY_SECTIONS: 'Sections',
-                                                   ACTION_OPEN: 'Open'
+                                                   CATEGORY_SECTIONS: 'Secciones',
+                                                   CATEGORY_ACTIONS: 'Acciones',
+                                                   ACTION_OPEN: 'Abrir',
+                                                   ACTION_CALL_OFFICE: 'Llamar consulta',
+                                                   ACTION_SEND_MAIL: 'Enviar email',
+                                                   ACTION_VIEW_MAP: 'Ver mapa',
+                                                   ACTION_VIEW_WEB: 'Ver web'
                                                });
 
                 analytics.execute = {};
@@ -126,8 +177,19 @@ var app = (function () {
                         handleGoogleAnalyticsConfigurationError(analytics.api);
                     }
                 };
+                analytics.execute.sendEvent = function (category, action, label) {
 
-                analytics.api.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
+                    var concatParameters = function () {
+                        return 'category: ' + category + '; action: ' + action + '; label: ' + label;
+                    };
+
+                    analytics.api.sendEvent(category, action, label, undefined, function () {
+                        console.log('Analytics event sent, ' + concatParameters());
+                    }, function (error) {
+                        console.log('Analytics event ' + concatParameters() + ' sent failed, error: ' + error);
+                    });
+
+                };
             } else {
                 handleGoogleAnalyticsConfigurationError(analytics.api);
             }

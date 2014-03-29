@@ -52,6 +52,7 @@ var offices = {
 };
 
 var patient = patient || {};
+var analytics = analytics || {};
 
 var app = app || {};
 app.views = app.views || {};
@@ -60,52 +61,12 @@ app.views.home = (function () {
 
     var isInitialised;
 
-    var loadRemembers = function () {
-        var expandRemember = function (remembers, event) {
-            var $li = $(event.target).parent();
+    var sections = (function () {
 
-            var meetingDate = $li.attr('data-meetingDate');
-            var remember = remembers.filter(function (each) {
-                return each.meetingDate === meetingDate;
-            })[0];
+        var contact = (function () {
+            var $contactTab;
 
-            app.displayNextView('#rememberNotificationView', remember);
-        };
-
-        var $container = $('#notifications').empty();
-        $container.append($.render.remembers({remembers: patient.remembers || []}));
-        if (patient.remembers) {
-            $container.find('li').click(expandRemember.bind(undefined, patient.remembers));
-        }
-    };
-
-    var loadPromotions = function () {
-        console.log('Loading promotions...');
-
-        var $container = $('#promotions');
-
-        googleDocsSimpleParser.parseSpreadsheetCellsUrl({
-                                                            url: urlJson,
-                                                            done: function (promotions) {
-                                                                console.log('Obtained: ' + promotions.length + ' promotions.');
-
-                                                                $container.html($.render.promotions({
-                                                                                                        promotions: modules.patient.getPersonalizedPromotions(patient,
-                                                                                                                                                              promotions)
-                                                                                                    }));
-                                                            },
-                                                            fail: function (jqXHR, textStatus, errorThrown) {
-                                                                console.log('There was an error getting promotions: ' + jqXHR.status + '. Text: '
-                                                                                + textStatus);
-                                                                $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las promociones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
-                                                            }
-                                                        });
-    };
-
-    return {
-        init: function () {
-
-            var renderContactTab = function () {
+            var render = function (callback) {
                 var officeName;
                 var eachAttribute;
 
@@ -126,20 +87,151 @@ app.views.home = (function () {
 
                         patient.office = offices[officeName];
                         localStorage.setItem('patient', JSON.stringify(patient));
-
                     } else {
                         console.log('Can\'t display office information, an error ocurred while looking for patient.office: ' + patient.office);
                     }
                 }
 
-                $('#contactInformation').html($('#contactInformationTemplate').render(patient.office));
+                $contactTab = $('#contactInformation');
+                $contactTab.html($('#contactInformationTemplate').render(patient.office));
+
+                callback();
             };
 
-            var bindEventsForSettingsTab = function () {
+            var bindEvents = function () {
+                if (analytics.api) {
+                    var onClick = analytics.execute.sendEvent.bind(undefined, analytics.keys.CATEGORY_ACTIONS, analytics.keys.ACTION_VIEW_MAP,
+                                                                   patient.office.city);
+                    $contactTab.find('a[href^=geo]').click(onClick);
+
+
+                    onClick = analytics.execute.sendEvent.bind(undefined, analytics.keys.CATEGORY_ACTIONS, analytics.keys.ACTION_CALL_OFFICE,
+                                                               patient.office.city);
+                    $contactTab.find('a[href^=tel]').click(onClick);
+
+
+                    onClick = analytics.execute.sendEvent.bind(undefined, analytics.keys.CATEGORY_ACTIONS, analytics.keys.ACTION_SEND_MAIL,
+                                                               patient.office.city);
+                    $contactTab.find('a[href^=mailto]').click(onClick);
+
+
+                    onClick = analytics.execute.sendEvent.bind(undefined, analytics.keys.CATEGORY_ACTIONS, analytics.keys.ACTION_VIEW_WEB, undefined);
+                    $contactTab.find('a[href^=http]').click(onClick);
+                }
+            };
+
+            return {
+                init: function () {
+                    render(bindEvents);
+                }
+            };
+        }());
+
+        var remembers = (function () {
+            var loadRemembers = function () {
+                var expandRemember = function (remembers, event) {
+                    var $li = $(event.target).parent();
+
+                    var meetingDate = $li.attr('data-meetingDate');
+                    var remember = remembers.filter(function (each) {
+                        return each.meetingDate === meetingDate;
+                    })[0];
+
+                    app.displayNextView('#rememberNotificationView', remember);
+                };
+
+                var $container = $('#notifications').empty();
+                $container.append($.render.remembers({remembers: patient.remembers || []}));
+                if (patient.remembers) {
+                    $container.find('li').click(expandRemember.bind(undefined, patient.remembers));
+                }
+            };
+
+            return {
+                load: loadRemembers
+            };
+        }());
+
+        var promotions = (function () {
+            var loadPromotions = function () {
+                console.log('Loading promotions...');
+
+                var $container = $('#promotions');
+
+                var googleDocsSimpleParserConfiguration = {
+                    url: urlJson,
+                    done: function (promotions) {
+                        console.log('Obtained: ' + promotions.length + ' promotions.');
+
+                        $container.html($.render.promotions({
+                                                                promotions: modules.patient.getPersonalizedPromotions(patient, promotions)
+                                                            }));
+                    },
+                    fail: function (jqXHR, textStatus, errorThrown) {
+                        console.log('There was an error getting promotions: ' + jqXHR.status + '. Text: ' + textStatus);
+                        $container.empty().html('<div class="alert alert-danger">\n    Disculpe, no se pudieron cargar las promociones en este momento. Intente de nuevo m&aacute;s tarde.\n</div>');
+                    }
+                };
+
+                googleDocsSimpleParser.parseSpreadsheetCellsUrl(googleDocsSimpleParserConfiguration);
+            };
+
+            return {
+                load: loadPromotions
+            };
+        }());
+
+        var settings = (function () {
+            var bindEvents = function () {
                 var $settings = $('#settings');
                 $settings.find('button:nth-child(1)').click(function (event) {
                     app.displayNextView('#changePasswordView');
                 });
+            };
+
+            return {
+                init: function () {
+                    bindEvents();
+                }
+            };
+        }());
+
+        return {
+            contact: contact,
+            remembers: remembers,
+            promotions: promotions,
+            settings: settings
+        };
+    }());
+
+    return {
+        init: function () {
+
+            var bindAnalyticsScreenViewEvents = function () {
+                if (analytics.api) {
+                    $('a.panel-title').click(function (event) {
+                        var href = event.currentTarget.href;
+                        href = href.substring(href.lastIndexOf('#'));
+
+                        var label;
+                        switch (href) {
+                            case '#panel-notifications':
+                                label = "Recordatorios";
+                                break;
+                            case '#panel-promotions':
+                                label = "Promociones";
+                                break;
+                            case '#panel-settings':
+                                label = "Configuración";
+                                break;
+                            case '#panel-contact':
+                                label = "Contacto";
+                                break;
+                        }
+
+                        analytics.execute.sendEvent(analytics.keys.CATEGORY_SECTIONS, analytics.keys.ACTION_OPEN, label);
+                    });
+                }
             };
 
             //  TODO : Delete this line or context.
@@ -149,49 +241,22 @@ app.views.home = (function () {
 //            ];
 //            localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
 
-            loadRemembers();
-            loadPromotions();
-            renderContactTab();
+            sections.remembers.load();
+            sections.promotions.load();
+            sections.contact.init();
+            sections.settings.init();
 
-            var bindAnalyticsEvents = function () {
-                $('a.panel-title').click(function (event) {
-                    var href = event.currentTarget.href;
-                    href = href.substring(href.lastIndexOf('#'));
+            bindAnalyticsScreenViewEvents();
 
-                    var label;
-                    switch (href) {
-                        case '#panel-notifications':
-                            label = "Remembers list";
-                            break;
-                        case '#panel-promotions':
-                            label = "Promotions list";
-                            break;
-                        case '#panel-settings':
-                            label = "Settings";
-                            break;
-                        case '#panel-contact':
-                            label = "Contact";
-                            break;
-                    }
-
-                    analytics.api.sendEvent(analytics.keys.CATEGORY_SECTIONS, analytics.keys.ACTION_OPEN, label);
-                });
-            };
-
-            if (analytics) {
-                bindAnalyticsEvents();
-            }
-
-            bindEventsForSettingsTab();
             isInitialised = true;
         },
         updateRemembers: function () {
-            loadRemembers();
+            sections.remembers.load();
         },
         isInitialised: function () {
             console.log('isInitialised: ' + isInitialised);
             return isInitialised;
         },
-        checkForNewPromotions: loadPromotions
+        checkForNewPromotions: sections.promotions.load()
     };
 }());

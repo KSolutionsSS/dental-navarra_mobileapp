@@ -20,7 +20,9 @@ var PATIENT_KEY = 'patient';
 var SERVER_URL = 'http://dentalnavarra-intranet.herokuapp.com/';
 var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0AgqeUj0Ks3f6dGNNMERIRnpjd2JTb1UzUWdzTXlDU2c';
 var GOOGLE_ANALYTICS_TRACKING_ID = 'UA-32410648-5';
-var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 120000;
+
+//var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 120000;// Every 2 minutes.
+var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 86400000;// Once per day.
 
 /**
  * @type {patient|*|{}}; Example:

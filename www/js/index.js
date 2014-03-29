@@ -19,6 +19,7 @@ var PATIENT_KEY = 'patient';
 //var SERVER_URL = 'http://localhost:5000/';
 var SERVER_URL = 'http://dentalnavarra-intranet.herokuapp.com/';
 var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0AgqeUj0Ks3f6dGNNMERIRnpjd2JTb1UzUWdzTXlDU2c';
+var GOOGLE_ANALYTICS_TRACKING_ID = 'UA-32410648-5';
 var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 120000;
 
 var patient = patient || {};
@@ -26,10 +27,16 @@ var $viewsTab;
 
 var app = (function () {
 
+    var analytics;
+
     /**
      * The application constructor
      */
     var initialize = function () {
+        analytics = navigator.analytics;
+        console.log('analytics vale: ' + analytics);
+//        analytics.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
+
         $.templates({
                         contactInformation: {
                             markup: '#contactInformationTemplate',
@@ -316,20 +323,39 @@ var app = (function () {
         app.views.changePassword.init();
     };
 
+    var updateAnalytics = function (pageName) {
+        if (analytics) {
+            analytics.sendAppView(pageName, function () {
+                //  onSuccess
+                console.log('mando bien: ' + pageName);
+            }, function (error) {
+                //  onError
+                console.log('fallo: ' + pageName + '; Error:');
+                console.log(error);
+            });
+        } else {
+            console.log('navigator.analytics is not configured well, can\'t send app usage statistics to analytics.');
+        }
+    };
+
     var displayNextView = function (selector, remember) {
         switch (selector) {
             case '#login':
+                updateAnalytics('login');
                 app.views.login.init();
                 break;
             case '#homeView':
+                updateAnalytics('home');
                 if (!app.views.home.isInitialised()) {
                     app.views.home.init();
                 }
                 break;
             case '#rememberNotificationView':
+                updateAnalytics('rememberNotification');
                 app.views.rememberNotification.render(remember);
                 break;
             case '#changePasswordView':
+                updateAnalytics('changePassword');
                 if (!app.views.changePassword.isInitialised()) {
                     app.views.changePassword.init();
                 }

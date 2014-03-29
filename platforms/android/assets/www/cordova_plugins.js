@@ -27,6 +27,13 @@ module.exports = [
         "merges": [
             "navigator.notification"
         ]
+    },
+    {
+        "file": "plugins/com.cmackay.plugins.googleanalytics/www/analytics.js",
+        "id": "com.cmackay.plugins.googleanalytics.GoogleAnalytics",
+        "clobbers": [
+            "navigator.analytics"
+        ]
     }
 ]
 });

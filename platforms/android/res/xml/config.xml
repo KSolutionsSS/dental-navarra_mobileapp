@@ -83,4 +83,8 @@
         <param name="android-package"
                value="org.apache.cordova.vibration.Vibration" />
     </feature>
+    <feature name="GoogleAnalytics">
+        <param name="android-package"
+               value="com.cmackay.plugins.googleanalytics.GoogleAnalyticsPlugin" />
+    </feature>
 </widget>

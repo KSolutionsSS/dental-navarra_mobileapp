@@ -152,6 +152,36 @@ app.views.home = (function () {
             loadRemembers();
             loadPromotions();
             renderContactTab();
+
+            var bindAnalyticsEvents = function () {
+                $('a.panel-title').click(function (event) {
+                    var href = event.currentTarget.href;
+                    href = href.substring(href.lastIndexOf('-') + 1);
+
+                    var label;
+                    switch (href) {
+                        case 'notifications':
+                            label = "Remembers list";
+                            break;
+                        case 'promotions':
+                            label = "Promotions list";
+                            break;
+                        case 'settings':
+                            label = "Settings";
+                            break;
+                        case 'contact':
+                            label = "Contact";
+                            break;
+                    }
+
+                    analytics.sendEvent('Sections', 'Open', label);
+                });
+            };
+
+            if (analytics) {
+                bindAnalyticsEvents();
+            }
+
             bindEventsForSettingsTab();
             isInitialised = true;
         },

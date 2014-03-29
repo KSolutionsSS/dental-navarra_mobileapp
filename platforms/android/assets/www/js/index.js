@@ -25,9 +25,9 @@ var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 120000;
 var patient = patient || {};
 var $viewsTab;
 
-var app = (function () {
+var analytics;
 
-    var analytics;
+var app = (function () {
 
     var handleGoogleAnalyticsConfigurationError = function (analytics) {
         //  TODO : Functionality : Try to send this error to support.

@@ -179,7 +179,7 @@ var app = (function () {
                     app.displayNextView('#homeView');
                 } else {
                     console.log('Displaying login...');
-                    displayNextView('#login');
+                    app.displayNextView('#login');
                 }
             }
         }());

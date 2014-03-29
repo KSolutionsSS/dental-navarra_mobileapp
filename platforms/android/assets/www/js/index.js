@@ -39,20 +39,6 @@ var app = (function () {
      * The application constructor
      */
     var initialize = function () {
-        /**
-         * This implementation is now using CMackay Google Analytics Plugin for Android and iOS: https://github.com/cmackay/google-analytics-plugin
-         */
-        var configureGoogleAnalytics = function () {
-            analytics = navigator.analytics;
-            if (analytics) {
-                analytics.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
-            } else {
-                handleGoogleAnalyticsConfigurationError(analytics);
-            }
-        };
-
-        configureGoogleAnalytics();
-
         $.templates({
                         contactInformation: {
                             markup: '#contactInformationTemplate',
@@ -112,6 +98,20 @@ var app = (function () {
         console.log('Executing onDeviceReady function...');
 
         $viewsTab = $('#viewsTab');
+
+        /**
+         * Configure Google Analytics.
+         *
+         * This implementation is now using CMackay Google Analytics Plugin for Android and iOS: https://github.com/cmackay/google-analytics-plugin
+         */
+        (function () {
+            analytics = navigator.analytics;
+            if (analytics) {
+                analytics.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
+            } else {
+                handleGoogleAnalyticsConfigurationError(analytics);
+            }
+        }());
 
         /**
          * Check what should be the first view
@@ -346,8 +346,7 @@ var app = (function () {
                 console.log('Added Google Analytics page view for: ' + pageName);
             }, function (error) {
                 //  onError
-                console.log('Error while sending Google Analytics page view for: ' + pageName + '; Error:');
-                console.log(error);
+                console.log('Error while sending Google Analytics page view for: ' + pageName + '; Error: ' + error);
             });
         } else {
             handleGoogleAnalyticsConfigurationError(analytics);

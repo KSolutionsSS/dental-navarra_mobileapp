@@ -156,25 +156,25 @@ app.views.home = (function () {
             var bindAnalyticsEvents = function () {
                 $('a.panel-title').click(function (event) {
                     var href = event.currentTarget.href;
-                    href = href.substring(href.lastIndexOf('-') + 1);
+                    href = href.substring(href.lastIndexOf('#'));
 
                     var label;
                     switch (href) {
-                        case 'notifications':
+                        case '#panel-notifications':
                             label = "Remembers list";
                             break;
-                        case 'promotions':
+                        case '#panel-promotions':
                             label = "Promotions list";
                             break;
-                        case 'settings':
+                        case '#panel-settings':
                             label = "Settings";
                             break;
-                        case 'contact':
+                        case '#panel-contact':
                             label = "Contact";
                             break;
                     }
 
-                    analytics.sendEvent('Sections', 'Open', label);
+                    analytics.api.sendEvent(analytics.keys.CATEGORY_SECTIONS, analytics.keys.ACTION_OPEN, label);
                 });
             };
 

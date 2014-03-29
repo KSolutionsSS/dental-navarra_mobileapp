@@ -25,7 +25,7 @@ var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 120000;
 var patient = patient || {};
 var $viewsTab;
 
-var analytics;
+var analytics = {};
 
 var app = (function () {
 
@@ -105,11 +105,31 @@ var app = (function () {
          * This implementation is now using CMackay Google Analytics Plugin for Android and iOS: https://github.com/cmackay/google-analytics-plugin
          */
         (function () {
-            analytics = navigator.analytics;
-            if (analytics) {
-                analytics.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
+            analytics.api = navigator.analytics;
+            if (analytics.api) {
+                analytics.keys = Object.freeze({
+                                                   CATEGORY_SECTIONS: 'Sections',
+                                                   ACTION_OPEN: 'Open'
+                                               });
+
+                analytics.execute = {};
+                analytics.execute.sendScreenView = function (pageName) {
+                    if (analytics.api) {
+                        analytics.api.sendAppView(pageName, function () {
+                            //  onSuccess
+                            console.log('Added Google Analytics page view for: ' + pageName);
+                        }, function (error) {
+                            //  onError
+                            console.log('Error while sending Google Analytics page view for: ' + pageName + '; Error: ' + error);
+                        });
+                    } else {
+                        handleGoogleAnalyticsConfigurationError(analytics.api);
+                    }
+                };
+
+                analytics.api.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
             } else {
-                handleGoogleAnalyticsConfigurationError(analytics);
+                handleGoogleAnalyticsConfigurationError(analytics.api);
             }
         }());
 
@@ -339,38 +359,24 @@ var app = (function () {
         app.views.changePassword.init();
     };
 
-    var updateAnalytics = function (pageName) {
-        if (analytics) {
-            analytics.sendAppView(pageName, function () {
-                //  onSuccess
-                console.log('Added Google Analytics page view for: ' + pageName);
-            }, function (error) {
-                //  onError
-                console.log('Error while sending Google Analytics page view for: ' + pageName + '; Error: ' + error);
-            });
-        } else {
-            handleGoogleAnalyticsConfigurationError(analytics);
-        }
-    };
-
     var displayNextView = function (selector, remember) {
         switch (selector) {
             case '#login':
-                updateAnalytics('login');
+                analytics.execute.sendScreenView('login');
                 app.views.login.init();
                 break;
             case '#homeView':
-                updateAnalytics('home');
+                analytics.execute.sendScreenView('home');
                 if (!app.views.home.isInitialised()) {
                     app.views.home.init();
                 }
                 break;
             case '#rememberNotificationView':
-                updateAnalytics('rememberNotification');
+                analytics.execute.sendScreenView('rememberNotification');
                 app.views.rememberNotification.render(remember);
                 break;
             case '#changePasswordView':
-                updateAnalytics('changePassword');
+                analytics.execute.sendScreenView('changePassword');
                 if (!app.views.changePassword.isInitialised()) {
                     app.views.changePassword.init();
                 }

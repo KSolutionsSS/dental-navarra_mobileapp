@@ -179,7 +179,7 @@ var app = (function () {
                     app.displayNextView('#homeView');
                 } else {
                     console.log('Displaying login...');
-                    app.views.login.init();
+                    displayNextView('#login');
                 }
             }
         }());
@@ -318,6 +318,9 @@ var app = (function () {
 
     var displayNextView = function (selector, remember) {
         switch (selector) {
+            case '#login':
+                app.views.login.init();
+                break;
             case '#homeView':
                 if (!app.views.home.isInitialised()) {
                     app.views.home.init();

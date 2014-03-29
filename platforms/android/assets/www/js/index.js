@@ -19,7 +19,6 @@ var PATIENT_KEY = 'patient';
 //var SERVER_URL = 'http://localhost:5000/';
 var SERVER_URL = 'http://dentalnavarra-intranet.herokuapp.com/';
 var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0AgqeUj0Ks3f6dGNNMERIRnpjd2JTb1UzUWdzTXlDU2c';
-var GOOGLE_ANALYTICS_TRACKING_ID = 'UA-32410648-5';
 var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 120000;
 
 var patient = patient || {};
@@ -27,16 +26,10 @@ var $viewsTab;
 
 var app = (function () {
 
-    var analytics;
-
     /**
      * The application constructor
      */
     var initialize = function () {
-        analytics = navigator.analytics;
-        console.log('analytics vale: ' + analytics);
-        analytics.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
-
         $.templates({
                         contactInformation: {
                             markup: '#contactInformationTemplate',

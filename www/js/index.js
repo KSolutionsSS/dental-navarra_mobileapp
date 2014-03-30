@@ -15,14 +15,17 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-//var SERVER_URL = 'http://localhost:5000/';
-var SERVER_URL = 'http://dentalnavarra-intranet.herokuapp.com/';
-var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0AgqeUj0Ks3f6dGNNMERIRnpjd2JTb1UzUWdzTXlDU2c';
-var GOOGLE_ANALYTICS_TRACKING_ID = 'UA-32410648-5';
-//var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 120000;// Every 2 minutes.
-var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 86400000;// Once per day.
 
+
+//var SERVER_URL = 'http://localhost:5000/';
+var SERVER_URL = 'http://desa-dentalnavarra-intranet.herokuapp.com/';
+var CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL = 180000;// Every 3 minutes.
+var GOOGLE_ANALYTICS_TRACKING_ID = 'UA-32410648-5';
+
+
+var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0AgqeUj0Ks3f6dGNNMERIRnpjd2JTb1UzUWdzTXlDU2c';
 var PATIENT_KEY = 'patient';
+
 
 /**
  * @type {patient|*|{}}; Example:

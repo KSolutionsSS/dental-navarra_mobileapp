@@ -234,7 +234,7 @@ app.views.home = (function () {
                 }
             };
 
-            //  TODO : Delete this line or context.
+            //  TODO : Delete this line or context. It's used when testing from desktop browser.
 //            patient.remembers = [
 //                {message: 'Tienes que hacerte el segundo implante.', meetingDate: '01/03/2014'},
 //                {message: 'deberías concurrir para un control general.', meetingDate: '01/03/2014'}

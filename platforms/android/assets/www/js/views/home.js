@@ -18,39 +18,6 @@
 
 var urlJson = 'https://spreadsheets.google.com/feeds/cells/' + PROMOTIONS_GOOGLE_SPREADSHEET_KEY + '/1/public/basic?alt=json';
 
-var offices = {
-    tafalla: {
-        name: "Clínica Odontológica Tafalla",
-        street: "C/ Diputación Foral",
-        number: 4,
-        apartment: "1 A",
-        city: "Tafalla",
-        postalCode: 31300,
-        phoneNumber: "948 755 169",
-        email: "tafalla@dentalnavarra.com"
-    },
-    alsasua: {
-        name: 'Clínica Dental Alsasua',
-        street: 'C/ Alzania',
-        number: 1,
-        apartment: "A",
-        city: 'Alsasua',
-        postalCode: 31800,
-        phoneNumber: '948 468 232',
-        email: 'alsasua@dentalnavarra.com'
-    },
-    milagro: {
-        name: 'Clínica Dental Milagro',
-        street: 'C/ Navas de Tolosa',
-        number: 4,
-        apartment: "bajo",
-        city: 'Milagro',
-        postalCode: 31120,
-        phoneNumber: '948 861 231',
-        email: 'milagro@dentalnavarra.com'
-    }
-};
-
 var patient = patient || {};
 var analytics = analytics || {};
 
@@ -93,7 +60,7 @@ app.views.home = (function () {
                 }
 
                 $contactTab = $('#contactInformation');
-                $contactTab.html($('#contactInformationTemplate').render(patient.office));
+                $contactTab.html($.render.contactInformation(patient.office));
 
                 callback();
             };
@@ -256,7 +223,6 @@ app.views.home = (function () {
         isInitialised: function () {
             console.log('isInitialised: ' + isInitialised);
             return isInitialised;
-        },
-        checkForNewPromotions: sections.promotions.load()
+        }
     };
 }());

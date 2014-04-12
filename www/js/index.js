@@ -25,6 +25,38 @@ var PROMOTIONS_GOOGLE_SPREADSHEET_KEY = '0AqAWn1xLDRvPdDNOSWJmU0VBZGtXOUx4QTdodT
 
 var PATIENT_KEY = 'patient';
 
+var offices = {
+    tafalla: {
+        name: "Clínica Odontológica Tafalla",
+        street: "C/ Diputación Foral",
+        number: 4,
+        apartment: "1 A",
+        city: "Tafalla",
+        postalCode: 31300,
+        phoneNumber: "948 755 169",
+        email: "tafalla@dentalnavarra.com"
+    },
+    alsasua: {
+        name: 'Clínica Dental Alsasua',
+        street: 'C/ Alzania',
+        number: 1,
+        apartment: "A",
+        city: 'Alsasua',
+        postalCode: 31800,
+        phoneNumber: '948 468 232',
+        email: 'alsasua@dentalnavarra.com'
+    },
+    milagro: {
+        name: 'Clínica Dental Milagro',
+        street: 'C/ Navas de Tolosa',
+        number: 4,
+        apartment: "bajo",
+        city: 'Milagro',
+        postalCode: 31120,
+        phoneNumber: '948 861 231',
+        email: 'milagro@dentalnavarra.com'
+    }
+};
 
 /**
  * @type {patient|*|{}}; Example:
@@ -88,6 +120,9 @@ var app = (function () {
      */
     var initialize = function () {
         $.templates({
+                        offices: {
+                            markup: '#officesTemplate'
+                        },
                         contactInformation: {
                             markup: '#contactInformationTemplate',
                             helpers: {
@@ -126,6 +161,10 @@ var app = (function () {
             };
 
             switch ($viewsTab.find('li.active>a').attr('href')) {
+                case '#loginView':
+                    console.log('Going back to public home...');
+                    app.displayNextView('#publicHomeView');
+                    break;
                 case '#rememberNotificationView':
                     goHome();
                     break;
@@ -154,6 +193,34 @@ var app = (function () {
          */
         (function () {
             analytics.api = navigator.analytics;
+            analytics.execute = {};
+            analytics.execute.sendScreenView = function (pageName) {
+                if (analytics.api) {
+                    analytics.api.sendAppView(pageName, function () {
+                        //  onSuccess
+                        console.log('Added Google Analytics page view for: ' + pageName);
+                    }, function (error) {
+                        //  onError
+                        console.log('Error while sending Google Analytics page view for: ' + pageName + '; Error: ' + error);
+                    });
+                } else {
+                    handleGoogleAnalyticsConfigurationError(analytics.api);
+                }
+            };
+            analytics.execute.sendEvent = function (category, action, label) {
+
+                var concatParameters = function () {
+                    return 'category: ' + category + '; action: ' + action + '; label: ' + label;
+                };
+
+                analytics.api.sendEvent(category, action, label, undefined, function () {
+                    console.log('Analytics event sent, ' + concatParameters());
+                }, function (error) {
+                    console.log('Analytics event ' + concatParameters() + ' sent failed, error: ' + error);
+                });
+
+            };
+
             if (analytics.api) {
                 analytics.api.setTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
 
@@ -166,34 +233,6 @@ var app = (function () {
                                                    ACTION_VIEW_MAP: 'Ver mapa',
                                                    ACTION_VIEW_WEB: 'Ver web'
                                                });
-
-                analytics.execute = {};
-                analytics.execute.sendScreenView = function (pageName) {
-                    if (analytics.api) {
-                        analytics.api.sendAppView(pageName, function () {
-                            //  onSuccess
-                            console.log('Added Google Analytics page view for: ' + pageName);
-                        }, function (error) {
-                            //  onError
-                            console.log('Error while sending Google Analytics page view for: ' + pageName + '; Error: ' + error);
-                        });
-                    } else {
-                        handleGoogleAnalyticsConfigurationError(analytics.api);
-                    }
-                };
-                analytics.execute.sendEvent = function (category, action, label) {
-
-                    var concatParameters = function () {
-                        return 'category: ' + category + '; action: ' + action + '; label: ' + label;
-                    };
-
-                    analytics.api.sendEvent(category, action, label, undefined, function () {
-                        console.log('Analytics event sent, ' + concatParameters());
-                    }, function (error) {
-                        console.log('Analytics event ' + concatParameters() + ' sent failed, error: ' + error);
-                    });
-
-                };
             } else {
                 handleGoogleAnalyticsConfigurationError(analytics.api);
             }
@@ -287,12 +326,11 @@ var app = (function () {
                     console.log('Displaying home view because the user is already logged.');
                     app.displayNextView('#homeView');
                 } else {
-                    console.log('Displaying login...');
-                    app.displayNextView('#login');
+                    console.log('Displaying public home...');
+                    app.displayNextView('#publicHomeView');
                 }
             }
         }());
-
 
         /**
          * Initialize background service
@@ -426,8 +464,13 @@ var app = (function () {
     };
 
     var displayNextView = function (selector, remember) {
+        console.log('Displaying next view: ' + selector);
         switch (selector) {
-            case '#login':
+            case '#publicHomeView':
+                analytics.execute.sendScreenView('home (public)');
+                app.views.publicHome.init();
+                break;
+            case '#loginView':
                 analytics.execute.sendScreenView('login');
                 app.views.login.init();
                 break;

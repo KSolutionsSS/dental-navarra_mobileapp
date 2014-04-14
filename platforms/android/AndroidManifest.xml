@@ -18,7 +18,7 @@
   -->
 
 <manifest
-    android:versionCode="2"
+    android:versionCode="3"
     android:versionName="1.1.0"
     android:windowSoftInputMode="adjustPan"
     package="com.nbempire.dentalnavarra"

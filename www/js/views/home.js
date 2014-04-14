@@ -199,6 +199,9 @@ app.views.home = (function () {
                             case '#panel-promotions':
                                 label = "Promociones";
                                 break;
+                            case '#panel-treatments':
+                                label = "Tratamientos";
+                                break;
                             case '#panel-settings':
                                 label = "Configuración";
                                 break;

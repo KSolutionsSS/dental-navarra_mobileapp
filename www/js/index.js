@@ -137,6 +137,9 @@ var app = (function () {
                         },
                         remembers: {
                             markup: '#remembersTemplate'
+                        },
+                        carousel: {
+                            markup: '#treatmentsCarouselTemplate'
                         }
                     });
 

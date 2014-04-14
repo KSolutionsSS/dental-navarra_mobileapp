@@ -148,6 +148,16 @@ app.views.home = (function () {
             };
         }());
 
+        var treatments = (function () {
+            var $view = $('#treatments');
+
+            return {
+                init: function () {
+                    $view.html($.render.carousel({carouselId: 'homeCarousel'}));
+                }
+            };
+        }());
+
         var settings = (function () {
             var bindEvents = function () {
                 var $settings = $('#settings');
@@ -167,6 +177,7 @@ app.views.home = (function () {
             contact: contact,
             remembers: remembers,
             promotions: promotions,
+            treatments: treatments,
             settings: settings
         };
     }());
@@ -210,6 +221,7 @@ app.views.home = (function () {
 
             sections.remembers.load();
             sections.promotions.load();
+            sections.treatments.init();
             sections.contact.init();
             sections.settings.init();
 

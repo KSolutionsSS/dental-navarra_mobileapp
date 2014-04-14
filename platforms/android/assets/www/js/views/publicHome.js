@@ -28,6 +28,8 @@ app.views.publicHome = (function () {
     var $view = $('#publicHomeView');
 
     var render = function () {
+        $view.find('.myContent').html($.render.carousel({carouselId: 'publicHomeCarousel'}));
+
         var templateParameters = {};
         templateParameters.offices = [];
 

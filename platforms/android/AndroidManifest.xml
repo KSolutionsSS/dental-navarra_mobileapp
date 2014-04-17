@@ -18,8 +18,8 @@
   -->
 
 <manifest
-    android:versionCode="4"
-    android:versionName="1.1.0"
+    android:versionCode="5"
+    android:versionName="1.2.0"
     android:windowSoftInputMode="adjustPan"
     package="com.nbempire.dentalnavarra"
     xmlns:android="http://schemas.android.com/apk/res/android">

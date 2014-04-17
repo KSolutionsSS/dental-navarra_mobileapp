@@ -163,10 +163,20 @@ var app = (function () {
                 app.displayNextView('#homeView');
             };
 
+            var exitApp = function () {
+                navigator.app.exitApp();
+            };
+
             switch ($viewsTab.find('li.active>a').attr('href')) {
+                case '#publicHomeView':
+                    exitApp();
+                    break;
                 case '#loginView':
                     console.log('Going back to public home...');
                     app.displayNextView('#publicHomeView');
+                    break;
+                case '#homeView':
+                    exitApp();
                     break;
                 case '#rememberNotificationView':
                     goHome();

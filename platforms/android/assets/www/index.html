@@ -162,12 +162,12 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
-                               href="#panel-notifications">Avisos</a>
+                               href="#panel-notifications">Pr&oacute;ximas citas</a>
                         </div>
                         <div id="panel-notifications" class="panel-collapse in">
                             <div class="panel-body">
                                 <ul class="list-unstyled" id="notifications">
-                                    <li>Cargando notificaciones...</li>
+                                    <li>Cargando citas...</li>
                                 </ul>
                             </div>
                         </div>
@@ -323,7 +323,8 @@
     {{if remembers.length>0}}
         {{for remembers}}
             <li data-meetingDate="{{:meetingDate}}">
-                <span>{{:message}}</span>
+                <span class="badge">{{:meetingDate}}</span>
+                <span>Cita por: {{:~decorateTreatments(treatments)}}</span>
             </li>
         {{/for}}
     {{else}}
@@ -414,10 +415,10 @@
         <div class="carousel-inner">
             <div class="item active">
                 <img alt="" src="img/treatments/endodoncia.jpg"/>
-        
+
                 <div class="carousel-caption">
                     <h4>Endodoncia</h4>
-        
+
                     <p>
                         Tratamiento de la cámara pulpar y los conductos radiculares.
                     </p>
@@ -425,10 +426,10 @@
             </div>
             <div class="item">
                 <img alt="" src="img/treatments/periodoncia.jpg"/>
-        
+
                 <div class="carousel-caption">
                     <h4>Periodoncia</h4>
-        
+
                     <p>
                         Estudia la prevención, diagnóstico y tratamiento de las enfermedades de los tejidos que dan
                         soporte a los dientes.
@@ -437,10 +438,10 @@
             </div>
             <div class="item">
                 <img alt="" src="img/treatments/ortodoncia.jpg"/>
-        
+
                 <div class="carousel-caption">
                     <h4>Ortodoncia</h4>
-        
+
                     <p>
                         Ciencia que se encarga del estudio, prevención, diagnóstico y tratamiento de las anomalías de
                         forma, posición y
@@ -450,10 +451,10 @@
             </div>
             <div class="item">
                 <img alt="" src="img/treatments/implantes.jpg"/>
-        
+
                 <div class="carousel-caption">
                     <h4>Implantes Dentales</h4>
-        
+
                     <p>
                         Realizar un implante significa colocar un sustituto artificial de la raíz de un diente perdido.
                     </p>
@@ -461,10 +462,10 @@
             </div>
             <div class="item">
                 <img alt="" src="img/treatments/blanqueamiento.jpg"/>
-        
+
                 <div class="carousel-caption">
                     <h4>Blanqueamiento</h4>
-        
+
                     <p>
                         tratamiento dental estático revolucionario, que logra reducir varios tonos el color original de
                         las piezas
@@ -474,10 +475,10 @@
             </div>
             <div class="item">
                 <img alt="" src="img/treatments/estetica.jpg"/>
-        
+
                 <div class="carousel-caption">
                     <h4>Est&eacute;tica Dental</h4>
-        
+
                     <p>
                         Rama de la odontología que garantiza la belleza, armonia y proporción de las piezas dentarias.
                     </p>
@@ -485,10 +486,10 @@
             </div>
             <div class="item">
                 <img alt="" src="img/treatments/pediatria.jpg"/>
-        
+
                 <div class="carousel-caption">
                     <h4>Odontopediatr&iacute;a</h4>
-        
+
                     <p>
                         Especialidad que se encarga de tratar la salud bucodental de los niños.
                     </p>
@@ -496,10 +497,10 @@
             </div>
             <div class="item">
                 <img alt="" src="img/treatments/odontologia.jpg"/>
-        
+
                 <div class="carousel-caption">
                     <h4>Odontolog&iacute;a Conservadora</h4>
-        
+
                     <p>
                         Tratamiento que permite restaurar las caries producidas en cualquiera de las superficies de los
                         dientes.
@@ -508,10 +509,10 @@
             </div>
             <div class="item">
                 <img alt="" src="img/treatments/rpr.jpg"/>
-        
+
                 <div class="carousel-caption">
                     <h4>P.R.P. / P.R.G.F.</h4>
-        
+
                     <p>
                         El Plasma Rico en Plaquetas (PRP) o Plasma Rico en Factores de Crecimiento (PRGF) es una de las
                         últimas técnicas

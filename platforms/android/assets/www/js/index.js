@@ -136,7 +136,12 @@ var app = (function () {
                             }
                         },
                         remembers: {
-                            markup: '#remembersTemplate'
+                            markup: '#remembersTemplate',
+                            helpers: {
+                                decorateTreatments: function (treatments) {
+                                    return treatments.replace(/,/g, '; ');
+                                }
+                            }
                         },
                         carousel: {
                             markup: '#treatmentsCarouselTemplate'

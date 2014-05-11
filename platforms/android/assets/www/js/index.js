@@ -373,14 +373,7 @@ var app = (function () {
 
                         patient = JSON.parse(localStoragePatient);
                         if (remembers.length > 0) {
-                            remembers = remembers.map(fromCommaSeparatedToArray);
-
-                            //  TODO : Functionality : Put newer remembers first!
-                            if (patient.remembers) {
-                                patient.remembers = patient.remembers.concat(remembers);
-                            } else {
-                                patient.remembers = remembers;
-                            }
+                            patient.remembers = remembers.map(fromCommaSeparatedToArray);
                             updateView = true;
                         }
 

@@ -38,6 +38,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * TODO : Javadoc for
  * <p/>
@@ -84,30 +87,41 @@ public class RemembersService extends BackgroundService {
         //  TODO : Refactor :  Move this, and its context to a .service package (BusinessObject)
         RememberDao rememberDao = new RememberDaoImplSpring();
         RemembersDTO response = rememberDao.findRemembers(patientId);
+        Log.i(TAG, "Obtained remembers: " + response.getRemembers().length);
 
-        Remember[] remembers = new Remember[0];
-        if (response != null) {
-            remembers = response.getRemembers();
-            String title;
-            String text;
-            Remember detail = null;
+        Remember[] notificableRemembers = filterNotNotificableRemembers(response.getRemembers());
+        Log.i(TAG, "Notificable remembers: " + notificableRemembers.length);
 
-            if (remembers != null && remembers.length > 0) {
-                if (remembers.length == 1) {
-                    title = "1 nuevo recordatorio de Dental Navarra";
-                    text = "Le corresponde una cita de revisión, ver detalle.";
-                    detail = remembers[0];
-                } else {
-                    title = remembers.length + " recordatorios de Dental Navarra";
-                    text = "Haga tap aquí para ver todos sus recordatorios.";
-                }
+        String title;
+        String text;
+        Remember detail = null;
+        if (notificableRemembers.length > 0) {
+            if (notificableRemembers.length == 1) {
+                title = "1 nuevo recordatorio de Dental Navarra";
+                text = "Le corresponde una cita de revisión, ver detalle.";
+                detail = notificableRemembers[0];
+            } else {
+                title = notificableRemembers.length + " recordatorios de Dental Navarra";
+                text = "Haga tap aquí para ver todos sus recordatorios.";
+            }
 
-                showNotification(title, text, detail);
+            showNotification(title, text, detail);
+        }
+
+        Log.d(TAG, "Obtained remembers: " + response.getRemembers().length);
+        return response.getRemembers();
+    }
+
+    private Remember[] filterNotNotificableRemembers(Remember[] remembers) {
+        List<Remember> filtered = new ArrayList<>();
+
+        for (Remember eachRemember : remembers) {
+            if (eachRemember.isNotify()) {
+                filtered.add(eachRemember);
             }
         }
 
-        Log.d(TAG, "Obtained remembers: " + remembers.length);
-        return remembers;
+        return filtered.toArray(new Remember[filtered.size()]);
     }
 
     private void showNotification(String title, String text, Remember remember) {

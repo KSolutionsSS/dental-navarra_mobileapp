@@ -49,7 +49,7 @@ public class RememberDaoImplSpring implements RememberDao {
         // Add a JSON converter (use GSON instead of Jackson because is a smaller library)
         restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 
-        String urlString = "http://dentalnavarra-intranet.herokuapp.com/patients/" + patientId + "/notifications";
+        String urlString = "http://desa-dentalnavarra-intranet.herokuapp.com/patients/" + patientId + "/notifications";
         Log.d(TAG, "Getting resource: " + urlString);
 
         RemembersDTO response = null;

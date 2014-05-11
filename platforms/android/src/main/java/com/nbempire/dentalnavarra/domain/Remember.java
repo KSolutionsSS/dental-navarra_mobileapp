@@ -33,6 +33,8 @@ public class Remember {
 
     private String treatments;
 
+    private boolean notify;
+
     public String getMeetingDate() {
         return meetingDate;
     }
@@ -43,5 +45,9 @@ public class Remember {
 
     public String getTreatments() {
         return treatments;
+    }
+
+    public boolean isNotify() {
+        return notify;
     }
 }

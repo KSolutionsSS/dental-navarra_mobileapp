@@ -31,7 +31,7 @@ app.views.rememberNotification = (function () {
         render: function (remember) {
             console.log('Rendering view with message: ' + remember.message + ', meetingDate: ' + remember.meetingDate);
 
-            $('#rememberContainer').html($('#rememberTemplate').render(remember));
+            $('#rememberContainer').html($.render.rememberView(remember));
 
             if (patient) {
                 if (patient.office) {

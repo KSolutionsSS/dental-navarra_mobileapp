@@ -60,7 +60,7 @@ var offices = {
 
 var properties = {
     mock: {
-        device: false,
+        device: true,
         loggedUser: false
     },
     mockData: {
@@ -124,6 +124,9 @@ var app = (function () {
                             helpers: {
                                 encodeURI: encodeURI
                             }
+                        },
+                        rememberView: {
+                            markup: '#rememberTemplate'
                         },
                         promotions: {
                             markup: '#promotionsTemplate',

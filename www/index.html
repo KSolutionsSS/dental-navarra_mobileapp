@@ -324,12 +324,12 @@
         {{for remembers}}
             <li data-meetingDate="{{:meetingDate}}">
                 <span class="badge">{{:meetingDate}}</span>
-                <span>Cita por: {{:~decorateTreatments(treatments)}}</span>
+                <span>Turno por: {{:~decorateTreatments(treatments)}}</span>
             </li>
         {{/for}}
     {{else}}
         <div class="alert alert-info">
-            Parece que usted a&uacute;n no tiene recordatorios.
+            Parece que usted a&uacute;n no tiene turnos agendados.
         </div>
     {{/if}}
 </script>

@@ -28,9 +28,10 @@ app.views.rememberNotification = (function () {
     var $view = $('#rememberNotificationView');
 
     return {
-        render: function (remember) {
+        render: function (remember, startingFromNotification) {
             console.log('Rendering view with message: ' + remember.message + ', meetingDate: ' + remember.meetingDate);
 
+            remember.startingFromNotification = startingFromNotification;
             $('#rememberContainer').html($.render.rememberView(remember));
 
             if (patient) {

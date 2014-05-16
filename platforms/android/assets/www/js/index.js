@@ -60,7 +60,7 @@ var offices = {
 
 var properties = {
     mock: {
-        device: true,
+        device: false,
         loggedUser: false
     },
     mockData: {
@@ -315,7 +315,7 @@ var app = (function () {
                 console.log('Obtained from URL meetingDate: ' + result.meetingDate + ', message: ' + result.message);
                 console.log('Displaying remember notification view...');
                 patient = JSON.parse(localStorage.getItem(PATIENT_KEY));
-                app.displayNextView('#rememberNotificationView', result);
+                app.displayNextView('#rememberNotificationView', result, true);
             } else {
                 result = checkForLoggedUser();
                 if (result) {
@@ -455,7 +455,7 @@ var app = (function () {
         app.views.changePassword.init();
     };
 
-    var displayNextView = function (selector, remember) {
+    var displayNextView = function (selector, remember, startingFromNotification) {
         console.log('Displaying next view: ' + selector);
         switch (selector) {
             case '#publicHomeView':
@@ -474,7 +474,7 @@ var app = (function () {
                 break;
             case '#rememberNotificationView':
                 analytics.execute.sendScreenView('rememberNotification');
-                app.views.rememberNotification.render(remember);
+                app.views.rememberNotification.render(remember, startingFromNotification);
                 break;
             case '#changePasswordView':
                 analytics.execute.sendScreenView('changePassword');

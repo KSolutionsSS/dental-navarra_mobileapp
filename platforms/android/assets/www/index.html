@@ -237,8 +237,6 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>1 recordatorio nuevo</h2>
-                        <hr class="secondary">
                         <div id="rememberContainer"></div>
                     </div>
                 </div>
@@ -384,7 +382,22 @@
     </address>
 </script>
 <script id="rememberTemplate" type="text/x-jsrender">
-    <p>{{:message}}</p>
+    <h2>
+        {{if startingFromNotification}}
+            1 recordatorio nuevo
+        {{else}}
+            Pr&oacute;xima revision sugerida
+        {{/if}}
+    </h2>
+    <hr class="secondary">
+
+    <p>
+        {{if startingFromNotification}}
+            {{:message}}
+        {{else}}
+            Usted tiene sugerida una revision.
+        {{/if}}
+    </p>
 
     <h3>Tratamientos a realizar:</h3>
     <ul>
@@ -393,7 +406,9 @@
         {{/for}}
     </ul>
 
-    <p>Comun&iacute;quese con nosotros en un plazo de 48hs para concretar su turno, gracias.</p>
+    {{if startingFromNotification}}
+        <p>Comun&iacute;quese con nosotros en un plazo de 48hs para concretar su turno, gracias.</p>
+    {{/if}}
 
     <blockquote>
         <p>Su pr&oacute;xima revision le corresponder&iacute;a el <span class="badge">{{:meetingDate}}</span></p>

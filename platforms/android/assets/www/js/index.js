@@ -58,50 +58,46 @@ var offices = {
     }
 };
 
-/**
- * @type {patient|*|{}}; Example:
- *    [
- *       {
- *           "name": "Nahuel",
- *           "lastName": "Barrios",
- *           "secondLastName": "Safranchik",
- *          "email": "barrios.nahuel@gmail.com",
- *           "birthday": "1989/10/16",
- *           "office": "tafalla",
- *           "password": "sha1$0a799115$1$27088d3dc17db87703d6ef443a16c3633fb88485",
- *           "_id": "532f621b0219c8020008cca1",
- *           "fullName": "Barrios Safranchik, Nahuel",
- *           "medicalHistory": [
- *               {
- *                   "date": "Sun Mar 23 2014 19:46:51 GMT-0300 (ART)",
- *                   "treatments": [
- *                       {
- *                           "_id": "531a4c09beb57e0200bbf955"
- *                       },
- *                       {
- *                           "_id": "531a4c09beb57e0200bbf954"
- *                       }
- *                   ],
- *                   "nextMeetingMonthsNumber": "2",
- *                   "active": "false"
- *               },
- *               {
- *                   "date": "Fri Mar 28 2014 10:55:15 GMT-0300 (ART)",
- *                   "treatments": [
- *                       {
- *                           "_id": "531a4c09beb57e0200bbf958"
- *                       },
- *                       {
- *                           "_id": "531a4c09beb57e0200bbf94f"
- *                       }
- *                   ],
- *                   "nextMeetingMonthsNumber": "2",
- *                   "active": false
- *              }
- *           ]
- *       }
- *   ]
- */
+var properties = {
+    mock: {
+        device: false,
+        loggedUser: false
+    },
+    mockData: {
+        patient: {
+            "_id": "5366dc82fc1e1f0200c32227",
+            "email": "barrios.nahuel@gmail.com",
+            "age": 24,
+            "office": {
+                "name": "Clínica Dental Alsasua",
+                "street": "C/ Alzania",
+                "number": 1,
+                "apartment": "A",
+                "city": "Alsasua",
+                "postalCode": 31800,
+                "phoneNumber": "948 468 232",
+                "email": "alsasua@dentalnavarra.com"
+            },
+            "remembers": [
+                {
+                    "message": "Han pasado 3 meses desde su visita y le corresponde una cita de revisión en 2 semanas.",
+                    "meetingDate": "10/8",
+                    "treatments": [
+                        "Cirugía (Periodontal)", "Cirugía (Extracción)"
+                    ]
+                },
+                {
+                    "message": "Han pasado 6 meses desde su visita y le corresponde una cita de revisión en 2 semanas.",
+                    "meetingDate": "11/11",
+                    "treatments": [
+                        "Limpieza", "Cirugía (Periodontal)"
+                    ]
+                }
+            ]
+        }
+    }
+};
+
 var patient = patient || {};
 var $viewsTab;
 
@@ -139,7 +135,7 @@ var app = (function () {
                             markup: '#remembersTemplate',
                             helpers: {
                                 decorateTreatments: function (treatments) {
-                                    return treatments.replace(/,/g, '; ');
+                                    return treatments.join('; ');
                                 }
                             }
                         },
@@ -192,8 +188,9 @@ var app = (function () {
             }
         }, false);
 
-        //  TODO : Delete this line or context. It's used when testing from desktop browser.
-//        this.onDeviceReady();
+        if (properties.mock.device) {
+            this.onDeviceReady();
+        }
     };
 
     /**
@@ -295,31 +292,9 @@ var app = (function () {
              * Check for logged user...
              */
             var checkForLoggedUser = function () {
-                //  TODO : Delete this line or context. It's used when testing from desktop browser.
-//                patient = {
-//                    "_id": "53194c7a0f0f8d02002b6742",
-//                    "email": "barrios.nahuel@gmail.com",
-//                    "age": "15",
-//                    "office": "tafalla",
-//                    "remembers": [
-//                        {
-//                            "message": "Han pasado 4 meses y medio desde su visita y le corresponde una cita de revisión en 2 semanas.",
-//                            "meetingDate": "29/7",
-//                            "treatments": "Ortodoncia"
-//                        },
-//                        {
-//                            "message": "Han pasado 4 meses y medio desde su visita y le corresponde una cita de revisión en 2 semanas.",
-//                            "meetingDate": "29/7",
-//                            "treatments": "Ortodoncia"
-//                        },
-//                        {
-//                            "message": "Han pasado 3 meses desde su visita y le corresponde una cita de revisión en 2 semanas.",
-//                            "meetingDate": "15/6",
-//                            "treatments": "Cirugía de implantes,Extracción"
-//                        }
-//                    ]
-//                };
-//                localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
+                if (properties.mock.loggedUser) {
+                    localStorage.setItem(PATIENT_KEY, JSON.stringify(properties.mockData.patient));
+                }
 
                 var isLogged;
 
@@ -350,126 +325,129 @@ var app = (function () {
             }
         }());
 
-        /**
-         * Initialize background service
-         */
-        (function () {
-            var updateNotificationsHandler = function (data) {
-                var fromCommaSeparatedToArray = function (eachRemember) {
+        if (!properties.mock.device) {
 
-                    if (typeof eachRemember.treatments === 'string') {
-                        eachRemember.treatments = eachRemember.treatments.split(',');
-                    }
+            /**
+             * Initialize background service
+             */
+            (function () {
+                var updateNotificationsHandler = function (data) {
+                    var fromCommaSeparatedToArray = function (eachRemember) {
 
-                    return eachRemember;
-                };
-
-                console.log('On update remembers handler...');
-
-                var localStoragePatient = localStorage.getItem(PATIENT_KEY);
-                if (localStoragePatient) {
-                    var updateView;
-
-                    console.log('Getting remembers from bridge...');
-                    var remembers = JSON.parse(window.bridge.getPreference("remembers"));
-                    if (remembers) {
-                        console.log('Obtained: ' + remembers.length + ' remembers, saving them to local storage system....');
-                        console.log('Obtained remembers from native module: ' + JSON.stringify(remembers));
-
-                        patient = JSON.parse(localStoragePatient);
-                        if (remembers.length > 0) {
-                            patient.remembers = remembers.map(fromCommaSeparatedToArray);
-                            updateView = true;
+                        if (typeof eachRemember.treatments === 'string') {
+                            eachRemember.treatments = eachRemember.treatments.split(',');
                         }
 
-                        console.log('Saving updated patient to local storage');
-                        localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
-                        if (updateView) {
-                            app.views.home.updateRemembers();
+                        return eachRemember;
+                    };
+
+                    console.log('On update remembers handler...');
+
+                    var localStoragePatient = localStorage.getItem(PATIENT_KEY);
+                    if (localStoragePatient) {
+                        var updateView;
+
+                        console.log('Getting remembers from bridge...');
+                        var remembers = JSON.parse(window.bridge.getPreference("remembers"));
+                        if (remembers) {
+                            console.log('Obtained: ' + remembers.length + ' remembers, saving them to local storage system....');
+                            console.log('Obtained remembers from native module: ' + JSON.stringify(remembers));
+
+                            patient = JSON.parse(localStoragePatient);
+                            if (remembers.length > 0) {
+                                patient.remembers = remembers.map(fromCommaSeparatedToArray);
+                                updateView = true;
+                            }
+
+                            console.log('Saving updated patient to local storage');
+                            localStorage.setItem(PATIENT_KEY, JSON.stringify(patient));
+                            if (updateView) {
+                                app.views.home.updateRemembers();
+                            }
+                        } else {
+                            console.log('Obtained an invalid result from bridge instead of an array of empty remembers.');
                         }
                     } else {
-                        console.log('Obtained an invalid result from bridge instead of an array of empty remembers.');
+                        console.log('User has never been logged, waiting for it to start receiving notifications from server...');
                     }
-                } else {
-                    console.log('User has never been logged, waiting for it to start receiving notifications from server...');
-                }
-            };
+                };
 
-            var onError = function (error) {
-                console.log('Error object: ' + JSON.stringify(error));
-                console.log('An error occurred with the background service: ' + error.ErrorMessage);
-            };
+                var onError = function (error) {
+                    console.log('Error object: ' + JSON.stringify(error));
+                    console.log('An error occurred with the background service: ' + error.ErrorMessage);
+                };
 
-            var myService = cordova.require('com.red_folder.phonegap.plugin.backgroundservice.BackgroundService');
-            var startService = function (data) {
-                if (data.ServiceRunning) {
-                    console.log('Background service is already running.');
-                    enableTimer(data);
-                } else {
-                    console.log('Background service is starting its service...');
-                    myService.startService(configureService, onError);
-                }
-            };
-
-            var configureService = function (data) {
-                console.log('Background service is running, trying to configure it...');
-                var localStoragePatient = localStorage.getItem(PATIENT_KEY);
-                if (localStoragePatient) {
-                    console.log('Configuring background service for patient: ' + localStoragePatient);
-                    patient = JSON.parse(localStoragePatient);
-
-                    myService.setConfiguration({patientId: patient._id}, function (data) {
-                        console.log('Background service configured successfully');
+                var myService = cordova.require('com.red_folder.phonegap.plugin.backgroundservice.BackgroundService');
+                var startService = function (data) {
+                    if (data.ServiceRunning) {
+                        console.log('Background service is already running.');
                         enableTimer(data);
-                    }, function (error) {
-                        console.log('acá tengo un error!!');
-                        console.log('error: ' + error);
-                        console.dir('error: ' + error);
+                    } else {
+                        console.log('Background service is starting its service...');
+                        myService.startService(configureService, onError);
+                    }
+                };
 
-                        onError(error);
-                    });
-                } else {
-                    var waitFor = 5000;
-                    console.log('Background service can\'t be configured because the user has never been logged, waiting ' + waitFor / 1000
-                                    + ' seconds to try again...');
+                var configureService = function (data) {
+                    console.log('Background service is running, trying to configure it...');
+                    var localStoragePatient = localStorage.getItem(PATIENT_KEY);
+                    if (localStoragePatient) {
+                        console.log('Configuring background service for patient: ' + localStoragePatient);
+                        patient = JSON.parse(localStoragePatient);
 
-                    //  TODO : Functionality : When user is logged, cancel this timeout to get notifications inmediately
-                    setTimeout(function () {
-                        configureService(data);
-                    }, waitFor);
-                }
-            };
+                        myService.setConfiguration({patientId: patient._id}, function (data) {
+                            console.log('Background service configured successfully');
+                            enableTimer(data);
+                        }, function (error) {
+                            console.log('acá tengo un error!!');
+                            console.log('error: ' + error);
+                            console.dir('error: ' + error);
 
-            var enableTimer = function (data) {
-                if (data.TimerEnabled) {
-                    console.log('Background service timer is already enabled.');
-                    registerForBootStart(data);
-                } else {
-                    console.log('Background service is enabling its timer...');
-                    myService.enableTimer(CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL, registerForBootStart, onError);
-                }
-            };
+                            onError(error);
+                        });
+                    } else {
+                        var waitFor = 5000;
+                        console.log('Background service can\'t be configured because the user has never been logged, waiting ' + waitFor / 1000
+                                        + ' seconds to try again...');
 
-            var registerForBootStart = function (data) {
-                if (data.RegisteredForBootStart) {
-                    console.log('Background service is already registered for boot start.');
-                    registerForUpdates(data);
-                } else {
-                    console.log('Background service is registering itself boot start...');
-                    myService.registerForBootStart(registerForUpdates, onError);
-                }
-            };
+                        //  TODO : Functionality : When user is logged, cancel this timeout to get notifications inmediately
+                        setTimeout(function () {
+                            configureService(data);
+                        }, waitFor);
+                    }
+                };
 
-            var registerForUpdates = function (data) {
-                if (data.RegisteredForUpdates) {
-                    console.log('Background service is already registered for updates.');
-                } else {
-                    console.log('Background service is registering for updates...');
-                    myService.registerForUpdates(updateNotificationsHandler, onError);
-                }
-            };
-            myService.getStatus(startService, onError);
-        }());
+                var enableTimer = function (data) {
+                    if (data.TimerEnabled) {
+                        console.log('Background service timer is already enabled.');
+                        registerForBootStart(data);
+                    } else {
+                        console.log('Background service is enabling its timer...');
+                        myService.enableTimer(CHECK_FOR_REMEMBERS_MILLISECONDS_INTERVAL, registerForBootStart, onError);
+                    }
+                };
+
+                var registerForBootStart = function (data) {
+                    if (data.RegisteredForBootStart) {
+                        console.log('Background service is already registered for boot start.');
+                        registerForUpdates(data);
+                    } else {
+                        console.log('Background service is registering itself boot start...');
+                        myService.registerForBootStart(registerForUpdates, onError);
+                    }
+                };
+
+                var registerForUpdates = function (data) {
+                    if (data.RegisteredForUpdates) {
+                        console.log('Background service is already registered for updates.');
+                    } else {
+                        console.log('Background service is registering for updates...');
+                        myService.registerForUpdates(updateNotificationsHandler, onError);
+                    }
+                };
+                myService.getStatus(startService, onError);
+            }());
+        }
 
         app.views.changePassword.init();
     };

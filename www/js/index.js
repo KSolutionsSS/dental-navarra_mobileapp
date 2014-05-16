@@ -60,8 +60,8 @@ var offices = {
 
 var properties = {
     mock: {
-        device: true,
-        loggedUser: true
+        device: false,
+        loggedUser: false
     },
     mockData: {
         patient: {

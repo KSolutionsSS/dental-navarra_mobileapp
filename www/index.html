@@ -162,12 +162,12 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <a class="panel-title collapsed" data-toggle="collapse" data-parent="#collapsable-panel"
-                               href="#panel-notifications">Pr&oacute;ximos turnos</a>
+                               href="#panel-notifications">Pr&oacute;ximas citas</a>
                         </div>
                         <div id="panel-notifications" class="panel-collapse in">
                             <div class="panel-body">
                                 <ul class="list-unstyled" id="notifications">
-                                    <li>Cargando pr&oacute;ximos turnos...</li>
+                                    <li>Cargando pr&oacute;ximas citas...</li>
                                 </ul>
                             </div>
                         </div>
@@ -322,12 +322,12 @@
         {{for remembers}}
             <li data-meetingDate="{{:meetingDate}}">
                 <span class="badge">{{:meetingDate}}</span>
-                <span>Turno por: {{:~decorateTreatments(treatments)}}</span>
+                <span>Cita por: {{:~decorateTreatments(treatments)}}</span>
             </li>
         {{/for}}
     {{else}}
         <div class="alert alert-info">
-            Parece que usted a&uacute;n no tiene turnos agendados.
+            Parece que usted a&uacute;n no tiene citas agendadas.
         </div>
     {{/if}}
 </script>

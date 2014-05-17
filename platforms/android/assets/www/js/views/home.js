@@ -108,6 +108,7 @@ app.views.home = (function () {
                 };
 
                 var $container = $('#notifications').empty();
+                console.log('Updating view with remembers: ' + patient.remembers.length);
                 $container.append($.render.remembers({remembers: patient.remembers || []}));
                 if (patient.remembers) {
                     $container.find('li').click(expandRemember.bind(undefined, patient.remembers));

@@ -113,7 +113,7 @@ public class RemembersService extends BackgroundService {
     }
 
     private Remember[] filterNotNotificableRemembers(Remember[] remembers) {
-        List<Remember> filtered = new ArrayList<>();
+        List<Remember> filtered = new ArrayList<Remember>();
 
         for (Remember eachRemember : remembers) {
             if (eachRemember.isNotify()) {

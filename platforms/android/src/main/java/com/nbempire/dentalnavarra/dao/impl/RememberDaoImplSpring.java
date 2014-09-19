@@ -19,6 +19,7 @@
 package com.nbempire.dentalnavarra.dao.impl;
 
 import android.util.Log;
+import com.nbempire.dentalnavarra.MainKeys;
 import com.nbempire.dentalnavarra.dao.RememberDao;
 import com.nbempire.dentalnavarra.dto.RemembersDTO;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
@@ -49,7 +50,7 @@ public class RememberDaoImplSpring implements RememberDao {
         // Add a JSON converter (use GSON instead of Jackson because is a smaller library)
         restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 
-        String urlString = "http://desa-dentalnavarra-intranet.herokuapp.com/patients/" + patientId + "/notifications";
+        String urlString = MainKeys.API_HOST + "/patients/" + patientId + "/notifications";
         Log.d(TAG, "Getting resource: " + urlString);
 
         RemembersDTO response = null;

@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nbempire.dentalnavarra.component.activity;
+package com.nbempire.dentalnavarra;
 
 import android.os.Bundle;
 import android.util.Log;

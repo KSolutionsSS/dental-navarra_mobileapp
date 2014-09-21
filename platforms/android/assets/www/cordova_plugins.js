@@ -27,13 +27,14 @@ module.exports = [
         "merges": [
             "navigator.notification"
         ]
-    },
-    {
-        "file": "plugins/com.cmackay.plugins.googleanalytics/www/analytics.js",
-        "id": "com.cmackay.plugins.googleanalytics.GoogleAnalytics",
-        "clobbers": [
-            "navigator.analytics"
-        ]
     }
-]
+];
+module.exports.metadata = 
+// TOP OF METADATA
+{
+    "com.red_folder.phonegap.plugin.backgroundservice": "3.3",
+    "org.apache.cordova.dialogs": "0.2.5",
+    "org.apache.cordova.vibration": "0.3.6"
+}
+// BOTTOM OF METADATA
 });

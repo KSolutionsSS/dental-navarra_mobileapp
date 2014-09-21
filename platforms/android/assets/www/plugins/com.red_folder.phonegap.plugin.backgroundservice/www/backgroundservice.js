@@ -1,4 +1,4 @@
-cordova.define("com.red_folder.phonegap.plugin.backgroundservice.BackgroundService", function(require, exports, module) {/*
+cordova.define("com.red_folder.phonegap.plugin.backgroundservice.BackgroundService", function(require, exports, module) { /*
  * Copyright 2013 Red Folder Consultancy Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

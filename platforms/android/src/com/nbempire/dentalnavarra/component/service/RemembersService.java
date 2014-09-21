@@ -28,7 +28,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import com.nbempire.dentalnavarra.R;
-import com.nbempire.dentalnavarra.component.activity.DentalNavarraActivity;
+import com.nbempire.dentalnavarra.DentalNavarraActivity;
 import com.nbempire.dentalnavarra.dao.RememberDao;
 import com.nbempire.dentalnavarra.dao.impl.RememberDaoImplSpring;
 import com.nbempire.dentalnavarra.domain.Remember;

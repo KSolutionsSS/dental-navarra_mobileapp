@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <manifest
     android:versionCode="8"
-    android:versionName="1.0.1"
+    android:versionName="1.3.2"
     android:windowSoftInputMode="adjustPan"
     package="com.nbempire.dentalnavarra"
     xmlns:android="http://schemas.android.com/apk/res/android">

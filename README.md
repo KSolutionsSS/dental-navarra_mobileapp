@@ -14,3 +14,8 @@ Before generating a new release
 * Set `index.js\properties.mock.device` to `false`.
 * Set `index.js\properties.mock.loggedUser` to `false`.
 
+Generate a new release
+--
+
+* Update `versionCode` and `versionNumber` in `AndroidManifest.xml`.
+* Run `android_rules.release` Ant target.
